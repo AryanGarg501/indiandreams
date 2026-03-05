@@ -47,7 +47,7 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-3">
           <Button variant="ghost" size="sm" asChild><a href="/login">Login</a></Button>
-          <Button variant="hero" size="sm">Start Now</Button>
+          <Button variant="hero" size="sm" asChild><a href="/quiz">Start Now</a></Button>
         </div>
 
         {/* Mobile toggle */}
@@ -79,7 +79,7 @@ const Navbar = () => {
                   {link.label}
                 </a>
               ))}
-              <Button variant="hero" className="mt-2">Start Now</Button>
+              <Button variant="hero" className="mt-2" asChild><a href="/quiz">Start Now</a></Button>
             </div>
           </motion.div>
         )}
