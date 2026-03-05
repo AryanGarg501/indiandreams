@@ -3,27 +3,32 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       toast.error("Please fill in all fields");
       return;
     }
     setLoading(true);
-    // TODO: connect to auth backend
-    setTimeout(() => {
-      toast.success("Login functionality coming soon!");
-      setLoading(false);
-    }, 1000);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Signed in successfully!");
+      navigate("/");
+    }
   };
 
   return (
@@ -37,9 +42,7 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-muted-foreground text-sm">
-              Email
-            </Label>
+            <Label htmlFor="email" className="text-muted-foreground text-sm">Email</Label>
             <Input
               id="email"
               type="email"
@@ -51,9 +54,7 @@ const Login = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-muted-foreground text-sm">
-              Password
-            </Label>
+            <Label htmlFor="password" className="text-muted-foreground text-sm">Password</Label>
             <div className="relative">
               <Input
                 id="password"
@@ -72,30 +73,20 @@ const Login = () => {
               </button>
             </div>
             <div className="flex justify-end">
-              <Link
-                to="/forgot-password"
-                className="text-sm text-primary hover:underline"
-              >
+              <Link to="/forgot-password" className="text-sm text-primary hover:underline">
                 Forgot password?
               </Link>
             </div>
           </div>
 
-          <Button
-            type="submit"
-            variant="hero"
-            className="w-full h-12 text-base rounded-lg"
-            disabled={loading}
-          >
+          <Button type="submit" variant="hero" className="w-full h-12 text-base rounded-lg" disabled={loading}>
             {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
 
         <p className="text-center text-sm text-muted-foreground mt-8">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-primary hover:underline font-medium">
-            Sign up
-          </Link>
+          <Link to="/signup" className="text-primary hover:underline font-medium">Sign up</Link>
         </p>
       </div>
     </div>
