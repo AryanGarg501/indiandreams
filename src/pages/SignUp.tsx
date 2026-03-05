@@ -6,7 +6,8 @@ import { Eye, EyeOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
-const Login = () => {
+const SignUp = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -14,14 +15,17 @@ const Login = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!name || !email || !password) {
       toast.error("Please fill in all fields");
       return;
     }
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
     setLoading(true);
-    // TODO: connect to auth backend
     setTimeout(() => {
-      toast.success("Login functionality coming soon!");
+      toast.success("Sign up functionality coming soon!");
       setLoading(false);
     }, 1000);
   };
@@ -33,13 +37,24 @@ const Login = () => {
       </Link>
 
       <div className="w-full max-w-md">
-        <h1 className="text-2xl font-bold text-foreground mb-8">Welcome Back</h1>
+        <h1 className="text-2xl font-bold text-foreground mb-2">Create Account</h1>
+        <p className="text-muted-foreground text-sm mb-8">Start your 28-day AI challenge today</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-muted-foreground text-sm">
-              Email
-            </Label>
+            <Label htmlFor="name" className="text-muted-foreground text-sm">Full Name</Label>
+            <Input
+              id="name"
+              type="text"
+              placeholder="John Doe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="h-12 border-border bg-card"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-muted-foreground text-sm">Email</Label>
             <Input
               id="email"
               type="email"
@@ -51,14 +66,12 @@ const Login = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-muted-foreground text-sm">
-              Password
-            </Label>
+            <Label htmlFor="password" className="text-muted-foreground text-sm">Password</Label>
             <div className="relative">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
+                placeholder="At least 6 characters"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="h-12 border-border bg-card pr-12"
@@ -71,35 +84,20 @@ const Login = () => {
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
-            <div className="flex justify-end">
-              <Link
-                to="/forgot-password"
-                className="text-sm text-primary hover:underline"
-              >
-                Forgot password?
-              </Link>
-            </div>
           </div>
 
-          <Button
-            type="submit"
-            variant="hero"
-            className="w-full h-12 text-base rounded-lg"
-            disabled={loading}
-          >
-            {loading ? "Signing in..." : "Sign In"}
+          <Button type="submit" variant="hero" className="w-full h-12 text-base rounded-lg" disabled={loading}>
+            {loading ? "Creating account..." : "Create Account"}
           </Button>
         </form>
 
         <p className="text-center text-sm text-muted-foreground mt-8">
-          Don't have an account?{" "}
-          <Link to="/signup" className="text-primary hover:underline font-medium">
-            Sign up
-          </Link>
+          Already have an account?{" "}
+          <Link to="/login" className="text-primary hover:underline font-medium">Sign in</Link>
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default SignUp;
