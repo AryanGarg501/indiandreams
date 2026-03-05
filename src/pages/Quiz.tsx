@@ -47,7 +47,7 @@ const Quiz = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.1 }}
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/quiz-steps")}
               className="group relative flex-1 rounded-xl border-2 border-border hover:border-primary overflow-hidden transition-all duration-300 bg-card cursor-pointer"
             >
               <div className="aspect-[4/3] overflow-hidden">
