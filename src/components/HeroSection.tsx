@@ -1,9 +1,21 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Users } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight, Users, ChevronRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
+import quizCompany from "@/assets/quiz-company.jpg";
+import quizMyself from "@/assets/quiz-myself.jpg";
+
+const quizOptions = [
+  { label: "I work for a company", image: quizCompany },
+  { label: "I work for myself", image: quizMyself },
+];
 
 const HeroSection = () => {
+  const [showQuiz, setShowQuiz] = useState(false);
+  const navigate = useNavigate();
+
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       {/* Decorative bg */}
@@ -33,13 +45,48 @@ const HeroSection = () => {
             </p>
 
             <div className="flex flex-wrap gap-4 mb-8">
-              <Button variant="hero" size="lg" className="gap-2">
+              <Button variant="hero" size="lg" className="gap-2" onClick={() => setShowQuiz(!showQuiz)}>
                 Start Now <ArrowRight size={18} />
               </Button>
               <Button variant="heroOutline" size="lg">
                 Learn More
               </Button>
             </div>
+
+            <AnimatePresence>
+              {showQuiz && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden mb-8"
+                >
+                  <p className="text-sm font-medium text-muted-foreground mb-3">How would you describe yourself?</p>
+                  <div className="flex gap-4">
+                    {quizOptions.map((option) => (
+                      <button
+                        key={option.label}
+                        onClick={() => navigate("/quiz-steps")}
+                        className="group relative flex-1 rounded-xl border-2 border-border hover:border-primary overflow-hidden transition-all duration-300 bg-card cursor-pointer"
+                      >
+                        <div className="aspect-[4/3] overflow-hidden">
+                          <img
+                            src={option.image}
+                            alt={option.label}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 bg-hero-gradient p-3 flex items-center justify-between">
+                          <span className="text-primary-foreground font-semibold text-xs sm:text-sm">{option.label}</span>
+                          <ChevronRight className="text-primary-foreground" size={16} />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <div className="flex items-center gap-3">
               <div className="flex -space-x-2">
