@@ -27,7 +27,7 @@ const Login = () => {
       toast.error(error.message);
     } else {
       toast.success("Signed in successfully!");
-      navigate("/");
+      navigate("/dashboard");
     }
   };
 

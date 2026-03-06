@@ -181,7 +181,7 @@ const Dashboard = () => {
                 <br />
                 Real knowledge.
               </p>
-              <Button size="sm" className="mt-3 bg-green-500 hover:bg-green-600 text-white rounded-full gap-1.5">
+              <Button size="sm" className="mt-3 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full gap-1.5">
                 <Play size={14} /> Play now
               </Button>
             </div>
