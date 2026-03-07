@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { Link } from "react-router-dom";
 
 const masteryPaths = [
   { title: "Claude", lessons: 10, hours: 5, progress: 20, emoji: "🤖" },
