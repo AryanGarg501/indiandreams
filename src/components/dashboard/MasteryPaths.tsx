@@ -1,12 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { Link } from "react-router-dom";
 
 const masteryPaths = [
-  { title: "Claude", lessons: 10, hours: 5, progress: 20, emoji: "🤖" },
-  { title: "Gemini", lessons: 10, hours: 4, progress: 35, emoji: "💎" },
-  { title: "ChatGPT", lessons: 13, hours: 6, progress: 50, emoji: "🧠" },
-  { title: "Jasper AI", lessons: 10, hours: 5, progress: 10, emoji: "✍️" },
-  { title: "Stable Diffusion", lessons: 10, hours: 4, progress: 0, emoji: "🎨" },
+  { title: "Claude", slug: "claude", lessons: 10, hours: 5, progress: 20, emoji: "🤖" },
+  { title: "Gemini", slug: "gemini", lessons: 10, hours: 4, progress: 35, emoji: "💎" },
+  { title: "ChatGPT", slug: "chatgpt", lessons: 13, hours: 6, progress: 50, emoji: "🧠" },
+  { title: "Jasper AI", slug: "jasper-ai", lessons: 10, hours: 5, progress: 10, emoji: "✍️" },
+  { title: "Stable Diffusion", slug: "stable-diffusion", lessons: 10, hours: 4, progress: 0, emoji: "🎨" },
 ];
 
 export function MasteryPaths() {
@@ -20,9 +21,10 @@ export function MasteryPaths() {
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         {masteryPaths.map((path) => (
-          <div
+          <Link
+            to={`/guide-pathway/${path.slug}`}
             key={path.title}
-            className="bg-card rounded-2xl border border-border p-4 card-elevated cursor-pointer"
+            className="bg-card rounded-2xl border border-border p-4 card-elevated cursor-pointer block hover:border-primary/30 transition-colors"
           >
             <div className="w-full aspect-square rounded-xl bg-muted flex items-center justify-center text-3xl mb-3">
               {path.emoji}
@@ -32,7 +34,7 @@ export function MasteryPaths() {
               {path.lessons} lessons · {path.hours}h
             </p>
             <Progress value={path.progress} className="h-1 mt-2.5" />
-          </div>
+          </Link>
         ))}
       </div>
     </section>
