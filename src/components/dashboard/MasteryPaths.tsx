@@ -3,10 +3,10 @@ import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 
 const masteryPaths = [
-  { title: "Claude", slug: "claude", lessons: 10, hours: 5, progress: 20, emoji: "🤖" },
-  { title: "Gemini", slug: "gemini", lessons: 10, hours: 4, progress: 35, emoji: "💎" },
-  { title: "ChatGPT", slug: "chatgpt", lessons: 13, hours: 6, progress: 50, emoji: "🧠" },
-  { title: "Jasper AI", slug: "jasper-ai", lessons: 10, hours: 5, progress: 10, emoji: "✍️" },
+  { title: "Claude", slug: "claude", lessons: 10, hours: 5, progress: 0, emoji: "🤖" },
+  { title: "Gemini", slug: "gemini", lessons: 10, hours: 4, progress: 0, emoji: "💎" },
+  { title: "ChatGPT", slug: "chatgpt", lessons: 13, hours: 6, progress: 0, emoji: "🧠" },
+  { title: "Jasper AI", slug: "jasper-ai", lessons: 10, hours: 5, progress: 0, emoji: "✍️" },
   { title: "Stable Diffusion", slug: "stable-diffusion", lessons: 10, hours: 4, progress: 0, emoji: "🎨" },
 ];
 
