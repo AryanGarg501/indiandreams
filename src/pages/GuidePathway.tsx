@@ -5,7 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, BookOpen, CheckCircle2, Lock, PlayCircle, ChevronRight } from "lucide-react";
+import { ArrowLeft, Clock, BookOpen, Lock, PlayCircle, ChevronRight } from "lucide-react";
 
 const coursesData: Record<string, {
   title: string;
@@ -13,10 +13,9 @@ const coursesData: Record<string, {
   description: string;
   totalLessons: number;
   totalHours: number;
-  progress: number;
   modules: {
     title: string;
-    lessons: { title: string; duration: string; completed: boolean; locked: boolean }[];
+    lessons: { title: string; duration: string }[];
   }[];
 }> = {
   claude: {
@@ -25,31 +24,30 @@ const coursesData: Record<string, {
     description: "Master Claude AI — from fundamentals to advanced prompt engineering and real-world applications.",
     totalLessons: 10,
     totalHours: 5,
-    progress: 20,
     modules: [
       {
         title: "Getting Started with Claude",
         lessons: [
-          { title: "Introduction to Claude AI", duration: "8 min", completed: true, locked: false },
-          { title: "Setting Up Your Workspace", duration: "12 min", completed: true, locked: false },
-          { title: "Your First Conversation", duration: "15 min", completed: false, locked: false },
+          { title: "Introduction to Claude AI", duration: "8 min" },
+          { title: "Setting Up Your Workspace", duration: "12 min" },
+          { title: "Your First Conversation", duration: "15 min" },
         ],
       },
       {
         title: "Prompt Engineering Basics",
         lessons: [
-          { title: "Understanding Prompt Structure", duration: "20 min", completed: false, locked: false },
-          { title: "Role-Based Prompting", duration: "18 min", completed: false, locked: true },
-          { title: "Chain of Thought Techniques", duration: "22 min", completed: false, locked: true },
+          { title: "Understanding Prompt Structure", duration: "20 min" },
+          { title: "Role-Based Prompting", duration: "18 min" },
+          { title: "Chain of Thought Techniques", duration: "22 min" },
         ],
       },
       {
         title: "Advanced Techniques",
         lessons: [
-          { title: "System Prompts Mastery", duration: "25 min", completed: false, locked: true },
-          { title: "Multi-Turn Conversations", duration: "20 min", completed: false, locked: true },
-          { title: "Claude for Content Creation", duration: "30 min", completed: false, locked: true },
-          { title: "Building AI Workflows", duration: "35 min", completed: false, locked: true },
+          { title: "System Prompts Mastery", duration: "25 min" },
+          { title: "Multi-Turn Conversations", duration: "20 min" },
+          { title: "Claude for Content Creation", duration: "30 min" },
+          { title: "Building AI Workflows", duration: "35 min" },
         ],
       },
     ],
@@ -60,31 +58,30 @@ const coursesData: Record<string, {
     description: "Unlock the power of Google's Gemini AI — multimodal capabilities, integrations, and advanced use cases.",
     totalLessons: 10,
     totalHours: 4,
-    progress: 35,
     modules: [
       {
         title: "Gemini Fundamentals",
         lessons: [
-          { title: "What is Gemini?", duration: "10 min", completed: true, locked: false },
-          { title: "Gemini vs Other AI Models", duration: "12 min", completed: true, locked: false },
-          { title: "Multimodal Capabilities", duration: "18 min", completed: true, locked: false },
+          { title: "What is Gemini?", duration: "10 min" },
+          { title: "Gemini vs Other AI Models", duration: "12 min" },
+          { title: "Multimodal Capabilities", duration: "18 min" },
         ],
       },
       {
         title: "Working with Gemini",
         lessons: [
-          { title: "Text Generation Mastery", duration: "20 min", completed: true, locked: false },
-          { title: "Image Analysis with Gemini", duration: "22 min", completed: false, locked: false },
-          { title: "Code Generation", duration: "25 min", completed: false, locked: true },
+          { title: "Text Generation Mastery", duration: "20 min" },
+          { title: "Image Analysis with Gemini", duration: "22 min" },
+          { title: "Code Generation", duration: "25 min" },
         ],
       },
       {
         title: "Gemini Pro Tips",
         lessons: [
-          { title: "Google Workspace Integration", duration: "15 min", completed: false, locked: true },
-          { title: "API Access & Automation", duration: "30 min", completed: false, locked: true },
-          { title: "Building with Gemini API", duration: "28 min", completed: false, locked: true },
-          { title: "Real-World Projects", duration: "35 min", completed: false, locked: true },
+          { title: "Google Workspace Integration", duration: "15 min" },
+          { title: "API Access & Automation", duration: "30 min" },
+          { title: "Building with Gemini API", duration: "28 min" },
+          { title: "Real-World Projects", duration: "35 min" },
         ],
       },
     ],
@@ -95,34 +92,33 @@ const coursesData: Record<string, {
     description: "Become a ChatGPT power user — from basics to GPTs, plugins, and professional workflows.",
     totalLessons: 13,
     totalHours: 6,
-    progress: 50,
     modules: [
       {
         title: "ChatGPT Essentials",
         lessons: [
-          { title: "Getting Started with ChatGPT", duration: "8 min", completed: true, locked: false },
-          { title: "Understanding GPT Models", duration: "15 min", completed: true, locked: false },
-          { title: "Effective Prompting", duration: "20 min", completed: true, locked: false },
+          { title: "Getting Started with ChatGPT", duration: "8 min" },
+          { title: "Understanding GPT Models", duration: "15 min" },
+          { title: "Effective Prompting", duration: "20 min" },
         ],
       },
       {
         title: "Intermediate Skills",
         lessons: [
-          { title: "Custom Instructions", duration: "18 min", completed: true, locked: false },
-          { title: "Using GPT-4 Vision", duration: "22 min", completed: true, locked: false },
-          { title: "Data Analysis with ChatGPT", duration: "25 min", completed: true, locked: false },
-          { title: "Writing & Editing", duration: "20 min", completed: true, locked: false },
+          { title: "Custom Instructions", duration: "18 min" },
+          { title: "Using GPT-4 Vision", duration: "22 min" },
+          { title: "Data Analysis with ChatGPT", duration: "25 min" },
+          { title: "Writing & Editing", duration: "20 min" },
         ],
       },
       {
         title: "Advanced & Custom GPTs",
         lessons: [
-          { title: "Building Custom GPTs", duration: "30 min", completed: false, locked: false },
-          { title: "API Integration", duration: "28 min", completed: false, locked: false },
-          { title: "Plugins & Extensions", duration: "22 min", completed: false, locked: true },
-          { title: "ChatGPT for Business", duration: "25 min", completed: false, locked: true },
-          { title: "Automation Workflows", duration: "30 min", completed: false, locked: true },
-          { title: "Final Project", duration: "45 min", completed: false, locked: true },
+          { title: "Building Custom GPTs", duration: "30 min" },
+          { title: "API Integration", duration: "28 min" },
+          { title: "Plugins & Extensions", duration: "22 min" },
+          { title: "ChatGPT for Business", duration: "25 min" },
+          { title: "Automation Workflows", duration: "30 min" },
+          { title: "Final Project", duration: "45 min" },
         ],
       },
     ],
@@ -133,31 +129,30 @@ const coursesData: Record<string, {
     description: "Learn Jasper AI for content marketing — copywriting, brand voice, and campaign management.",
     totalLessons: 10,
     totalHours: 5,
-    progress: 10,
     modules: [
       {
         title: "Jasper Basics",
         lessons: [
-          { title: "Introduction to Jasper", duration: "10 min", completed: true, locked: false },
-          { title: "Setting Up Brand Voice", duration: "15 min", completed: false, locked: false },
-          { title: "Templates Overview", duration: "12 min", completed: false, locked: false },
+          { title: "Introduction to Jasper", duration: "10 min" },
+          { title: "Setting Up Brand Voice", duration: "15 min" },
+          { title: "Templates Overview", duration: "12 min" },
         ],
       },
       {
         title: "Content Creation",
         lessons: [
-          { title: "Blog Post Writing", duration: "25 min", completed: false, locked: true },
-          { title: "Social Media Content", duration: "20 min", completed: false, locked: true },
-          { title: "Ad Copy Generation", duration: "18 min", completed: false, locked: true },
-          { title: "Email Marketing", duration: "22 min", completed: false, locked: true },
+          { title: "Blog Post Writing", duration: "25 min" },
+          { title: "Social Media Content", duration: "20 min" },
+          { title: "Ad Copy Generation", duration: "18 min" },
+          { title: "Email Marketing", duration: "22 min" },
         ],
       },
       {
         title: "Advanced Jasper",
         lessons: [
-          { title: "Jasper Chat & Commands", duration: "20 min", completed: false, locked: true },
-          { title: "Team Collaboration", duration: "15 min", completed: false, locked: true },
-          { title: "Campaign Workflows", duration: "30 min", completed: false, locked: true },
+          { title: "Jasper Chat & Commands", duration: "20 min" },
+          { title: "Team Collaboration", duration: "15 min" },
+          { title: "Campaign Workflows", duration: "30 min" },
         ],
       },
     ],
@@ -168,31 +163,30 @@ const coursesData: Record<string, {
     description: "Create stunning AI art with Stable Diffusion — prompting, models, and creative workflows.",
     totalLessons: 10,
     totalHours: 4,
-    progress: 0,
     modules: [
       {
         title: "AI Art Fundamentals",
         lessons: [
-          { title: "What is Stable Diffusion?", duration: "10 min", completed: false, locked: false },
-          { title: "Installation & Setup", duration: "20 min", completed: false, locked: false },
-          { title: "Your First Image", duration: "15 min", completed: false, locked: false },
+          { title: "What is Stable Diffusion?", duration: "10 min" },
+          { title: "Installation & Setup", duration: "20 min" },
+          { title: "Your First Image", duration: "15 min" },
         ],
       },
       {
         title: "Prompt Crafting",
         lessons: [
-          { title: "Positive & Negative Prompts", duration: "22 min", completed: false, locked: true },
-          { title: "Style Keywords & Modifiers", duration: "18 min", completed: false, locked: true },
-          { title: "Aspect Ratios & Resolution", duration: "15 min", completed: false, locked: true },
+          { title: "Positive & Negative Prompts", duration: "22 min" },
+          { title: "Style Keywords & Modifiers", duration: "18 min" },
+          { title: "Aspect Ratios & Resolution", duration: "15 min" },
         ],
       },
       {
         title: "Advanced Generation",
         lessons: [
-          { title: "ControlNet & img2img", duration: "30 min", completed: false, locked: true },
-          { title: "LoRA & Model Fine-Tuning", duration: "35 min", completed: false, locked: true },
-          { title: "Inpainting & Outpainting", duration: "25 min", completed: false, locked: true },
-          { title: "Creative Portfolio Project", duration: "40 min", completed: false, locked: true },
+          { title: "ControlNet & img2img", duration: "30 min" },
+          { title: "LoRA & Model Fine-Tuning", duration: "35 min" },
+          { title: "Inpainting & Outpainting", duration: "25 min" },
+          { title: "Creative Portfolio Project", duration: "40 min" },
         ],
       },
     ],
@@ -225,7 +219,6 @@ const GuidePathway = () => {
   };
 
   const course = coursesData[courseId || ""] || coursesData.claude;
-  const completedLessons = course.modules.flatMap(m => m.lessons).filter(l => l.completed).length;
 
   if (loading) {
     return (
@@ -269,78 +262,68 @@ const GuidePathway = () => {
 
                 <div className="mt-6">
                   <div className="flex items-center justify-between text-sm mb-2">
-                    <span className="font-medium text-foreground">{completedLessons} of {course.totalLessons} completed</span>
-                    <span className="font-semibold text-primary">{course.progress}%</span>
+                    <span className="font-medium text-foreground">0 of {course.totalLessons} completed</span>
+                    <span className="font-semibold text-primary">0%</span>
                   </div>
-                  <Progress value={course.progress} className="h-2" />
+                  <Progress value={0} className="h-2" />
                 </div>
               </div>
 
               {/* Modules */}
-              {course.modules.map((module, moduleIdx) => {
-                const moduleCompleted = module.lessons.filter(l => l.completed).length;
-                const moduleTotal = module.lessons.length;
-                return (
-                  <div key={moduleIdx} className="space-y-1">
-                    <div className="flex items-center justify-between px-1 mb-3">
-                      <h2 className="text-lg font-bold text-foreground">
-                        Module {moduleIdx + 1}: {module.title}
-                      </h2>
-                      <span className="text-xs text-muted-foreground font-medium">
-                        {moduleCompleted}/{moduleTotal}
-                      </span>
-                    </div>
-
-                    <div className="bg-card rounded-2xl border border-border overflow-hidden divide-y divide-border">
-                      {module.lessons.map((lesson, lessonIdx) => {
-                        const isNext = !lesson.completed && !lesson.locked &&
-                          (lessonIdx === 0 || module.lessons[lessonIdx - 1]?.completed);
-                        return (
-                          <button
-                            key={lessonIdx}
-                            disabled={lesson.locked}
-                            className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors group
-                              ${lesson.locked ? "opacity-50 cursor-not-allowed" : "hover:bg-muted/50 cursor-pointer"}
-                              ${isNext ? "bg-primary/5" : ""}
-                            `}
-                          >
-                            <div className="shrink-0">
-                              {lesson.completed ? (
-                                <CheckCircle2 size={20} className="text-primary" />
-                              ) : lesson.locked ? (
-                                <Lock size={18} className="text-muted-foreground" />
-                              ) : isNext ? (
-                                <PlayCircle size={20} className="text-primary" />
-                              ) : (
-                                <div className="w-5 h-5 rounded-full border-2 border-border" />
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className={`text-sm font-medium ${lesson.completed ? "text-muted-foreground line-through" : "text-foreground"}`}>
-                                {lesson.title}
-                              </p>
-                            </div>
-                            <span className="text-xs text-muted-foreground shrink-0">{lesson.duration}</span>
-                            {!lesson.locked && (
-                              <ChevronRight size={16} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
+              {course.modules.map((module, moduleIdx) => (
+                <div key={moduleIdx} className="space-y-1">
+                  <div className="flex items-center justify-between px-1 mb-3">
+                    <h2 className="text-lg font-bold text-foreground">
+                      Module {moduleIdx + 1}: {module.title}
+                    </h2>
+                    <span className="text-xs text-muted-foreground font-medium">
+                      0/{module.lessons.length}
+                    </span>
                   </div>
-                );
-              })}
 
-              {/* Continue Button */}
-              {course.progress < 100 && (
-                <div className="flex justify-center pt-2 pb-8">
-                  <Button size="lg" className="rounded-xl px-8 font-semibold">
-                    <PlayCircle size={18} />
-                    Continue Learning
-                  </Button>
+                  <div className="bg-card rounded-2xl border border-border overflow-hidden divide-y divide-border">
+                    {module.lessons.map((lesson, lessonIdx) => {
+                      // Only first lesson of first module is unlocked for new users
+                      const isFirstLesson = moduleIdx === 0 && lessonIdx === 0;
+                      const isLocked = !isFirstLesson;
+                      return (
+                        <button
+                          key={lessonIdx}
+                          disabled={isLocked}
+                          className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors group
+                            ${isLocked ? "opacity-50 cursor-not-allowed" : "hover:bg-muted/50 cursor-pointer bg-primary/5"}
+                          `}
+                        >
+                          <div className="shrink-0">
+                            {isFirstLesson ? (
+                              <PlayCircle size={20} className="text-primary" />
+                            ) : (
+                              <Lock size={18} className="text-muted-foreground" />
+                            )}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-medium text-foreground">
+                              {lesson.title}
+                            </p>
+                          </div>
+                          <span className="text-xs text-muted-foreground shrink-0">{lesson.duration}</span>
+                          {!isLocked && (
+                            <ChevronRight size={16} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              )}
+              ))}
+
+              {/* Start Button */}
+              <div className="flex justify-center pt-2 pb-8">
+                <Button size="lg" className="rounded-xl px-8 font-semibold">
+                  <PlayCircle size={18} />
+                  Start Learning
+                </Button>
+              </div>
             </div>
           </main>
         </div>
