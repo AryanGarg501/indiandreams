@@ -21,9 +21,10 @@ export function MasteryPaths() {
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         {masteryPaths.map((path) => (
-          <div
+          <Link
+            to={`/guide-pathway/${path.slug}`}
             key={path.title}
-            className="bg-card rounded-2xl border border-border p-4 card-elevated cursor-pointer"
+            className="bg-card rounded-2xl border border-border p-4 card-elevated cursor-pointer block hover:border-primary/30 transition-colors"
           >
             <div className="w-full aspect-square rounded-xl bg-muted flex items-center justify-center text-3xl mb-3">
               {path.emoji}
