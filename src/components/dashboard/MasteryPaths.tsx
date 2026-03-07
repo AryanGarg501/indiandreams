@@ -34,7 +34,7 @@ export function MasteryPaths() {
               {path.lessons} lessons · {path.hours}h
             </p>
             <Progress value={path.progress} className="h-1 mt-2.5" />
-          </div>
+          </Link>
         ))}
       </div>
     </section>
