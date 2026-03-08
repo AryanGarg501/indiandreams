@@ -132,6 +132,10 @@ const CertificateView = () => {
 
       setCertificate(data);
       setLoading(false);
+      
+      // Show confetti on first load
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 4000);
     };
     fetchCertificate();
   }, [certificateId, navigate]);
