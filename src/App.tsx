@@ -16,6 +16,7 @@ import AITools from "./pages/AITools";
 import GuidePathway from "./pages/GuidePathway";
 import LessonView from "./pages/LessonView";
 import CertificateView from "./pages/CertificateView";
+import ChallengeView from "./pages/ChallengeView";
 import MiniGames from "./pages/MiniGames";
 import AISpotter from "./pages/games/AISpotter";
 import PromptChallenge from "./pages/games/PromptChallenge";
