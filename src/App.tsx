@@ -11,6 +11,7 @@ import Quiz from "./pages/Quiz";
 import QuizSteps from "./pages/QuizSteps";
 import Dashboard from "./pages/Dashboard";
 import Challenges from "./pages/Challenges";
+import Guides from "./pages/Guides";
 import GuidePathway from "./pages/GuidePathway";
 import NotFound from "./pages/NotFound";
 
