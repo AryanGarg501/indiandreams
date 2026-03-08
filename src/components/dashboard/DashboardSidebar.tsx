@@ -55,7 +55,7 @@ export function DashboardSidebar({ userName, onLogout }: DashboardSidebarProps) 
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => {
-                const isActive = location.pathname === item.href && item.label === "Home";
+                const isActive = location.pathname === item.href;
                 return (
                   <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton
