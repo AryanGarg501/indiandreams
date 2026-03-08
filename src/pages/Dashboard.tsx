@@ -92,8 +92,8 @@ const Dashboard = () => {
               </h1>
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 bg-accent/10 rounded-full">
-              <Flame size={16} className="text-accent" />
-              <span className="text-sm font-semibold text-foreground">0</span>
+              <Flame size={16} className={streakCount > 0 ? "text-accent" : "text-muted-foreground"} />
+              <span className="text-sm font-semibold text-foreground">{streakCount}</span>
             </div>
           </header>
 
