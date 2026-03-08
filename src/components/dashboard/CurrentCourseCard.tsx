@@ -16,8 +16,8 @@ export function CurrentCourseCard() {
       <Progress value={0} className="h-2 mb-2" />
       <p className="text-xs text-muted-foreground mb-5">0 lessons completed · 0%</p>
       <div className="flex gap-3">
-        <Button variant="hero" size="sm" className="flex-1 rounded-xl" asChild>
-          <a href="https://app.coursiv.com/guides" target="_blank" rel="noopener noreferrer">Browse guides</a>
+        <Button variant="hero" size="sm" className="flex-1 rounded-xl">
+          Browse guides
         </Button>
       </div>
     </div>
