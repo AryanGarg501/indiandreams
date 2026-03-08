@@ -140,10 +140,12 @@ const OfferPage = () => {
                   onClick={() => handleSelectPlan("starter")}
                 >
                   <h3 className="font-display text-lg font-bold text-foreground mb-1">Starter</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Perfect to try things out</p>
-                  <div className="flex items-baseline gap-1 mb-6">
-                    <span className="font-display text-4xl font-extrabold text-foreground">Free</span>
+                  <p className="text-sm text-muted-foreground mb-4">Perfect to get started</p>
+                  <div className="flex items-baseline gap-1 mb-1">
+                    <span className="font-display text-4xl font-extrabold text-foreground">₹199</span>
+                    <span className="text-muted-foreground text-sm">/one-time</span>
                   </div>
+                  <p className="text-xs text-muted-foreground line-through mb-6">₹799</p>
                   <ul className="space-y-3 mb-6">
                     {[
                       "7-day AI challenge access",
@@ -158,7 +160,7 @@ const OfferPage = () => {
                     ))}
                   </ul>
                   <Button variant="outline" className="w-full h-12 rounded-xl font-semibold">
-                    Get Started Free
+                    Get Starter Access
                   </Button>
                 </motion.div>
 
