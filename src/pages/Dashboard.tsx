@@ -9,11 +9,13 @@ import { FeatureCards } from "@/components/dashboard/FeatureCards";
 import { MasteryPaths } from "@/components/dashboard/MasteryPaths";
 import { ChallengesSection } from "@/components/dashboard/ChallengesSection";
 import { Flame } from "lucide-react";
+import { startOfWeek, addDays, format } from "date-fns";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [streakCount, setStreakCount] = useState(0);
 
   useEffect(() => {
     const checkAuth = async () => {
