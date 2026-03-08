@@ -209,12 +209,22 @@ const GuidePathway = () => {
               })}
 
               {/* CTA Button */}
-              <div className="flex justify-center pt-2 pb-8">
+              <div className="flex flex-col items-center gap-3 pt-2 pb-8">
                 {allCompleted ? (
-                  <Button size="lg" variant="outline" className="rounded-xl px-8 font-semibold" disabled>
-                    <CheckCircle2 size={18} className="text-emerald-500" />
-                    Course Completed!
-                  </Button>
+                  <>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <CheckCircle2 size={18} className="text-emerald-500" />
+                      <span className="font-medium">Course Completed!</span>
+                    </div>
+                    {certificateId && (
+                      <Link to={`/certificate/${certificateId}`}>
+                        <Button size="lg" variant="hero" className="rounded-xl px-8 font-semibold">
+                          <Award size={18} />
+                          View Certificate
+                        </Button>
+                      </Link>
+                    )}
+                  </>
                 ) : (
                   <Link to={`/lesson/${courseId}/${nextLesson.moduleId}/${nextLesson.id}`}>
                     <Button size="lg" className="rounded-xl px-8 font-semibold">
