@@ -165,6 +165,9 @@ const CertificateView = () => {
 
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,hsl(var(--secondary)/0.08),transparent_60%),radial-gradient(ellipse_at_bottom,hsl(var(--primary)/0.06),transparent_60%)] bg-background">
+      {/* Confetti */}
+      <Confetti active={showConfetti} />
+      
       {/* Header */}
       <header className="print:hidden sticky top-0 z-40 h-14 flex items-center justify-between border-b border-border bg-card/80 backdrop-blur-sm px-4 md:px-6">
         <Link to={`/guide-pathway/${certificate.course_id}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
