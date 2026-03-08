@@ -103,16 +103,49 @@ const LessonView = () => {
 
     if (error) {
       toast({ title: "Error", description: "Failed to save progress. Please try again.", variant: "destructive" });
-    } else {
-      setCompletedLessons((prev) => new Set([...prev, `${moduleId}-${lessonId}`]));
-      toast({ title: "Lesson completed! 🎉", description: nextLesson ? "Moving to next lesson..." : "Great job finishing this lesson!" });
-      
-      // Auto-navigate to next lesson after short delay
-      if (nextLesson) {
+      setMarkingComplete(false);
+      return;
+    }
+
+    const newCompleted = new Set([...completedLessons, `${moduleId}-${lessonId}`]);
+    setCompletedLessons(newCompleted);
+
+    // Check if all lessons in this course are now completed
+    const allDone = allLessons.every(
+      (l) => newCompleted.has(`${l.moduleId}-${l.id}`)
+    );
+
+    if (allDone && course) {
+      // Generate certificate
+      const { data: certData, error: certError } = await supabase
+        .from("certificates")
+        .insert({
+          user_id: userId,
+          course_id: courseId,
+          course_title: course.title,
+          user_name: userName,
+        })
+        .select("id")
+        .single();
+
+      if (!certError && certData) {
+        toast({
+          title: "🎓 Course Completed!",
+          description: "Your certificate is ready! Redirecting...",
+        });
         setTimeout(() => {
-          navigate(`/lesson/${courseId}/${nextLesson.moduleId}/${nextLesson.id}`);
-        }, 800);
+          navigate(`/certificate/${certData.id}`);
+        }, 1200);
+      } else {
+        toast({ title: "Course Completed! 🎉", description: "Congratulations on finishing all lessons!" });
       }
+    } else if (nextLesson) {
+      toast({ title: "Lesson completed! 🎉", description: "Moving to next lesson..." });
+      setTimeout(() => {
+        navigate(`/lesson/${courseId}/${nextLesson.moduleId}/${nextLesson.id}`);
+      }, 800);
+    } else {
+      toast({ title: "Lesson completed! 🎉", description: "Great job!" });
     }
     
     setMarkingComplete(false);

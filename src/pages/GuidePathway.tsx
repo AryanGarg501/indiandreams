@@ -5,7 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, BookOpen, Lock, PlayCircle, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, Clock, BookOpen, Lock, PlayCircle, ChevronRight, CheckCircle2, Award } from "lucide-react";
 import { coursesData } from "@/data/coursesData";
 
 interface LessonProgress {
@@ -19,6 +19,7 @@ const GuidePathway = () => {
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [certificateId, setCertificateId] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -37,6 +38,16 @@ const GuidePathway = () => {
         const completed = new Set(progressData.map((p: LessonProgress) => `${p.module_id}-${p.lesson_id}`));
         setCompletedLessons(completed);
       }
+
+      // Check for existing certificate
+      const { data: certData } = await supabase
+        .from("certificates")
+        .select("id")
+        .eq("user_id", session.user.id)
+        .eq("course_id", courseId || "")
+        .maybeSingle();
+      
+      if (certData) setCertificateId(certData.id);
       
       setLoading(false);
     };
@@ -198,12 +209,22 @@ const GuidePathway = () => {
               })}
 
               {/* CTA Button */}
-              <div className="flex justify-center pt-2 pb-8">
+              <div className="flex flex-col items-center gap-3 pt-2 pb-8">
                 {allCompleted ? (
-                  <Button size="lg" variant="outline" className="rounded-xl px-8 font-semibold" disabled>
-                    <CheckCircle2 size={18} className="text-emerald-500" />
-                    Course Completed!
-                  </Button>
+                  <>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <CheckCircle2 size={18} className="text-emerald-500" />
+                      <span className="font-medium">Course Completed!</span>
+                    </div>
+                    {certificateId && (
+                      <Link to={`/certificate/${certificateId}`}>
+                        <Button size="lg" variant="hero" className="rounded-xl px-8 font-semibold">
+                          <Award size={18} />
+                          View Certificate
+                        </Button>
+                      </Link>
+                    )}
+                  </>
                 ) : (
                   <Link to={`/lesson/${courseId}/${nextLesson.moduleId}/${nextLesson.id}`}>
                     <Button size="lg" className="rounded-xl px-8 font-semibold">
