@@ -3,6 +3,7 @@ import { Play, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export function FeatureCards() {
+  const navigate = useNavigate();
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="bg-secondary rounded-2xl p-6 flex items-center justify-between card-elevated">
