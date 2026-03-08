@@ -17,6 +17,7 @@ export function FeatureCards() {
           <Button
             size="sm"
             className="mt-4 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full gap-1.5 font-semibold"
+            onClick={() => navigate("/mini-games")}
           >
             <Play size={14} /> Play now
           </Button>
