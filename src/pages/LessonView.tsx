@@ -285,9 +285,45 @@ const LessonView = () => {
                   <span className="text-sm font-semibold text-foreground truncate">{currentLesson?.title}</span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Clock size={13} />
-                <span>{currentLesson?.duration}</span>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1">
+                  {isSpeaking ? (
+                    <>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={isPaused ? resume : pause}
+                        title={isPaused ? "Resume" : "Pause"}
+                      >
+                        {isPaused ? <Play size={14} /> : <Pause size={14} />}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={stop}
+                        title="Stop listening"
+                      >
+                        <VolumeX size={14} />
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => currentLesson && speak(currentLesson.content)}
+                      title="Listen to lesson"
+                    >
+                      <Volume2 size={14} />
+                    </Button>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Clock size={13} />
+                  <span>{currentLesson?.duration}</span>
+                </div>
               </div>
             </header>
 
