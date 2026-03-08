@@ -3,7 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 
 export function CurrentCourseCard() {
-  const navigate = useNavigate();
+  return (
     <div className="bg-card rounded-2xl border border-border p-6 card-elevated">
       <div className="flex items-start gap-4 mb-5">
         <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-2xl shrink-0">
@@ -17,7 +17,7 @@ export function CurrentCourseCard() {
       <Progress value={0} className="h-2 mb-2" />
       <p className="text-xs text-muted-foreground mb-5">0 lessons completed · 0%</p>
       <div className="flex gap-3">
-        <Button variant="hero" size="sm" className="flex-1 rounded-xl">
+        <Button variant="hero" size="sm" className="flex-1 rounded-xl" onClick={() => navigate("/guides")}>
           Browse guides
         </Button>
       </div>
