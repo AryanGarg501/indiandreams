@@ -9,6 +9,12 @@ import { Progress } from "@/components/ui/progress";
 import { challengesData, type ChallengeData } from "@/data/challengesData";
 import challengeHero from "@/assets/challenge-hero.jpg";
 import challenge28day from "@/assets/challenge-28day.jpg";
+import challengeJunior from "@/assets/challenge-junior-ai.jpg";
+
+const challengeImages: Record<string, string> = {
+  "28-day-ai": challenge28day,
+  "junior-ai": challengeJunior,
+};
 
 const Challenges = () => {
   const navigate = useNavigate();
