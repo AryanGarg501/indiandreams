@@ -11,9 +11,12 @@ import challengeHero from "@/assets/challenge-hero.jpg";
 import challenge28day from "@/assets/challenge-28day.jpg";
 import challengeJunior from "@/assets/challenge-junior-ai.jpg";
 
+import challengeSideGigs from "@/assets/challenge-side-gigs.jpg";
+
 const challengeImages: Record<string, string> = {
   "28-day-ai": challenge28day,
   "junior-ai": challengeJunior,
+  "14-day-side-gigs": challengeSideGigs,
 };
 
 const Challenges = () => {

@@ -2,11 +2,12 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import challenge28day from "@/assets/challenge-28day.jpg";
 import challengeJunior from "@/assets/challenge-junior-ai.jpg";
+import challengeSideGigs from "@/assets/challenge-side-gigs.jpg";
 
 const challenges = [
   { id: "28-day-ai", title: "2026 28-Day AI Challenge", duration: "28 days", level: "Beginner", image: challenge28day },
   { id: "junior-ai", title: "Junior AI Challenge", duration: "28 days", level: "Beginner", image: challengeJunior },
-  { id: "14-day-side-gigs", title: "14-Day AI Side Gigs Challenge", duration: "14 days", level: "Beginner", image: null },
+  { id: "14-day-side-gigs", title: "14-Day AI Side Gigs Challenge", duration: "14 days", level: "Beginner", image: challengeSideGigs },
 ];
 
 export function ChallengesSection() {
