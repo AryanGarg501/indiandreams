@@ -49,7 +49,7 @@ const QuizSteps = () => {
     if (currentStep < totalSteps - 1) {
       setTimeout(() => setCurrentStep(currentStep + 1), 300);
     } else {
-      setTimeout(() => navigate("/signup"), 300);
+      setTimeout(() => navigate("/offer"), 300);
     }
   };
 
