@@ -153,12 +153,13 @@ const LessonView = () => {
     setMarkingComplete(false);
   };
 
-  // Expand current module by default
+  // Expand current module by default & stop speech on lesson change
   useEffect(() => {
+    stop();
     if (moduleId) {
       setExpandedModules((prev) => ({ ...prev, [moduleId]: true }));
     }
-  }, [moduleId]);
+  }, [moduleId, lessonId, stop]);
 
   const toggleModule = (mId: string) => {
     setExpandedModules((prev) => ({ ...prev, [mId]: !prev[mId] }));
