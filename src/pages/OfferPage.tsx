@@ -125,116 +125,38 @@ const OfferPage = () => {
                 </p>
               </div>
 
-              {/* Plans grid */}
-              <div className="grid md:grid-cols-3 gap-4 md:gap-6">
-                {/* Starter Plan */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
-                  className={`relative rounded-2xl border-2 p-6 transition-all cursor-pointer ${
-                    selectedPlan === "starter"
-                      ? "border-primary bg-primary/5 shadow-lg"
-                      : "border-border bg-card hover:border-primary/40 hover:shadow-md"
-                  }`}
-                  onClick={() => handleSelectPlan("starter")}
-                >
-                  <h3 className="font-display text-lg font-bold text-foreground mb-1">Starter</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Perfect to get started</p>
-                  <div className="flex items-baseline gap-1 mb-1">
-                    <span className="font-display text-4xl font-extrabold text-foreground">₹199</span>
-                    <span className="text-muted-foreground text-sm">/one-time</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground line-through mb-6">₹799</p>
-                  <ul className="space-y-3 mb-6">
-                    {[
-                      "7-day AI challenge access",
-                      "Basic AI tools guide",
-                      "Community access",
-                      "Email support",
-                    ].map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm text-foreground">
-                        <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button variant="outline" className="w-full h-12 rounded-xl font-semibold">
-                    Get Starter Access
-                  </Button>
-                </motion.div>
-
-                {/* Pro Plan - Featured */}
+              {/* Single Plan */}
+              <div className="flex justify-center">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
-                  className={`relative rounded-2xl border-2 p-6 transition-all cursor-pointer ${
-                    selectedPlan === "pro"
-                      ? "border-primary bg-primary/5 shadow-xl scale-[1.02]"
-                      : "border-primary/60 bg-card hover:shadow-xl shadow-lg"
-                  }`}
-                  onClick={() => handleSelectPlan("pro")}
+                  className="relative rounded-2xl border-2 border-primary/60 bg-card shadow-lg p-8 w-full max-w-md cursor-pointer hover:shadow-xl transition-all"
+                  onClick={() => handleSelectPlan("full")}
                 >
                   {/* Badge */}
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                     <span className="bg-hero-gradient text-primary-foreground text-xs font-bold px-4 py-1.5 rounded-full flex items-center gap-1.5 whitespace-nowrap">
-                      <Star className="w-3.5 h-3.5" /> MOST POPULAR
+                      <Star className="w-3.5 h-3.5" /> LIMITED OFFER
                     </span>
                   </div>
 
-                  <h3 className="font-display text-lg font-bold text-foreground mb-1 mt-2">Pro Challenge</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Full 28-day experience</p>
-                  <div className="flex items-baseline gap-1 mb-1">
-                    <span className="font-display text-4xl font-extrabold text-foreground">₹499</span>
+                  <h3 className="font-display text-xl font-bold text-foreground mb-1 mt-2 text-center">Full Package — 28 Days</h3>
+                  <p className="text-sm text-muted-foreground mb-5 text-center">Complete AI mastery challenge</p>
+                  <div className="flex items-baseline justify-center gap-1 mb-1">
+                    <span className="font-display text-5xl font-extrabold text-foreground">₹199</span>
                     <span className="text-muted-foreground text-sm">/one-time</span>
                   </div>
-                  <p className="text-xs text-muted-foreground line-through mb-6">₹1,999</p>
-                  <ul className="space-y-3 mb-6">
+                  <p className="text-xs text-muted-foreground line-through mb-6 text-center">₹1,999</p>
+                  <ul className="space-y-3 mb-8">
                     {[
                       "Full 28-day AI challenge",
                       "All AI tools & guides",
                       "Certificate of completion",
                       "Priority support",
                       "Bonus: Side gigs challenge",
-                    ].map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm text-foreground">
-                        <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button variant="hero" className="w-full h-12 rounded-xl font-semibold text-base">
-                    Claim 75% Off
-                  </Button>
-                </motion.div>
-
-                {/* Ultimate Plan */}
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className={`relative rounded-2xl border-2 p-6 transition-all cursor-pointer ${
-                    selectedPlan === "ultimate"
-                      ? "border-primary bg-primary/5 shadow-lg"
-                      : "border-border bg-card hover:border-primary/40 hover:shadow-md"
-                  }`}
-                  onClick={() => handleSelectPlan("ultimate")}
-                >
-                  <h3 className="font-display text-lg font-bold text-foreground mb-1">Ultimate</h3>
-                  <p className="text-sm text-muted-foreground mb-4">Everything + lifetime access</p>
-                  <div className="flex items-baseline gap-1 mb-1">
-                    <span className="font-display text-4xl font-extrabold text-foreground">₹999</span>
-                    <span className="text-muted-foreground text-sm">/one-time</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground line-through mb-6">₹3,999</p>
-                  <ul className="space-y-3 mb-6">
-                    {[
-                      "Everything in Pro",
-                      "All 3 challenges included",
+                      "Community access",
                       "Lifetime updates",
-                      "1-on-1 mentorship session",
-                      "Exclusive AI toolkit",
                     ].map((f) => (
                       <li key={f} className="flex items-start gap-2 text-sm text-foreground">
                         <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
@@ -242,8 +164,8 @@ const OfferPage = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button variant="heroOutline" className="w-full h-12 rounded-xl font-semibold">
-                    Get Ultimate Access
+                  <Button variant="hero" className="w-full h-14 rounded-xl font-semibold text-lg">
+                    Claim 90% Off — Get Full Access
                   </Button>
                 </motion.div>
               </div>
