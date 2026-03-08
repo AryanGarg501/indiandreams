@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Award, Sparkles } from "lucide-react";
+import { ArrowLeft, Download, Award } from "lucide-react";
 import { coursesData } from "@/data/coursesData";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
@@ -26,17 +26,27 @@ const CertificateView = () => {
     const fetchCertificate = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { navigate("/login"); return; }
+
       const { data, error } = await supabase
         .from("certificates")
         .select("*")
         .eq("id", certificateId)
         .single();
-      if (error || !data) { navigate("/guides"); return; }
+
+      if (error || !data) {
+        navigate("/guides");
+        return;
+      }
+
       setCertificate(data);
       setLoading(false);
     };
     fetchCertificate();
   }, [certificateId, navigate]);
+
+  const handleDownload = () => {
+    window.print();
+  };
 
   if (loading) {
     return (
@@ -58,14 +68,14 @@ const CertificateView = () => {
   const completedDate = format(new Date(certificate.completed_at), "MMMM d, yyyy");
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,hsl(var(--secondary)/0.08),transparent_60%),radial-gradient(ellipse_at_bottom,hsl(var(--primary)/0.06),transparent_60%)] bg-background">
       {/* Header */}
       <header className="print:hidden sticky top-0 z-40 h-14 flex items-center justify-between border-b border-border bg-card/80 backdrop-blur-sm px-4 md:px-6">
         <Link to={`/guide-pathway/${certificate.course_id}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft size={16} />
           <span>Back to Course</span>
         </Link>
-        <Button variant="outline" size="sm" onClick={() => window.print()} className="gap-2">
+        <Button variant="outline" size="sm" onClick={handleDownload} className="gap-2">
           <Download size={14} />
           Download PDF
         </Button>
@@ -74,159 +84,120 @@ const CertificateView = () => {
       {/* Certificate */}
       <div className="flex items-center justify-center p-4 md:p-8 lg:p-12 print:p-0">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           ref={certificateRef}
           className="w-full max-w-4xl aspect-[1.414/1] relative print:max-w-none"
         >
-          {/* Ambient glow */}
-          <div className="absolute -inset-4 rounded-3xl blur-3xl opacity-40 print:hidden"
-            style={{ background: "linear-gradient(135deg, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.3), hsl(var(--secondary) / 0.3))" }}
-          />
+          {/* Outer glow */}
+          <div className="absolute -inset-1 bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 rounded-2xl blur-xl print:hidden" />
 
           {/* Main card */}
-          <div
-            className="relative h-full w-full rounded-3xl overflow-hidden shadow-2xl print:shadow-none print:rounded-none"
-            style={{
-              background: "linear-gradient(160deg, hsl(245 70% 12%) 0%, hsl(240 40% 8%) 40%, hsl(22 50% 10%) 100%)",
-            }}
-          >
-            {/* Mesh gradient overlays */}
-            <div className="absolute inset-0">
-              <div className="absolute top-0 right-0 w-[70%] h-[70%] rounded-full blur-[120px] opacity-30"
-                style={{ background: "radial-gradient(circle, hsl(var(--primary)), transparent 70%)" }}
-              />
-              <div className="absolute bottom-0 left-0 w-[60%] h-[60%] rounded-full blur-[100px] opacity-20"
-                style={{ background: "radial-gradient(circle, hsl(var(--accent)), transparent 70%)" }}
-              />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50%] h-[50%] rounded-full blur-[80px] opacity-15"
-                style={{ background: "radial-gradient(circle, hsl(var(--secondary) / 0.5), transparent 70%)" }}
-              />
-            </div>
+          <div className="relative h-full w-full bg-card rounded-2xl shadow-2xl overflow-hidden print:shadow-none print:rounded-none">
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-[0.03]"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              }}
+            />
+            
+            {/* Top gradient bar */}
+            <div className="h-2 bg-gradient-to-r from-secondary via-primary to-accent" />
 
-            {/* Geometric shapes */}
-            <div className="absolute inset-0 overflow-hidden print:hidden">
-              <div className="absolute top-8 right-12 w-24 h-24 border border-white/[0.06] rounded-2xl rotate-12" />
-              <div className="absolute bottom-12 left-8 w-16 h-16 border border-white/[0.04] rounded-full" />
-              <div className="absolute top-1/3 left-10 w-2 h-2 bg-primary/30 rounded-full" />
-              <div className="absolute bottom-1/4 right-16 w-1.5 h-1.5 bg-accent/40 rounded-full" />
-              <div className="absolute top-1/4 right-1/3 w-1 h-1 bg-white/20 rounded-full" />
-            </div>
+            {/* Inner content */}
+            <div className="relative h-[calc(100%-0.5rem)] p-6 md:p-10 lg:p-14 flex flex-col">
+              {/* Decorative inner border */}
+              <div className="absolute inset-4 md:inset-8 border border-primary/10 rounded-xl pointer-events-none" />
+              <div className="absolute inset-[18px] md:inset-[34px] border border-primary/5 rounded-lg pointer-events-none" />
+              
+              {/* Corner ornaments */}
+              {[
+                "top-6 left-6 md:top-10 md:left-10 border-t-2 border-l-2 rounded-tl-xl",
+                "top-6 right-6 md:top-10 md:right-10 border-t-2 border-r-2 rounded-tr-xl",
+                "bottom-6 left-6 md:bottom-10 md:left-10 border-b-2 border-l-2 rounded-bl-xl",
+                "bottom-6 right-6 md:bottom-10 md:right-10 border-b-2 border-r-2 rounded-br-xl",
+              ].map((pos, i) => (
+                <div key={i} className={`absolute w-8 h-8 md:w-12 md:h-12 border-primary/25 ${pos}`} />
+              ))}
 
-            {/* Top edge accent */}
-            <div className="h-1 bg-gradient-to-r from-primary via-accent to-primary" />
-
-            {/* Content */}
-            <div className="relative h-[calc(100%-0.25rem)] p-6 md:p-10 lg:p-14 flex flex-col z-10">
-
-              {/* Header row */}
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
-                    <span className="text-xs font-extrabold text-white">ID</span>
-                  </div>
-                  <span className="text-[11px] md:text-xs font-bold tracking-wider text-white/40 uppercase">Indian Dreams</span>
-                </div>
-                <span className="text-[9px] md:text-[10px] font-mono text-white/20 tracking-wider">
-                  #{certificate.id.slice(0, 8).toUpperCase()}
-                </span>
-              </div>
-
-              {/* Main body */}
-              <div className="flex-1 flex flex-col items-center justify-center text-center">
-
-                {/* Badge */}
+              {/* Content */}
+              <div className="flex-1 flex flex-col items-center justify-center text-center relative z-10">
+                {/* Logo / Badge */}
                 <motion.div
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ delay: 0.3, type: "spring", stiffness: 150, damping: 15 }}
-                  className="relative mb-5 md:mb-6"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
                 >
-                  <div className="absolute -inset-4 rounded-full opacity-50"
-                    style={{ background: "conic-gradient(from 0deg, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.3), hsl(var(--primary) / 0.3))" }}
-                  />
-                  <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center"
-                    style={{ background: "linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)))" }}
-                  >
-                    <Award className="w-8 h-8 md:w-10 md:h-10 text-white drop-shadow-lg" />
+                  <div className="relative mb-5 md:mb-7">
+                    {/* Ring */}
+                    <div className="absolute -inset-3 rounded-full border-2 border-dashed border-primary/20 animate-[spin_20s_linear_infinite]" />
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-hero-gradient flex items-center justify-center shadow-lg shadow-primary/20">
+                      <Award className="w-8 h-8 md:w-10 md:h-10 text-primary-foreground drop-shadow" />
+                    </div>
                   </div>
                 </motion.div>
+
+                {/* Brand */}
+                <p className="text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase text-primary/60 mb-3 md:mb-4">
+                  Indian Dreams Academy
+                </p>
 
                 {/* Title */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <div className="flex items-center gap-2 mb-1">
-                    <Sparkles size={12} className="text-accent/60" />
-                    <p className="text-[10px] md:text-xs font-bold tracking-[0.35em] uppercase text-white/30">
-                      Certificate of Completion
-                    </p>
-                    <Sparkles size={12} className="text-accent/60" />
-                  </div>
-                </motion.div>
+                <h1 className="font-display text-base md:text-lg lg:text-xl text-muted-foreground tracking-[0.2em] uppercase font-semibold mb-3">
+                  Certificate of Completion
+                </h1>
 
-                {/* Divider */}
-                <div className="flex items-center gap-2 my-4 md:my-5">
-                  <div className="w-16 md:w-24 h-px bg-gradient-to-r from-transparent to-white/10" />
-                  <div className="w-1.5 h-1.5 rounded-full bg-gradient-to-br from-primary to-accent" />
-                  <div className="w-16 md:w-24 h-px bg-gradient-to-l from-transparent to-white/10" />
+                {/* Ornamental divider */}
+                <div className="flex items-center gap-3 mb-5 md:mb-7">
+                  <div className="w-12 md:w-20 h-px bg-gradient-to-r from-transparent to-primary/30" />
+                  <div className="w-2 h-2 rotate-45 bg-primary/40" />
+                  <div className="w-12 md:w-20 h-px bg-gradient-to-l from-transparent to-primary/30" />
                 </div>
 
-                {/* Presented to */}
-                <p className="text-xs md:text-sm text-white/40 mb-2 font-medium tracking-wide">Presented to</p>
+                {/* Recipient intro */}
+                <p className="text-xs md:text-sm text-muted-foreground mb-1.5">This is proudly presented to</p>
 
                 {/* Name */}
                 <motion.h2
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.5, duration: 0.6 }}
-                  className="font-display text-3xl md:text-5xl lg:text-6xl font-extrabold mb-2 tracking-tight"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.5 }}
+                  className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold mb-1.5"
                   style={{
-                    background: "linear-gradient(135deg, #fff 0%, hsl(var(--accent)) 50%, hsl(var(--primary)) 100%)",
+                    background: "linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--primary)) 50%, hsl(var(--accent)) 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 2px 10px hsl(var(--primary) / 0.3))",
                   }}
                 >
                   {certificate.user_name}
                 </motion.h2>
 
                 {/* Underline */}
-                <div className="w-40 md:w-56 h-px mb-5 md:mb-6"
-                  style={{ background: "linear-gradient(90deg, transparent, hsl(var(--primary) / 0.4), hsl(var(--accent) / 0.4), transparent)" }}
-                />
+                <div className="w-48 md:w-64 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent mb-5 md:mb-6" />
 
-                {/* Course */}
-                <p className="text-[11px] md:text-xs text-white/35 mb-3 tracking-wide">for completing the course</p>
+                {/* Course info */}
+                <p className="text-xs md:text-sm text-muted-foreground mb-2.5">for successfully completing the course</p>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.6 }}
-                  className="flex items-center gap-3 px-5 py-3 rounded-2xl mb-6 md:mb-8 border border-white/[0.06]"
-                  style={{ background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--accent) / 0.06))" }}
-                >
+                <div className="flex items-center gap-3 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 px-5 py-2.5 rounded-xl border border-primary/10 mb-6 md:mb-8">
                   <span className="text-2xl md:text-3xl">{course?.emoji || "📜"}</span>
-                  <h3 className="font-display text-lg md:text-2xl lg:text-3xl font-bold text-white/90">
+                  <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
                     {certificate.course_title}
                   </h3>
-                </motion.div>
+                </div>
 
-                {/* Stats row */}
-                <div className="flex items-center gap-6 md:gap-10">
+                {/* Stats */}
+                <div className="flex items-center gap-5 md:gap-8">
                   {[
-                    { label: "Date", value: completedDate },
+                    { label: "Completed", value: completedDate },
                     { label: "Lessons", value: String(course?.totalLessons || "—") },
                     { label: "Hours", value: String(course?.totalHours || "—") },
                   ].map((stat, i) => (
-                    <div key={stat.label} className="flex items-center gap-6 md:gap-10">
-                      {i > 0 && <div className="w-px h-7 bg-white/[0.06] -ml-6 md:-ml-10" />}
+                    <div key={stat.label} className="flex items-center gap-5 md:gap-8">
+                      {i > 0 && <div className="w-px h-8 bg-border -ml-5 md:-ml-8" />}
                       <div className="text-center">
-                        <p className="text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-white/25 mb-0.5">{stat.label}</p>
-                        <p className="text-[11px] md:text-sm font-semibold text-white/70">{stat.value}</p>
+                        <p className="text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground/70 mb-0.5">{stat.label}</p>
+                        <p className="text-xs md:text-sm font-semibold text-foreground">{stat.value}</p>
                       </div>
                     </div>
                   ))}
@@ -234,29 +205,35 @@ const CertificateView = () => {
               </div>
 
               {/* Footer */}
-              <div className="flex items-end justify-between pt-4 md:pt-6">
+              <div className="flex items-end justify-between relative z-10 mt-6 md:mt-8">
                 <div className="text-center">
-                  <div className="w-24 md:w-32 border-t border-white/10 mb-1.5" />
-                  <p className="text-[10px] font-medium text-white/30">Indian Dreams</p>
+                  <div className="w-28 md:w-36 border-t border-muted-foreground/20 mb-1.5" />
+                  <p className="text-[10px] md:text-xs font-medium text-muted-foreground">Indian Dreams</p>
+                  <p className="text-[8px] text-muted-foreground/50">Learning Platform</p>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-primary/40 to-accent/40 flex items-center justify-center">
-                    <div className="w-2 h-2 rounded-full bg-white/40" />
+                <div className="text-center flex flex-col items-center">
+                  <div className="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center mb-1">
+                    <div className="w-4 h-4 rounded-full bg-hero-gradient opacity-60" />
                   </div>
+                  <p className="text-[8px] text-muted-foreground/40 font-mono">
+                    {certificate.id.slice(0, 8).toUpperCase()}
+                  </p>
                 </div>
                 <div className="text-center">
-                  <div className="w-24 md:w-32 border-t border-white/10 mb-1.5" />
-                  <p className="text-[10px] font-medium text-white/30">Verified</p>
+                  <div className="w-28 md:w-36 border-t border-muted-foreground/20 mb-1.5" />
+                  <p className="text-[10px] md:text-xs font-medium text-muted-foreground">Verified</p>
+                  <p className="text-[8px] text-muted-foreground/50">Certificate of Achievement</p>
                 </div>
               </div>
             </div>
 
-            {/* Bottom edge accent */}
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent via-primary to-accent" />
+            {/* Bottom gradient bar */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-secondary via-primary to-accent" />
           </div>
         </motion.div>
       </div>
 
+      {/* Print styles */}
       <style>{`
         @media print {
           body { background: white !important; }
