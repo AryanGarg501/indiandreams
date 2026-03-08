@@ -7,6 +7,8 @@ import { Flame, Trophy, Clock, Users, Lock, CheckCircle2, Play } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { challengesData, type ChallengeData } from "@/data/challengesData";
+import challengeHero from "@/assets/challenge-hero.jpg";
+import challenge28day from "@/assets/challenge-28day.jpg";
 
 const Challenges = () => {
   const navigate = useNavigate();
