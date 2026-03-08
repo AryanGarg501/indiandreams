@@ -88,6 +88,12 @@ const ChallengeView = () => {
         if (certData) {
           setTimeout(() => navigate(`/certificate/${certData.id}`), 1200);
         }
+      } else {
+        // Jump to next day
+        const nextDay = day + 1;
+        if (challenge && nextDay <= challenge.days.length) {
+          setTimeout(() => setSelectedDay(nextDay), 600);
+        }
       }
     }
     setMarkingComplete(false);
