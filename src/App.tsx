@@ -14,6 +14,7 @@ import Challenges from "./pages/Challenges";
 import Guides from "./pages/Guides";
 import AITools from "./pages/AITools";
 import GuidePathway from "./pages/GuidePathway";
+import LessonView from "./pages/LessonView";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
