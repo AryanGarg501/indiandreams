@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { coursesData } from "@/data/coursesData";
 import ReactMarkdown from "react-markdown";
 import { useToast } from "@/hooks/use-toast";
+import { useSpeech } from "@/hooks/use-speech";
 
 interface LessonProgress {
   course_id: string;
