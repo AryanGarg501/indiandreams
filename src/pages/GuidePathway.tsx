@@ -19,6 +19,7 @@ const GuidePathway = () => {
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [certificateId, setCertificateId] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
