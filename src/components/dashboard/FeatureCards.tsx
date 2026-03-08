@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Play, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function FeatureCards() {
   return (
