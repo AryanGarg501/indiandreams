@@ -159,9 +159,9 @@ const Guides = () => {
                       <div className="mt-3">
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-[11px] text-muted-foreground">Progress</span>
-                          <span className="text-[11px] font-semibold text-primary">{guide.progress}%</span>
+                          <span className="text-[11px] font-semibold text-primary">{progressMap[guide.slug] || 0}%</span>
                         </div>
-                        <Progress value={guide.progress} className="h-1" />
+                        <Progress value={progressMap[guide.slug] || 0} className="h-1" />
                       </div>
                     </div>
                   </Link>
