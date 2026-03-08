@@ -16,6 +16,7 @@ import AITools from "./pages/AITools";
 import GuidePathway from "./pages/GuidePathway";
 import LessonView from "./pages/LessonView";
 import CertificateView from "./pages/CertificateView";
+import ChallengeView from "./pages/ChallengeView";
 import MiniGames from "./pages/MiniGames";
 import AISpotter from "./pages/games/AISpotter";
 import PromptChallenge from "./pages/games/PromptChallenge";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/quiz-steps" element={<QuizSteps />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/challenges" element={<Challenges />} />
+          <Route path="/challenge/:challengeId" element={<ChallengeView />} />
           <Route path="/guides" element={<Guides />} />
           <Route path="/ai-tools" element={<AITools />} />
           <Route path="/guide-pathway/:courseId" element={<GuidePathway />} />
