@@ -24,7 +24,10 @@ export function FeatureCards() {
         <div className="text-5xl">🎮</div>
       </div>
 
-      <div className="bg-card rounded-2xl border border-border p-6 flex items-center justify-between card-elevated">
+      <div
+        onClick={() => navigate("/ai-tools")}
+        className="bg-card rounded-2xl border border-border p-6 flex items-center justify-between card-elevated cursor-pointer hover:border-primary/30 transition-colors"
+      >
         <div>
           <h3 className="text-lg font-bold text-foreground">Prompts Library</h3>
           <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
