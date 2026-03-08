@@ -111,6 +111,7 @@ const CertificateView = () => {
   const { certificateId } = useParams<{ certificateId: string }>();
   const [loading, setLoading] = useState(true);
   const [certificate, setCertificate] = useState<Certificate | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
   const certificateRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
