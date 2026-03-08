@@ -1,0 +1,227 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { Flame, Trophy, Clock, Users, Lock, CheckCircle2, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+
+const challengesData = [
+  {
+    id: "28-day-ai",
+    title: "2026 28-Day AI Challenge",
+    description: "Master essential AI tools and techniques over 28 days. Perfect for beginners looking to build a strong foundation.",
+    duration: "28 days",
+    level: "Beginner",
+    participants: "12.4K",
+    emoji: "🚀",
+    tags: ["AI Skills", "Business Growth", "Boost Productivity", "Save Time", "Advance Career"],
+    totalDays: 28,
+    completedDays: 0,
+  },
+  {
+    id: "junior-ai",
+    title: "Junior AI Challenge",
+    description: "A structured challenge designed for junior professionals to level up their AI skills with daily hands-on tasks.",
+    duration: "28 days",
+    level: "Beginner",
+    participants: "8.2K",
+    emoji: "🎯",
+    tags: ["Career Growth", "AI Basics", "Hands-On Learning"],
+    totalDays: 28,
+    completedDays: 0,
+  },
+  {
+    id: "14-day-side-gigs",
+    title: "14-Day AI Side Gigs Challenge",
+    description: "Discover how to use AI to start profitable side gigs. Learn practical skills you can monetize immediately.",
+    duration: "14 days",
+    level: "Beginner",
+    participants: "5.7K",
+    emoji: "💰",
+    tags: ["Side Income", "AI Tools", "Freelancing", "Monetization"],
+    totalDays: 14,
+    completedDays: 0,
+  },
+];
+
+const Challenges = () => {
+  const navigate = useNavigate();
+  const [userName, setUserName] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate("/login");
+        return;
+      }
+      setUserName(session.user.user_metadata?.full_name || session.user.email || "Learner");
+      setLoading(false);
+    };
+    checkAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) navigate("/login");
+    });
+    return () => subscription.unsubscribe();
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/login");
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-background">
+        <DashboardSidebar userName={userName} onLogout={handleLogout} />
+
+        <div className="flex-1 flex flex-col min-w-0">
+          <header className="sticky top-0 z-40 h-14 flex items-center justify-between border-b border-border bg-card/80 backdrop-blur-sm px-4 md:px-6">
+            <div className="flex items-center gap-3">
+              <SidebarTrigger className="md:hidden" />
+              <h1 className="text-lg font-bold text-foreground flex items-center gap-2">
+                <Trophy size={20} className="text-primary" /> Challenges
+              </h1>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-accent/10 rounded-full">
+              <Flame size={16} className="text-accent" />
+              <span className="text-sm font-semibold text-foreground">0</span>
+            </div>
+          </header>
+
+          <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+            <div className="max-w-5xl mx-auto space-y-6">
+              {/* Hero Banner */}
+              <div className="bg-gradient-to-br from-primary/15 via-accent/10 to-secondary/15 rounded-2xl p-6 md:p-8 border border-border">
+                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+                  Push your limits with daily challenges
+                </h2>
+                <p className="text-muted-foreground max-w-lg">
+                  Build real AI skills one day at a time. Complete daily tasks, earn streaks, and level up your expertise.
+                </p>
+              </div>
+
+              {/* Challenge Cards */}
+              <div className="space-y-4">
+                {challengesData.map((challenge) => (
+                  <ChallengeCard key={challenge.id} challenge={challenge} />
+                ))}
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+};
+
+interface ChallengeCardProps {
+  challenge: typeof challengesData[0];
+}
+
+function ChallengeCard({ challenge }: ChallengeCardProps) {
+  const progress = Math.round((challenge.completedDays / challenge.totalDays) * 100);
+  const days = Array.from({ length: challenge.totalDays }, (_, i) => i + 1);
+
+  return (
+    <div className="bg-card rounded-2xl border border-border overflow-hidden card-elevated">
+      <div className="p-5 md:p-6">
+        {/* Header */}
+        <div className="flex items-start gap-4 mb-4">
+          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center text-3xl shrink-0">
+            {challenge.emoji}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="font-display text-lg font-bold text-foreground">{challenge.title}</h3>
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{challenge.description}</p>
+          </div>
+        </div>
+
+        {/* Meta */}
+        <div className="flex flex-wrap items-center gap-3 mb-4 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1">
+            <Clock size={13} /> {challenge.duration}
+          </span>
+          <span className="px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium">
+            {challenge.level}
+          </span>
+          <span className="flex items-center gap-1">
+            <Users size={13} /> {challenge.participants} joined
+          </span>
+        </div>
+
+        {/* Tags */}
+        <div className="flex flex-wrap gap-1.5 mb-5">
+          {challenge.tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-[11px] font-medium bg-muted text-muted-foreground px-2.5 py-1 rounded-full"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {/* Days Grid */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-medium text-muted-foreground">
+              Day {challenge.completedDays} / {challenge.totalDays}
+            </span>
+            <span className="text-xs font-semibold text-primary">{progress}%</span>
+          </div>
+          <Progress value={progress} className="h-1.5 mb-3" />
+          <div className={`grid gap-1.5 ${challenge.totalDays === 14 ? "grid-cols-7" : "grid-cols-7"}`}>
+            {days.map((d) => {
+              const isCompleted = d <= challenge.completedDays;
+              const isNext = d === challenge.completedDays + 1;
+              const isLocked = d > challenge.completedDays + 1;
+
+              return (
+                <div
+                  key={d}
+                  className={`aspect-square rounded-lg flex items-center justify-center text-[10px] font-semibold transition-all ${
+                    isCompleted
+                      ? "bg-primary text-primary-foreground"
+                      : isNext
+                      ? "bg-primary/20 text-primary ring-1 ring-primary/40 cursor-pointer"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {isCompleted ? (
+                    <CheckCircle2 size={12} />
+                  ) : isNext ? (
+                    <Play size={10} />
+                  ) : isLocked ? (
+                    <Lock size={9} className="opacity-40" />
+                  ) : (
+                    d
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <Button variant="hero" className="w-full">
+          Start Challenge
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+export default Challenges;

@@ -10,6 +10,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Quiz from "./pages/Quiz";
 import QuizSteps from "./pages/QuizSteps";
 import Dashboard from "./pages/Dashboard";
+import Challenges from "./pages/Challenges";
 import GuidePathway from "./pages/GuidePathway";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/quiz-steps" element={<QuizSteps />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/challenges" element={<Challenges />} />
           <Route path="/guide-pathway/:courseId" element={<GuidePathway />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
