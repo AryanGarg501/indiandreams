@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const challenges = [
   { title: "2026 28-Day AI Challenge", duration: "28 days", level: "Beginner" },
@@ -11,9 +12,9 @@ export function ChallengesSection() {
     <section>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-foreground">Challenges</h2>
-        <button className="text-sm text-primary font-medium hover:underline flex items-center gap-1">
+        <Link to="/challenges" className="text-sm text-primary font-medium hover:underline flex items-center gap-1">
           View All <ArrowRight size={14} />
-        </button>
+        </Link>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
         {challenges.map((challenge) => (
