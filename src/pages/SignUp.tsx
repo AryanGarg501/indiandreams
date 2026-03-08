@@ -8,8 +8,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 const SignUp = () => {
+  const [searchParams] = useSearchParams();
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(searchParams.get("email") || "");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
