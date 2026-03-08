@@ -126,16 +126,15 @@ function ChallengeCard({ challenge, completedDays }: ChallengeCardProps) {
 
   return (
     <div className="bg-card rounded-2xl border border-border overflow-hidden card-elevated">
-      <div className="p-5 md:p-6">
-        <div className="flex items-start gap-4 mb-4">
-          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center text-3xl shrink-0">
-            {challenge.emoji}
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-display text-lg font-bold text-foreground">{challenge.title}</h3>
-            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{challenge.description}</p>
-          </div>
+      <div className="relative h-40 md:h-48 overflow-hidden">
+        <img src={challenge28day} alt={challenge.title} className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
+        <div className="absolute bottom-3 left-5 right-5">
+          <h3 className="font-display text-lg font-bold text-foreground drop-shadow-sm">{challenge.title}</h3>
+          <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">{challenge.description}</p>
         </div>
+      </div>
+      <div className="p-5 md:p-6">
 
         <div className="flex flex-wrap items-center gap-3 mb-4 text-xs text-muted-foreground">
           <span className="flex items-center gap-1"><Clock size={13} /> {challenge.duration}</span>
