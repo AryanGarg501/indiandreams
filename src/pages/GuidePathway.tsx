@@ -38,6 +38,16 @@ const GuidePathway = () => {
         const completed = new Set(progressData.map((p: LessonProgress) => `${p.module_id}-${p.lesson_id}`));
         setCompletedLessons(completed);
       }
+
+      // Check for existing certificate
+      const { data: certData } = await supabase
+        .from("certificates")
+        .select("id")
+        .eq("user_id", session.user.id)
+        .eq("course_id", courseId || "")
+        .maybeSingle();
+      
+      if (certData) setCertificateId(certData.id);
       
       setLoading(false);
     };
