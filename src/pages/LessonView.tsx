@@ -31,6 +31,7 @@ const LessonView = () => {
   const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({});
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [markingComplete, setMarkingComplete] = useState(false);
+  const { speak, stop, pause, resume, isSpeaking, isPaused } = useSpeech();
 
   // Fetch user and progress
   useEffect(() => {
