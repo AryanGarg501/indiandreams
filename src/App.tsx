@@ -39,6 +39,7 @@ const App = () => (
           <Route path="/ai-tools" element={<AITools />} />
           <Route path="/guide-pathway/:courseId" element={<GuidePathway />} />
           <Route path="/lesson/:courseId/:moduleId/:lessonId" element={<LessonView />} />
+          <Route path="/certificate/:certificateId" element={<CertificateView />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
