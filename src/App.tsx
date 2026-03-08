@@ -45,6 +45,11 @@ const App = () => (
           <Route path="/guide-pathway/:courseId" element={<GuidePathway />} />
           <Route path="/lesson/:courseId/:moduleId/:lessonId" element={<LessonView />} />
           <Route path="/certificate/:certificateId" element={<CertificateView />} />
+          <Route path="/mini-games" element={<MiniGames />} />
+          <Route path="/mini-games/ai-spotter" element={<AISpotter />} />
+          <Route path="/mini-games/prompt-challenge" element={<PromptChallenge />} />
+          <Route path="/mini-games/ai-trivia" element={<AITrivia />} />
+          <Route path="/mini-games/speed-classifier" element={<SpeedClassifier />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
