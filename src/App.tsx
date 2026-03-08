@@ -14,6 +14,7 @@ import Challenges from "./pages/Challenges";
 import Guides from "./pages/Guides";
 import AITools from "./pages/AITools";
 import GuidePathway from "./pages/GuidePathway";
+import LessonView from "./pages/LessonView";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/guides" element={<Guides />} />
           <Route path="/ai-tools" element={<AITools />} />
           <Route path="/guide-pathway/:courseId" element={<GuidePathway />} />
+          <Route path="/lesson/:courseId/:moduleId/:lessonId" element={<LessonView />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
