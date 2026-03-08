@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      certificates: {
+        Row: {
+          completed_at: string
+          course_id: string
+          course_title: string
+          id: string
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          completed_at?: string
+          course_id: string
+          course_title: string
+          id?: string
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          completed_at?: string
+          course_id?: string
+          course_title?: string
+          id?: string
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: []
+      }
       lesson_progress: {
         Row: {
           completed_at: string
