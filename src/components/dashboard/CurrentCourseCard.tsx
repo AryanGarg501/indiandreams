@@ -3,6 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 
 export function CurrentCourseCard() {
+  const navigate = useNavigate();
   return (
     <div className="bg-card rounded-2xl border border-border p-6 card-elevated">
       <div className="flex items-start gap-4 mb-5">
