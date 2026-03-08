@@ -1,31 +1,56 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Clock, Lock, PlayCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Clock, Lock, PlayCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { coursesData } from "@/data/coursesData";
 import ReactMarkdown from "react-markdown";
+import { useToast } from "@/hooks/use-toast";
+
+interface LessonProgress {
+  course_id: string;
+  module_id: string;
+  lesson_id: string;
+}
 
 const LessonView = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { courseId, moduleId, lessonId } = useParams<{
     courseId: string;
     moduleId: string;
     lessonId: string;
   }>();
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({});
+  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+  const [markingComplete, setMarkingComplete] = useState(false);
 
+  // Fetch user and progress
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { navigate("/login"); return; }
       setUserName(session.user.user_metadata?.full_name || session.user.email || "Learner");
+      setUserId(session.user.id);
+      
+      // Fetch progress for this course
+      const { data: progressData } = await supabase
+        .from("lesson_progress")
+        .select("course_id, module_id, lesson_id")
+        .eq("user_id", session.user.id)
+        .eq("course_id", courseId || "");
+      
+      if (progressData) {
+        const completed = new Set(progressData.map((p: LessonProgress) => `${p.module_id}-${p.lesson_id}`));
+        setCompletedLessons(completed);
+      }
+      
       setLoading(false);
     };
     checkAuth();
@@ -33,7 +58,7 @@ const LessonView = () => {
       if (!session) navigate("/login");
     });
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, courseId]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -42,7 +67,7 @@ const LessonView = () => {
 
   const course = coursesData[courseId || ""];
 
-  // Find current lesson, module, and build flat list
+  // Build flat list
   const allLessons = course?.modules.flatMap((m) =>
     m.lessons.map((l) => ({ ...l, moduleId: m.id, moduleTitle: m.title }))
   ) || [];
@@ -54,8 +79,44 @@ const LessonView = () => {
   const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
 
-  // For new users, only first lesson is unlocked
-  const isUnlocked = (idx: number) => idx === 0;
+  // Check if a lesson is unlocked: first lesson OR previous lesson is completed
+  const isUnlocked = useCallback((idx: number) => {
+    if (idx === 0) return true;
+    const prevLesson = allLessons[idx - 1];
+    return completedLessons.has(`${prevLesson.moduleId}-${prevLesson.id}`);
+  }, [allLessons, completedLessons]);
+
+  const isCurrentCompleted = completedLessons.has(`${moduleId}-${lessonId}`);
+
+  // Mark lesson complete
+  const handleMarkComplete = async () => {
+    if (!userId || !courseId || !moduleId || !lessonId || isCurrentCompleted) return;
+    
+    setMarkingComplete(true);
+    
+    const { error } = await supabase.from("lesson_progress").insert({
+      user_id: userId,
+      course_id: courseId,
+      module_id: moduleId,
+      lesson_id: lessonId,
+    });
+
+    if (error) {
+      toast({ title: "Error", description: "Failed to save progress. Please try again.", variant: "destructive" });
+    } else {
+      setCompletedLessons((prev) => new Set([...prev, `${moduleId}-${lessonId}`]));
+      toast({ title: "Lesson completed! 🎉", description: nextLesson ? "Moving to next lesson..." : "Great job finishing this lesson!" });
+      
+      // Auto-navigate to next lesson after short delay
+      if (nextLesson) {
+        setTimeout(() => {
+          navigate(`/lesson/${courseId}/${nextLesson.moduleId}/${nextLesson.id}`);
+        }, 800);
+      }
+    }
+    
+    setMarkingComplete(false);
+  };
 
   // Expand current module by default
   useEffect(() => {
@@ -84,7 +145,7 @@ const LessonView = () => {
     );
   }
 
-  const completedCount = 0;
+  const completedCount = completedLessons.size;
   const progress = Math.round((completedCount / allLessons.length) * 100);
 
   return (
@@ -94,11 +155,7 @@ const LessonView = () => {
 
         <div className="flex-1 flex min-w-0">
           {/* Lesson Sidebar */}
-          <div
-            className={`border-r border-border bg-card flex-col transition-all duration-300 ${
-              sidebarOpen ? "w-72 lg:w-80" : "w-0"
-            } hidden md:flex overflow-hidden`}
-          >
+          <div className="border-r border-border bg-card flex-col transition-all duration-300 w-72 lg:w-80 hidden md:flex overflow-hidden">
             <div className="p-4 border-b border-border">
               <Link
                 to={`/guide-pathway/${courseId}`}
@@ -120,62 +177,60 @@ const LessonView = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto">
-              {course.modules.map((mod) => (
-                <div key={mod.id}>
-                  <button
-                    onClick={() => toggleModule(mod.id)}
-                    className="w-full flex items-center justify-between px-4 py-3 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
-                  >
-                    <span className="text-left">{mod.title}</span>
-                    {expandedModules[mod.id] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                  </button>
-                  {expandedModules[mod.id] && (
-                    <div className="pb-1">
-                      {mod.lessons.map((lesson) => {
-                        const flatIdx = allLessons.findIndex((l) => l.id === lesson.id && l.moduleId === mod.id);
-                        const isCurrent = lesson.id === lessonId && mod.id === moduleId;
-                        const unlocked = isUnlocked(flatIdx);
-                        const isCompleted = false;
+              {course.modules.map((mod, modIdx) => {
+                const modStartIdx = course.modules.slice(0, modIdx).reduce((acc, m) => acc + m.lessons.length, 0);
+                
+                return (
+                  <div key={mod.id}>
+                    <button
+                      onClick={() => toggleModule(mod.id)}
+                      className="w-full flex items-center justify-between px-4 py-3 text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors"
+                    >
+                      <span className="text-left">{mod.title}</span>
+                      {expandedModules[mod.id] ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                    </button>
+                    {expandedModules[mod.id] && (
+                      <div className="pb-1">
+                        {mod.lessons.map((lesson, lessonIdx) => {
+                          const flatIdx = modStartIdx + lessonIdx;
+                          const isCurrent = lesson.id === lessonId && mod.id === moduleId;
+                          const unlocked = isUnlocked(flatIdx);
+                          const isCompleted = completedLessons.has(`${mod.id}-${lesson.id}`);
 
-                        return (
-                          <Link
-                            key={lesson.id}
-                            to={
-                              unlocked || isCurrent
-                                ? `/lesson/${courseId}/${mod.id}/${lesson.id}`
-                                : "#"
-                            }
-                            onClick={(e) => {
-                              if (!unlocked && !isCurrent) e.preventDefault();
-                            }}
-                            className={`flex items-center gap-2.5 px-4 py-2 text-xs transition-colors ${
-                              isCurrent
-                                ? "bg-primary/10 text-primary font-medium border-l-2 border-primary"
-                                : unlocked
-                                ? "text-foreground hover:bg-muted/30"
-                                : "text-muted-foreground/50 cursor-not-allowed"
-                            }`}
-                          >
-                            <div className="shrink-0">
-                              {isCompleted ? (
-                                <CheckCircle2 size={14} className="text-green-500" />
-                              ) : isCurrent ? (
-                                <PlayCircle size={14} className="text-primary" />
-                              ) : unlocked ? (
-                                <div className="w-3.5 h-3.5 rounded-full border-2 border-muted-foreground/30" />
-                              ) : (
-                                <Lock size={12} />
-                              )}
-                            </div>
-                            <span className="flex-1 truncate">{lesson.title}</span>
-                            <span className="text-[10px] text-muted-foreground shrink-0">{lesson.duration}</span>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              ))}
+                          return (
+                            <Link
+                              key={lesson.id}
+                              to={unlocked ? `/lesson/${courseId}/${mod.id}/${lesson.id}` : "#"}
+                              onClick={(e) => { if (!unlocked) e.preventDefault(); }}
+                              className={`flex items-center gap-2.5 px-4 py-2 text-xs transition-colors ${
+                                isCurrent
+                                  ? "bg-primary/10 text-primary font-medium border-l-2 border-primary"
+                                  : unlocked
+                                  ? "text-foreground hover:bg-muted/30"
+                                  : "text-muted-foreground/50 cursor-not-allowed"
+                              }`}
+                            >
+                              <div className="shrink-0">
+                                {isCompleted ? (
+                                  <CheckCircle2 size={14} className="text-emerald-500" />
+                                ) : isCurrent ? (
+                                  <PlayCircle size={14} className="text-primary" />
+                                ) : unlocked ? (
+                                  <div className="w-3.5 h-3.5 rounded-full border-2 border-muted-foreground/30" />
+                                ) : (
+                                  <Lock size={12} />
+                                )}
+                              </div>
+                              <span className="flex-1 truncate">{lesson.title}</span>
+                              <span className="text-[10px] text-muted-foreground shrink-0">{lesson.duration}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -230,10 +285,26 @@ const LessonView = () => {
                     <div />
                   )}
 
-                  <Button variant="hero" className="shrink-0">
-                    <CheckCircle2 size={16} />
-                    Mark Complete
-                  </Button>
+                  {isCurrentCompleted ? (
+                    <Button variant="outline" disabled className="shrink-0">
+                      <CheckCircle2 size={16} className="text-emerald-500" />
+                      Completed
+                    </Button>
+                  ) : (
+                    <Button 
+                      variant="hero" 
+                      className="shrink-0" 
+                      onClick={handleMarkComplete}
+                      disabled={markingComplete}
+                    >
+                      {markingComplete ? (
+                        <Loader2 size={16} className="animate-spin" />
+                      ) : (
+                        <CheckCircle2 size={16} />
+                      )}
+                      Mark Complete
+                    </Button>
+                  )}
 
                   {nextLesson ? (
                     <Link

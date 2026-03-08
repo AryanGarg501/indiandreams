@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -8,17 +8,36 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock, BookOpen, Lock, PlayCircle, ChevronRight, CheckCircle2 } from "lucide-react";
 import { coursesData } from "@/data/coursesData";
 
+interface LessonProgress {
+  module_id: string;
+  lesson_id: string;
+}
+
 const GuidePathway = () => {
   const navigate = useNavigate();
   const { courseId } = useParams<{ courseId: string }>();
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) { navigate("/login"); return; }
       setUserName(session.user.user_metadata?.full_name || session.user.email || "Learner");
+      
+      // Fetch progress for this course
+      const { data: progressData } = await supabase
+        .from("lesson_progress")
+        .select("module_id, lesson_id")
+        .eq("user_id", session.user.id)
+        .eq("course_id", courseId || "");
+      
+      if (progressData) {
+        const completed = new Set(progressData.map((p: LessonProgress) => `${p.module_id}-${p.lesson_id}`));
+        setCompletedLessons(completed);
+      }
+      
       setLoading(false);
     };
     checkAuth();
@@ -26,7 +45,7 @@ const GuidePathway = () => {
       if (!session) navigate("/login");
     });
     return () => subscription.unsubscribe();
-  }, [navigate]);
+  }, [navigate, courseId]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -40,8 +59,27 @@ const GuidePathway = () => {
     m.lessons.map((l, lIdx) => ({ ...l, moduleId: m.id, moduleIdx: mIdx, lessonIdx: lIdx }))
   );
 
-  // For new users, only first lesson is unlocked
-  const isUnlocked = (flatIdx: number) => flatIdx === 0;
+  // Check if a lesson is unlocked: first lesson OR previous lesson is completed
+  const isUnlocked = useCallback((flatIdx: number) => {
+    if (flatIdx === 0) return true;
+    const prevLesson = allLessons[flatIdx - 1];
+    return completedLessons.has(`${prevLesson.moduleId}-${prevLesson.id}`);
+  }, [allLessons, completedLessons]);
+
+  // Find first unlocked and incomplete lesson for "Continue" button
+  const findNextLesson = () => {
+    for (let i = 0; i < allLessons.length; i++) {
+      const lesson = allLessons[i];
+      const isCompleted = completedLessons.has(`${lesson.moduleId}-${lesson.id}`);
+      if (!isCompleted && isUnlocked(i)) {
+        return lesson;
+      }
+    }
+    // All done, return first lesson
+    return allLessons[0];
+  };
+
+  const nextLesson = findNextLesson();
 
   if (loading) {
     return (
@@ -51,8 +89,9 @@ const GuidePathway = () => {
     );
   }
 
-  const completedCount = 0;
+  const completedCount = completedLessons.size;
   const progress = Math.round((completedCount / course.totalLessons) * 100);
+  const allCompleted = completedCount === course.totalLessons;
 
   return (
     <SidebarProvider>
@@ -101,6 +140,10 @@ const GuidePathway = () => {
                   .slice(0, moduleIdx)
                   .reduce((acc, m) => acc + m.lessons.length, 0);
 
+                const moduleCompletedCount = module.lessons.filter(
+                  (l) => completedLessons.has(`${module.id}-${l.id}`)
+                ).length;
+
                 return (
                   <div key={module.id} className="space-y-1">
                     <div className="flex items-center justify-between px-1 mb-3">
@@ -108,7 +151,7 @@ const GuidePathway = () => {
                         Module {moduleIdx + 1}: {module.title}
                       </h2>
                       <span className="text-xs text-muted-foreground font-medium">
-                        0/{module.lessons.length}
+                        {moduleCompletedCount}/{module.lessons.length}
                       </span>
                     </div>
 
@@ -116,7 +159,7 @@ const GuidePathway = () => {
                       {module.lessons.map((lesson, lessonIdx) => {
                         const flatIdx = moduleLessonsStart + lessonIdx;
                         const unlocked = isUnlocked(flatIdx);
-                        const isCompleted = false;
+                        const isCompleted = completedLessons.has(`${module.id}-${lesson.id}`);
 
                         return (
                           <Link
@@ -130,7 +173,7 @@ const GuidePathway = () => {
                           >
                             <div className="shrink-0">
                               {isCompleted ? (
-                                <CheckCircle2 size={20} className="text-green-500" />
+                                <CheckCircle2 size={20} className="text-emerald-500" />
                               ) : unlocked ? (
                                 <PlayCircle size={20} className="text-primary" />
                               ) : (
@@ -154,14 +197,21 @@ const GuidePathway = () => {
                 );
               })}
 
-              {/* Start Button */}
+              {/* CTA Button */}
               <div className="flex justify-center pt-2 pb-8">
-                <Link to={`/lesson/${courseId}/${course.modules[0].id}/${course.modules[0].lessons[0].id}`}>
-                  <Button size="lg" className="rounded-xl px-8 font-semibold">
-                    <PlayCircle size={18} />
-                    Start Learning
+                {allCompleted ? (
+                  <Button size="lg" variant="outline" className="rounded-xl px-8 font-semibold" disabled>
+                    <CheckCircle2 size={18} className="text-emerald-500" />
+                    Course Completed!
                   </Button>
-                </Link>
+                ) : (
+                  <Link to={`/lesson/${courseId}/${nextLesson.moduleId}/${nextLesson.id}`}>
+                    <Button size="lg" className="rounded-xl px-8 font-semibold">
+                      <PlayCircle size={18} />
+                      {completedCount > 0 ? "Continue Learning" : "Start Learning"}
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </main>
