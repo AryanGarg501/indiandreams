@@ -22,7 +22,7 @@ import {
 
 const navItems = [
   { label: "Home", icon: Home, href: "/dashboard" },
-  { label: "Guides", icon: BookOpen, href: "/dashboard" },
+  { label: "Guides", icon: BookOpen, href: "/guides" },
   { label: "Challenges", icon: Trophy, href: "/challenges" },
   { label: "AI Tools", icon: Sparkles, href: "/dashboard" },
 ];

@@ -15,9 +15,9 @@ export function MasteryPaths() {
     <section>
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-foreground">Your Mastery path</h2>
-        <button className="text-sm text-primary font-medium hover:underline flex items-center gap-1">
+        <Link to="/guides" className="text-sm text-primary font-medium hover:underline flex items-center gap-1">
           View All <ArrowRight size={14} />
-        </button>
+        </Link>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         {masteryPaths.map((path) => (
