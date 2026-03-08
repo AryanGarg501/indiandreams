@@ -16,6 +16,11 @@ import AITools from "./pages/AITools";
 import GuidePathway from "./pages/GuidePathway";
 import LessonView from "./pages/LessonView";
 import CertificateView from "./pages/CertificateView";
+import MiniGames from "./pages/MiniGames";
+import AISpotter from "./pages/games/AISpotter";
+import PromptChallenge from "./pages/games/PromptChallenge";
+import AITrivia from "./pages/games/AITrivia";
+import SpeedClassifier from "./pages/games/SpeedClassifier";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
