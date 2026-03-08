@@ -5,193 +5,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, BookOpen, Lock, PlayCircle, ChevronRight } from "lucide-react";
-
-const coursesData: Record<string, {
-  title: string;
-  emoji: string;
-  description: string;
-  totalLessons: number;
-  totalHours: number;
-  modules: {
-    title: string;
-    lessons: { title: string; duration: string }[];
-  }[];
-}> = {
-  claude: {
-    title: "Claude",
-    emoji: "🤖",
-    description: "Master Claude AI — from fundamentals to advanced prompt engineering and real-world applications.",
-    totalLessons: 10,
-    totalHours: 5,
-    modules: [
-      {
-        title: "Getting Started with Claude",
-        lessons: [
-          { title: "Introduction to Claude AI", duration: "8 min" },
-          { title: "Setting Up Your Workspace", duration: "12 min" },
-          { title: "Your First Conversation", duration: "15 min" },
-        ],
-      },
-      {
-        title: "Prompt Engineering Basics",
-        lessons: [
-          { title: "Understanding Prompt Structure", duration: "20 min" },
-          { title: "Role-Based Prompting", duration: "18 min" },
-          { title: "Chain of Thought Techniques", duration: "22 min" },
-        ],
-      },
-      {
-        title: "Advanced Techniques",
-        lessons: [
-          { title: "System Prompts Mastery", duration: "25 min" },
-          { title: "Multi-Turn Conversations", duration: "20 min" },
-          { title: "Claude for Content Creation", duration: "30 min" },
-          { title: "Building AI Workflows", duration: "35 min" },
-        ],
-      },
-    ],
-  },
-  gemini: {
-    title: "Gemini",
-    emoji: "💎",
-    description: "Unlock the power of Google's Gemini AI — multimodal capabilities, integrations, and advanced use cases.",
-    totalLessons: 10,
-    totalHours: 4,
-    modules: [
-      {
-        title: "Gemini Fundamentals",
-        lessons: [
-          { title: "What is Gemini?", duration: "10 min" },
-          { title: "Gemini vs Other AI Models", duration: "12 min" },
-          { title: "Multimodal Capabilities", duration: "18 min" },
-        ],
-      },
-      {
-        title: "Working with Gemini",
-        lessons: [
-          { title: "Text Generation Mastery", duration: "20 min" },
-          { title: "Image Analysis with Gemini", duration: "22 min" },
-          { title: "Code Generation", duration: "25 min" },
-        ],
-      },
-      {
-        title: "Gemini Pro Tips",
-        lessons: [
-          { title: "Google Workspace Integration", duration: "15 min" },
-          { title: "API Access & Automation", duration: "30 min" },
-          { title: "Building with Gemini API", duration: "28 min" },
-          { title: "Real-World Projects", duration: "35 min" },
-        ],
-      },
-    ],
-  },
-  chatgpt: {
-    title: "ChatGPT",
-    emoji: "🧠",
-    description: "Become a ChatGPT power user — from basics to GPTs, plugins, and professional workflows.",
-    totalLessons: 13,
-    totalHours: 6,
-    modules: [
-      {
-        title: "ChatGPT Essentials",
-        lessons: [
-          { title: "Getting Started with ChatGPT", duration: "8 min" },
-          { title: "Understanding GPT Models", duration: "15 min" },
-          { title: "Effective Prompting", duration: "20 min" },
-        ],
-      },
-      {
-        title: "Intermediate Skills",
-        lessons: [
-          { title: "Custom Instructions", duration: "18 min" },
-          { title: "Using GPT-4 Vision", duration: "22 min" },
-          { title: "Data Analysis with ChatGPT", duration: "25 min" },
-          { title: "Writing & Editing", duration: "20 min" },
-        ],
-      },
-      {
-        title: "Advanced & Custom GPTs",
-        lessons: [
-          { title: "Building Custom GPTs", duration: "30 min" },
-          { title: "API Integration", duration: "28 min" },
-          { title: "Plugins & Extensions", duration: "22 min" },
-          { title: "ChatGPT for Business", duration: "25 min" },
-          { title: "Automation Workflows", duration: "30 min" },
-          { title: "Final Project", duration: "45 min" },
-        ],
-      },
-    ],
-  },
-  "jasper-ai": {
-    title: "Jasper AI",
-    emoji: "✍️",
-    description: "Learn Jasper AI for content marketing — copywriting, brand voice, and campaign management.",
-    totalLessons: 10,
-    totalHours: 5,
-    modules: [
-      {
-        title: "Jasper Basics",
-        lessons: [
-          { title: "Introduction to Jasper", duration: "10 min" },
-          { title: "Setting Up Brand Voice", duration: "15 min" },
-          { title: "Templates Overview", duration: "12 min" },
-        ],
-      },
-      {
-        title: "Content Creation",
-        lessons: [
-          { title: "Blog Post Writing", duration: "25 min" },
-          { title: "Social Media Content", duration: "20 min" },
-          { title: "Ad Copy Generation", duration: "18 min" },
-          { title: "Email Marketing", duration: "22 min" },
-        ],
-      },
-      {
-        title: "Advanced Jasper",
-        lessons: [
-          { title: "Jasper Chat & Commands", duration: "20 min" },
-          { title: "Team Collaboration", duration: "15 min" },
-          { title: "Campaign Workflows", duration: "30 min" },
-        ],
-      },
-    ],
-  },
-  "stable-diffusion": {
-    title: "Stable Diffusion",
-    emoji: "🎨",
-    description: "Create stunning AI art with Stable Diffusion — prompting, models, and creative workflows.",
-    totalLessons: 10,
-    totalHours: 4,
-    modules: [
-      {
-        title: "AI Art Fundamentals",
-        lessons: [
-          { title: "What is Stable Diffusion?", duration: "10 min" },
-          { title: "Installation & Setup", duration: "20 min" },
-          { title: "Your First Image", duration: "15 min" },
-        ],
-      },
-      {
-        title: "Prompt Crafting",
-        lessons: [
-          { title: "Positive & Negative Prompts", duration: "22 min" },
-          { title: "Style Keywords & Modifiers", duration: "18 min" },
-          { title: "Aspect Ratios & Resolution", duration: "15 min" },
-        ],
-      },
-      {
-        title: "Advanced Generation",
-        lessons: [
-          { title: "ControlNet & img2img", duration: "30 min" },
-          { title: "LoRA & Model Fine-Tuning", duration: "35 min" },
-          { title: "Inpainting & Outpainting", duration: "25 min" },
-          { title: "Creative Portfolio Project", duration: "40 min" },
-        ],
-      },
-    ],
-  },
-};
+import { ArrowLeft, Clock, BookOpen, Lock, PlayCircle, ChevronRight, CheckCircle2 } from "lucide-react";
+import { coursesData } from "@/data/coursesData";
 
 const GuidePathway = () => {
   const navigate = useNavigate();
@@ -220,6 +35,14 @@ const GuidePathway = () => {
 
   const course = coursesData[courseId || ""] || coursesData.claude;
 
+  // Build flat list of all lessons
+  const allLessons = course.modules.flatMap((m, mIdx) =>
+    m.lessons.map((l, lIdx) => ({ ...l, moduleId: m.id, moduleIdx: mIdx, lessonIdx: lIdx }))
+  );
+
+  // For new users, only first lesson is unlocked
+  const isUnlocked = (flatIdx: number) => flatIdx === 0;
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -227,6 +50,9 @@ const GuidePathway = () => {
       </div>
     );
   }
+
+  const completedCount = 0;
+  const progress = Math.round((completedCount / course.totalLessons) * 100);
 
   return (
     <SidebarProvider>
@@ -236,9 +62,9 @@ const GuidePathway = () => {
         <div className="flex-1 flex flex-col min-w-0">
           <header className="sticky top-0 z-40 h-14 flex items-center gap-3 border-b border-border bg-card/80 backdrop-blur-sm px-4 md:px-6">
             <SidebarTrigger className="md:hidden" />
-            <Link to="/dashboard" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link to="/guides" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <ArrowLeft size={16} />
-              <span className="hidden sm:inline">Back to Dashboard</span>
+              <span className="hidden sm:inline">Back to Guides</span>
             </Link>
           </header>
 
@@ -262,67 +88,80 @@ const GuidePathway = () => {
 
                 <div className="mt-6">
                   <div className="flex items-center justify-between text-sm mb-2">
-                    <span className="font-medium text-foreground">0 of {course.totalLessons} completed</span>
-                    <span className="font-semibold text-primary">0%</span>
+                    <span className="font-medium text-foreground">{completedCount} of {course.totalLessons} completed</span>
+                    <span className="font-semibold text-primary">{progress}%</span>
                   </div>
-                  <Progress value={0} className="h-2" />
+                  <Progress value={progress} className="h-2" />
                 </div>
               </div>
 
               {/* Modules */}
-              {course.modules.map((module, moduleIdx) => (
-                <div key={moduleIdx} className="space-y-1">
-                  <div className="flex items-center justify-between px-1 mb-3">
-                    <h2 className="text-lg font-bold text-foreground">
-                      Module {moduleIdx + 1}: {module.title}
-                    </h2>
-                    <span className="text-xs text-muted-foreground font-medium">
-                      0/{module.lessons.length}
-                    </span>
-                  </div>
+              {course.modules.map((module, moduleIdx) => {
+                const moduleLessonsStart = course.modules
+                  .slice(0, moduleIdx)
+                  .reduce((acc, m) => acc + m.lessons.length, 0);
 
-                  <div className="bg-card rounded-2xl border border-border overflow-hidden divide-y divide-border">
-                    {module.lessons.map((lesson, lessonIdx) => {
-                      // Only first lesson of first module is unlocked for new users
-                      const isFirstLesson = moduleIdx === 0 && lessonIdx === 0;
-                      const isLocked = !isFirstLesson;
-                      return (
-                        <button
-                          key={lessonIdx}
-                          disabled={isLocked}
-                          className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors group
-                            ${isLocked ? "opacity-50 cursor-not-allowed" : "hover:bg-muted/50 cursor-pointer bg-primary/5"}
-                          `}
-                        >
-                          <div className="shrink-0">
-                            {isFirstLesson ? (
-                              <PlayCircle size={20} className="text-primary" />
-                            ) : (
-                              <Lock size={18} className="text-muted-foreground" />
+                return (
+                  <div key={module.id} className="space-y-1">
+                    <div className="flex items-center justify-between px-1 mb-3">
+                      <h2 className="text-lg font-bold text-foreground">
+                        Module {moduleIdx + 1}: {module.title}
+                      </h2>
+                      <span className="text-xs text-muted-foreground font-medium">
+                        0/{module.lessons.length}
+                      </span>
+                    </div>
+
+                    <div className="bg-card rounded-2xl border border-border overflow-hidden divide-y divide-border">
+                      {module.lessons.map((lesson, lessonIdx) => {
+                        const flatIdx = moduleLessonsStart + lessonIdx;
+                        const unlocked = isUnlocked(flatIdx);
+                        const isCompleted = false;
+
+                        return (
+                          <Link
+                            key={lesson.id}
+                            to={unlocked ? `/lesson/${courseId}/${module.id}/${lesson.id}` : "#"}
+                            onClick={(e) => { if (!unlocked) e.preventDefault(); }}
+                            className={`w-full flex items-center gap-3 px-4 py-3.5 text-left transition-colors group
+                              ${!unlocked ? "opacity-50 cursor-not-allowed" : "hover:bg-muted/50 cursor-pointer"}
+                              ${unlocked && !isCompleted ? "bg-primary/5" : ""}
+                            `}
+                          >
+                            <div className="shrink-0">
+                              {isCompleted ? (
+                                <CheckCircle2 size={20} className="text-green-500" />
+                              ) : unlocked ? (
+                                <PlayCircle size={20} className="text-primary" />
+                              ) : (
+                                <Lock size={18} className="text-muted-foreground" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-foreground">
+                                {lesson.title}
+                              </p>
+                            </div>
+                            <span className="text-xs text-muted-foreground shrink-0">{lesson.duration}</span>
+                            {unlocked && (
+                              <ChevronRight size={16} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                             )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-foreground">
-                              {lesson.title}
-                            </p>
-                          </div>
-                          <span className="text-xs text-muted-foreground shrink-0">{lesson.duration}</span>
-                          {!isLocked && (
-                            <ChevronRight size={16} className="text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
-                          )}
-                        </button>
-                      );
-                    })}
+                          </Link>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
               {/* Start Button */}
               <div className="flex justify-center pt-2 pb-8">
-                <Button size="lg" className="rounded-xl px-8 font-semibold">
-                  <PlayCircle size={18} />
-                  Start Learning
-                </Button>
+                <Link to={`/lesson/${courseId}/${course.modules[0].id}/${course.modules[0].lessons[0].id}`}>
+                  <Button size="lg" className="rounded-xl px-8 font-semibold">
+                    <PlayCircle size={18} />
+                    Start Learning
+                  </Button>
+                </Link>
               </div>
             </div>
           </main>
