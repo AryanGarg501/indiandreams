@@ -9,28 +9,59 @@ import { FeatureCards } from "@/components/dashboard/FeatureCards";
 import { MasteryPaths } from "@/components/dashboard/MasteryPaths";
 import { ChallengesSection } from "@/components/dashboard/ChallengesSection";
 import { Flame } from "lucide-react";
+import { startOfWeek, addDays, format } from "date-fns";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [streakCount, setStreakCount] = useState(0);
+
+  const fetchStreak = async (userId: string) => {
+    const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+    const weekEnd = addDays(weekStart, 7);
+    const { data } = await supabase
+      .from("lesson_progress")
+      .select("completed_at")
+      .eq("user_id", userId)
+      .gte("completed_at", weekStart.toISOString())
+      .lt("completed_at", weekEnd.toISOString());
+    if (data) {
+      const uniqueDays = new Set(data.map((r) => format(new Date(r.completed_at), "yyyy-MM-dd")));
+      setStreakCount(uniqueDays.size);
+    }
+  };
 
   useEffect(() => {
+    let userId = "";
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate("/login");
         return;
       }
+      userId = session.user.id;
       setUserName(session.user.user_metadata?.full_name || session.user.email || "Learner");
       setLoading(false);
+      fetchStreak(userId);
     };
     checkAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) navigate("/login");
     });
-    return () => subscription.unsubscribe();
+
+    const channel = supabase
+      .channel("header-streak")
+      .on("postgres_changes", { event: "INSERT", schema: "public", table: "lesson_progress" }, () => {
+        if (userId) fetchStreak(userId);
+      })
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+      supabase.removeChannel(channel);
+    };
   }, [navigate]);
 
   const handleLogout = async () => {
@@ -61,8 +92,8 @@ const Dashboard = () => {
               </h1>
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 bg-accent/10 rounded-full">
-              <Flame size={16} className="text-accent" />
-              <span className="text-sm font-semibold text-foreground">0</span>
+              <Flame size={16} className={streakCount > 0 ? "text-accent" : "text-muted-foreground"} />
+              <span className="text-sm font-semibold text-foreground">{streakCount}</span>
             </div>
           </header>
 
