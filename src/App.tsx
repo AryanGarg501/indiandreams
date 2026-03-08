@@ -15,6 +15,7 @@ import Guides from "./pages/Guides";
 import AITools from "./pages/AITools";
 import GuidePathway from "./pages/GuidePathway";
 import LessonView from "./pages/LessonView";
+import CertificateView from "./pages/CertificateView";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
