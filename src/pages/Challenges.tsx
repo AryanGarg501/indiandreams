@@ -84,13 +84,17 @@ const Challenges = () => {
 
           <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
             <div className="max-w-5xl mx-auto space-y-6">
-              <div className="bg-gradient-to-br from-primary/15 via-accent/10 to-secondary/15 rounded-2xl p-6 md:p-8 border border-border">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
-                  Push your limits with daily challenges
-                </h2>
-                <p className="text-muted-foreground max-w-lg">
-                  Build real AI skills one day at a time. Complete daily tasks, earn streaks, and level up your expertise.
-                </p>
+              <div className="relative rounded-2xl overflow-hidden border border-border">
+                <img src={challengeHero} alt="AI Challenge" className="w-full h-48 md:h-56 object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+                    Push your limits with daily challenges
+                  </h2>
+                  <p className="text-muted-foreground max-w-lg">
+                    Build real AI skills one day at a time. Complete daily tasks, earn streaks, and level up your expertise.
+                  </p>
+                </div>
               </div>
 
               <div className="space-y-4">
