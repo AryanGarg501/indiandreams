@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,97 @@ import { ArrowLeft, Download, Award } from "lucide-react";
 import { coursesData } from "@/data/coursesData";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
+
+// Confetti particle component
+const Confetti = ({ active }: { active: boolean }) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!active) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = [
+      "hsl(24, 95%, 53%)",  // saffron/orange
+      "hsl(262, 80%, 50%)", // indigo/purple
+      "hsl(45, 100%, 51%)", // gold
+      "hsl(142, 71%, 45%)", // green
+      "hsl(350, 80%, 55%)", // red
+      "hsl(200, 80%, 55%)", // blue
+      "hsl(330, 80%, 60%)", // pink
+    ];
+
+    interface Particle {
+      x: number; y: number; w: number; h: number;
+      color: string; vx: number; vy: number;
+      rotation: number; rotationSpeed: number;
+      opacity: number; decay: number;
+    }
+
+    const particles: Particle[] = [];
+    const count = 150;
+
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+        y: canvas.height * 0.3,
+        w: Math.random() * 8 + 4,
+        h: Math.random() * 4 + 2,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 16,
+        vy: Math.random() * -14 - 4,
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 12,
+        opacity: 1,
+        decay: 0.003 + Math.random() * 0.004,
+      });
+    }
+
+    let animId: number;
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+
+      for (const p of particles) {
+        if (p.opacity <= 0) continue;
+        alive = true;
+        p.x += p.vx;
+        p.vy += 0.25;
+        p.y += p.vy;
+        p.vx *= 0.99;
+        p.rotation += p.rotationSpeed;
+        p.opacity -= p.decay;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.globalAlpha = Math.max(0, p.opacity);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      }
+
+      if (alive) animId = requestAnimationFrame(animate);
+    };
+
+    animate();
+    return () => cancelAnimationFrame(animId);
+  }, [active]);
+
+  if (!active) return null;
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 z-50 pointer-events-none print:hidden"
+    />
+  );
+};
 
 interface Certificate {
   id: string;
