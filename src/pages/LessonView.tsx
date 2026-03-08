@@ -3,12 +3,13 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
-import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Clock, Lock, PlayCircle, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, ChevronDown, ChevronRight, Clock, Lock, PlayCircle, Loader2, Volume2, VolumeX, Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { coursesData } from "@/data/coursesData";
 import ReactMarkdown from "react-markdown";
 import { useToast } from "@/hooks/use-toast";
+import { useSpeech } from "@/hooks/use-speech";
 
 interface LessonProgress {
   course_id: string;
@@ -30,6 +31,7 @@ const LessonView = () => {
   const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({});
   const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
   const [markingComplete, setMarkingComplete] = useState(false);
+  const { speak, stop, pause, resume, isSpeaking, isPaused } = useSpeech();
 
   // Fetch user and progress
   useEffect(() => {
@@ -151,12 +153,13 @@ const LessonView = () => {
     setMarkingComplete(false);
   };
 
-  // Expand current module by default
+  // Expand current module by default & stop speech on lesson change
   useEffect(() => {
+    stop();
     if (moduleId) {
       setExpandedModules((prev) => ({ ...prev, [moduleId]: true }));
     }
-  }, [moduleId]);
+  }, [moduleId, lessonId, stop]);
 
   const toggleModule = (mId: string) => {
     setExpandedModules((prev) => ({ ...prev, [mId]: !prev[mId] }));
@@ -283,9 +286,45 @@ const LessonView = () => {
                   <span className="text-sm font-semibold text-foreground truncate">{currentLesson?.title}</span>
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Clock size={13} />
-                <span>{currentLesson?.duration}</span>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1">
+                  {isSpeaking ? (
+                    <>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={isPaused ? resume : pause}
+                        title={isPaused ? "Resume" : "Pause"}
+                      >
+                        {isPaused ? <Play size={14} /> : <Pause size={14} />}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={stop}
+                        title="Stop listening"
+                      >
+                        <VolumeX size={14} />
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => currentLesson && speak(currentLesson.content)}
+                      title="Listen to lesson"
+                    >
+                      <Volume2 size={14} />
+                    </Button>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Clock size={13} />
+                  <span>{currentLesson?.duration}</span>
+                </div>
               </div>
             </header>
 
