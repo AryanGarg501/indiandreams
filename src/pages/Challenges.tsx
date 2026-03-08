@@ -7,6 +7,8 @@ import { Flame, Trophy, Clock, Users, Lock, CheckCircle2, Play } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { challengesData, type ChallengeData } from "@/data/challengesData";
+import challengeHero from "@/assets/challenge-hero.jpg";
+import challenge28day from "@/assets/challenge-28day.jpg";
 
 const Challenges = () => {
   const navigate = useNavigate();
@@ -82,13 +84,17 @@ const Challenges = () => {
 
           <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
             <div className="max-w-5xl mx-auto space-y-6">
-              <div className="bg-gradient-to-br from-primary/15 via-accent/10 to-secondary/15 rounded-2xl p-6 md:p-8 border border-border">
-                <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
-                  Push your limits with daily challenges
-                </h2>
-                <p className="text-muted-foreground max-w-lg">
-                  Build real AI skills one day at a time. Complete daily tasks, earn streaks, and level up your expertise.
-                </p>
+              <div className="relative rounded-2xl overflow-hidden border border-border">
+                <img src={challengeHero} alt="AI Challenge" className="w-full h-48 md:h-56 object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+                  <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+                    Push your limits with daily challenges
+                  </h2>
+                  <p className="text-muted-foreground max-w-lg">
+                    Build real AI skills one day at a time. Complete daily tasks, earn streaks, and level up your expertise.
+                  </p>
+                </div>
               </div>
 
               <div className="space-y-4">
@@ -120,16 +126,15 @@ function ChallengeCard({ challenge, completedDays }: ChallengeCardProps) {
 
   return (
     <div className="bg-card rounded-2xl border border-border overflow-hidden card-elevated">
-      <div className="p-5 md:p-6">
-        <div className="flex items-start gap-4 mb-4">
-          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center text-3xl shrink-0">
-            {challenge.emoji}
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="font-display text-lg font-bold text-foreground">{challenge.title}</h3>
-            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{challenge.description}</p>
-          </div>
+      <div className="relative h-40 md:h-48 overflow-hidden">
+        <img src={challenge28day} alt={challenge.title} className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
+        <div className="absolute bottom-3 left-5 right-5">
+          <h3 className="font-display text-lg font-bold text-foreground drop-shadow-sm">{challenge.title}</h3>
+          <p className="text-sm text-muted-foreground mt-0.5 line-clamp-1">{challenge.description}</p>
         </div>
+      </div>
+      <div className="p-5 md:p-6">
 
         <div className="flex flex-wrap items-center gap-3 mb-4 text-xs text-muted-foreground">
           <span className="flex items-center gap-1"><Clock size={13} /> {challenge.duration}</span>
