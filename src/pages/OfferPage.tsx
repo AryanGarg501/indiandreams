@@ -191,15 +191,6 @@ const OfferPage = () => {
                 </div>
               </motion.div>
 
-              {/* Skip option */}
-              <p className="text-center text-sm text-muted-foreground mt-6">
-                <button
-                  onClick={() => navigate(`/signup?email=${encodeURIComponent(email)}`)}
-                  className="text-primary hover:underline font-medium"
-                >
-                  Skip and create a free account →
-                </button>
-              </p>
             </motion.div>
           )}
         </AnimatePresence>
