@@ -12,6 +12,7 @@ import QuizSteps from "./pages/QuizSteps";
 import Dashboard from "./pages/Dashboard";
 import Challenges from "./pages/Challenges";
 import Guides from "./pages/Guides";
+import AITools from "./pages/AITools";
 import GuidePathway from "./pages/GuidePathway";
 import NotFound from "./pages/NotFound";
 
