@@ -9,6 +9,12 @@ import { Progress } from "@/components/ui/progress";
 import { challengesData, type ChallengeData } from "@/data/challengesData";
 import challengeHero from "@/assets/challenge-hero.jpg";
 import challenge28day from "@/assets/challenge-28day.jpg";
+import challengeJunior from "@/assets/challenge-junior-ai.jpg";
+
+const challengeImages: Record<string, string> = {
+  "28-day-ai": challenge28day,
+  "junior-ai": challengeJunior,
+};
 
 const Challenges = () => {
   const navigate = useNavigate();
@@ -127,7 +133,7 @@ function ChallengeCard({ challenge, completedDays }: ChallengeCardProps) {
   return (
     <div className="bg-card rounded-2xl border border-border overflow-hidden card-elevated">
       <div className="relative h-40 md:h-48 overflow-hidden">
-        <img src={challenge28day} alt={challenge.title} className="w-full h-full object-cover" />
+        <img src={challengeImages[challenge.id] || challenge28day} alt={challenge.title} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
         <div className="absolute bottom-3 left-5 right-5">
           <h3 className="font-display text-lg font-bold text-foreground drop-shadow-sm">{challenge.title}</h3>
