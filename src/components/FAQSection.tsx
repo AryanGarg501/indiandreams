@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, HelpCircle } from "lucide-react";
 
 const faqs = [
   {
@@ -29,19 +29,23 @@ const FAQSection = () => {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-24 bg-card">
-      <div className="container mx-auto px-4 max-w-3xl">
+    <section id="faq" className="py-28 bg-card relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full bg-primary/3 blur-[120px]" />
+      <div className="container mx-auto px-4 max-w-3xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">Frequently asked questions</h2>
-          <p className="text-muted-foreground">Find answers to common questions about Indian Dreams</p>
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-6">
+            <HelpCircle size={28} className="text-primary" />
+          </div>
+          <h2 className="font-display text-3xl md:text-5xl font-bold mb-5">Frequently asked questions</h2>
+          <p className="text-muted-foreground text-lg">Find answers to common questions about Indian Dreams</p>
         </motion.div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {faqs.map((faq, i) => (
             <motion.div
               key={i}
@@ -49,16 +53,18 @@ const FAQSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              className="border border-border rounded-xl overflow-hidden"
+              className={`border rounded-2xl overflow-hidden transition-all duration-300 ${
+                open === i ? "border-primary/30 shadow-lg bg-card" : "border-border bg-card hover:border-primary/20"
+              }`}
             >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between p-5 text-left font-semibold text-foreground hover:bg-muted/50 transition-colors"
+                className="w-full flex items-center justify-between p-6 text-left font-bold text-foreground transition-colors"
               >
-                {faq.q}
+                <span className="pr-4">{faq.q}</span>
                 <ChevronDown
                   size={20}
-                  className={`text-muted-foreground transition-transform ${open === i ? "rotate-180" : ""}`}
+                  className={`text-muted-foreground transition-transform duration-300 flex-shrink-0 ${open === i ? "rotate-180 text-primary" : ""}`}
                 />
               </button>
               <AnimatePresence>
@@ -69,7 +75,7 @@ const FAQSection = () => {
                     exit={{ height: 0 }}
                     className="overflow-hidden"
                   >
-                    <p className="px-5 pb-5 text-sm text-muted-foreground">{faq.a}</p>
+                    <p className="px-6 pb-6 text-muted-foreground leading-relaxed">{faq.a}</p>
                   </motion.div>
                 )}
               </AnimatePresence>

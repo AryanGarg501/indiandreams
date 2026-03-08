@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
@@ -23,12 +23,13 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-card/95 backdrop-blur-md shadow-sm" : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? "glass shadow-lg border-b border-border/50" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
-        <a href="#home" className="font-display text-2xl font-bold text-gradient">
+        <a href="#home" className="flex items-center gap-2 font-display text-2xl font-bold text-gradient-vivid">
+          <Sparkles size={22} className="text-primary" />
           Indian Dreams
         </a>
 
@@ -38,7 +39,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
             >
               {link.label}
             </a>
@@ -46,13 +47,13 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm" asChild><a href="/login">Login</a></Button>
-          <Button variant="hero" size="sm" asChild><a href="/quiz">Start Now</a></Button>
+          <Button variant="ghost" size="sm" className="font-semibold" asChild><a href="/login">Login</a></Button>
+          <Button variant="hero" size="sm" className="rounded-xl px-6" asChild><a href="/quiz">Start Now</a></Button>
         </div>
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden text-foreground"
+          className="md:hidden text-foreground p-2 rounded-xl hover:bg-muted transition-colors"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -66,20 +67,20 @@ const Navbar = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-card border-t border-border overflow-hidden"
+            className="md:hidden glass border-t border-border/50 overflow-hidden"
           >
-            <div className="flex flex-col gap-2 p-4">
+            <div className="flex flex-col gap-1 p-4">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
+                  className="py-3 px-4 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-xl transition-colors"
                   onClick={() => setMobileOpen(false)}
                 >
                   {link.label}
                 </a>
               ))}
-              <Button variant="hero" className="mt-2" asChild><a href="/quiz">Start Now</a></Button>
+              <Button variant="hero" className="mt-3 rounded-xl" asChild><a href="/quiz">Start Now</a></Button>
             </div>
           </motion.div>
         )}

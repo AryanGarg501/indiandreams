@@ -47,10 +47,12 @@
 
     /* Custom tokens */
     --hero-gradient: linear-gradient(135deg, hsl(22 100% 55%) 0%, hsl(42 100% 50%) 100%);
+    --hero-gradient-vivid: linear-gradient(135deg, hsl(22 100% 50%) 0%, hsl(35 100% 55%) 50%, hsl(42 100% 50%) 100%);
     --section-gradient: linear-gradient(180deg, hsl(30 33% 98%) 0%, hsl(30 40% 96%) 100%);
     --card-shadow: 0 4px 24px -4px hsl(240 24% 10% / 0.08);
-    --card-shadow-hover: 0 8px 32px -4px hsl(240 24% 10% / 0.14);
-    --glow: 0 0 40px hsl(22 100% 55% / 0.15);
+    --card-shadow-hover: 0 12px 40px -4px hsl(240 24% 10% / 0.16);
+    --glow: 0 0 60px hsl(22 100% 55% / 0.2);
+    --glow-accent: 0 0 60px hsl(42 100% 50% / 0.15);
 
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
@@ -96,21 +98,70 @@
     @apply bg-clip-text text-transparent;
     background-image: var(--hero-gradient);
   }
+  .text-gradient-vivid {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--hero-gradient-vivid);
+  }
   .bg-hero-gradient {
     background-image: var(--hero-gradient);
+  }
+  .bg-hero-gradient-vivid {
+    background-image: var(--hero-gradient-vivid);
   }
   .section-gradient {
     background-image: var(--section-gradient);
   }
   .card-elevated {
     box-shadow: var(--card-shadow);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition: box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .card-elevated:hover {
     box-shadow: var(--card-shadow-hover);
-    transform: translateY(-2px);
+    transform: translateY(-4px);
   }
   .glow {
     box-shadow: var(--glow);
+  }
+  .glow-accent {
+    box-shadow: var(--glow-accent);
+  }
+  .glass {
+    background: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      hsl(0 0% 100% / 0.15) 50%,
+      transparent 60%
+    );
+    animation: shimmer 3s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+  .pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px hsl(22 100% 55% / 0.2); }
+    50% { box-shadow: 0 0 40px hsl(22 100% 55% / 0.4); }
   }
 }

@@ -2,25 +2,27 @@ import { motion } from "framer-motion";
 import { Briefcase, TrendingUp, Lightbulb, PenTool, Share2 } from "lucide-react";
 
 const paths = [
-  { icon: Briefcase, title: "AI-powered Business", desc: "Automate workflows, analyze data, and make smarter decisions" },
-  { icon: TrendingUp, title: "AI Marketing", desc: "Increase sales with AI-driven tools for ads and social media" },
-  { icon: Lightbulb, title: "AI Productivity", desc: "Simplify daily tasks with AI tools that save time" },
-  { icon: PenTool, title: "AI Content Creation", desc: "Produce high-quality content for blogs and social media" },
-  { icon: Share2, title: "AI Affiliate Marketing", desc: "Use AI to find products and automate promotions" },
+  { icon: Briefcase, title: "AI-powered Business", desc: "Automate workflows, analyze data, and make smarter decisions", emoji: "💼" },
+  { icon: TrendingUp, title: "AI Marketing", desc: "Increase sales with AI-driven tools for ads and social media", emoji: "📈" },
+  { icon: Lightbulb, title: "AI Productivity", desc: "Simplify daily tasks with AI tools that save time", emoji: "⚡" },
+  { icon: PenTool, title: "AI Content Creation", desc: "Produce high-quality content for blogs and social media", emoji: "✍️" },
+  { icon: Share2, title: "AI Affiliate Marketing", desc: "Use AI to find products and automate promotions", emoji: "🔗" },
 ];
 
 const PathsSection = () => {
   return (
-    <section id="paths" className="py-24 bg-card">
-      <div className="container mx-auto px-4">
+    <section id="paths" className="py-28 bg-card relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/3 blur-[150px]" />
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2 className="font-display text-3xl md:text-4xl font-bold mb-4">Choose your path</h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <span className="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-4 block">Learning Paths</span>
+          <h2 className="font-display text-3xl md:text-5xl font-bold mb-5">Choose your path</h2>
+          <p className="text-muted-foreground max-w-xl mx-auto text-lg">
             Explore different paths where you could apply AI to grow in today's digital world
           </p>
         </motion.div>
@@ -33,14 +35,19 @@ const PathsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.08 }}
-              className="group relative overflow-hidden rounded-xl border border-border p-6 hover:border-primary/30 transition-all card-elevated cursor-pointer"
+              className="group relative overflow-hidden rounded-2xl border border-border p-7 hover:border-primary/40 transition-all card-elevated cursor-pointer"
             >
-              <div className="w-10 h-10 rounded-lg bg-hero-gradient flex items-center justify-center mb-4">
-                <p.icon size={20} className="text-primary-foreground" />
+              <div className="absolute inset-0 bg-hero-gradient opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-12 h-12 rounded-xl bg-hero-gradient flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+                    <p.icon size={22} className="text-primary-foreground" />
+                  </div>
+                  <span className="text-2xl">{p.emoji}</span>
+                </div>
+                <h3 className="font-display text-lg font-bold mb-2">{p.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
               </div>
-              <h3 className="font-display text-lg font-semibold mb-2">{p.title}</h3>
-              <p className="text-sm text-muted-foreground">{p.desc}</p>
-              <div className="absolute inset-0 bg-hero-gradient opacity-0 group-hover:opacity-5 transition-opacity" />
             </motion.div>
           ))}
         </div>
