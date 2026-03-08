@@ -1,16 +1,51 @@
+import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { coursesData } from "@/data/coursesData";
 
 const masteryPaths = [
-  { title: "Claude", slug: "claude", lessons: 10, hours: 5, progress: 0, emoji: "🤖" },
-  { title: "Gemini", slug: "gemini", lessons: 10, hours: 4, progress: 0, emoji: "💎" },
-  { title: "ChatGPT", slug: "chatgpt", lessons: 13, hours: 6, progress: 0, emoji: "🧠" },
-  { title: "Jasper AI", slug: "jasper-ai", lessons: 10, hours: 5, progress: 0, emoji: "✍️" },
-  { title: "Stable Diffusion", slug: "stable-diffusion", lessons: 10, hours: 4, progress: 0, emoji: "🎨" },
+  { title: "Claude", slug: "claude", lessons: 10, hours: 5, emoji: "🤖" },
+  { title: "Gemini", slug: "gemini", lessons: 10, hours: 4, emoji: "💎" },
+  { title: "ChatGPT", slug: "chatgpt", lessons: 13, hours: 6, emoji: "🧠" },
+  { title: "Jasper AI", slug: "jasper-ai", lessons: 10, hours: 5, emoji: "✍️" },
+  { title: "Stable Diffusion", slug: "stable-diffusion", lessons: 10, hours: 4, emoji: "🎨" },
 ];
 
 export function MasteryPaths() {
+  const [progressMap, setProgressMap] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const fetchProgress = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+
+      const { data: progress } = await supabase
+        .from("lesson_progress")
+        .select("course_id, lesson_id")
+        .eq("user_id", session.user.id);
+
+      if (!progress) return;
+
+      const byCourse: Record<string, Set<string>> = {};
+      for (const p of progress) {
+        if (!byCourse[p.course_id]) byCourse[p.course_id] = new Set();
+        byCourse[p.course_id].add(p.lesson_id);
+      }
+
+      const map: Record<string, number> = {};
+      for (const [courseId, lessons] of Object.entries(byCourse)) {
+        const course = coursesData[courseId];
+        if (course) {
+          map[courseId] = Math.round((lessons.size / course.totalLessons) * 100);
+        }
+      }
+      setProgressMap(map);
+    };
+    fetchProgress();
+  }, []);
+
   return (
     <section>
       <div className="flex items-center justify-between mb-4">
@@ -33,7 +68,10 @@ export function MasteryPaths() {
             <p className="text-xs text-muted-foreground mt-0.5">
               {path.lessons} lessons · {path.hours}h
             </p>
-            <Progress value={path.progress} className="h-1 mt-2.5" />
+            <Progress value={progressMap[path.slug] || 0} className="h-1 mt-2.5" />
+            <p className="text-xs text-muted-foreground mt-1">
+              {progressMap[path.slug] || 0}% complete
+            </p>
           </Link>
         ))}
       </div>
