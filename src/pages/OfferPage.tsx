@@ -121,7 +121,7 @@ const OfferPage = () => {
                   Choose Your <span className="text-primary">AI Mastery Plan</span>
                 </h1>
                 <p className="text-muted-foreground max-w-lg mx-auto">
-                  Unlock your personalized 28-day AI challenge and start building real skills today
+                  Unlock your personalized 14-day AI challenge and start building real skills today
                 </p>
               </div>
 
@@ -141,7 +141,7 @@ const OfferPage = () => {
                     </span>
                   </div>
 
-                  <h3 className="font-display text-xl font-bold text-foreground mb-1 mt-2 text-center">Full Package — 28 Days</h3>
+                  <h3 className="font-display text-xl font-bold text-foreground mb-1 mt-2 text-center">Full Package — 14 Days</h3>
                   <p className="text-sm text-muted-foreground mb-5 text-center">Complete AI mastery challenge</p>
                   <div className="flex items-baseline justify-center gap-1 mb-1">
                     <span className="font-display text-5xl font-extrabold text-foreground">₹199</span>
@@ -150,7 +150,7 @@ const OfferPage = () => {
                   <p className="text-xs text-muted-foreground line-through mb-6 text-center">₹1,999</p>
                   <ul className="space-y-3 mb-8">
                     {[
-                      "Full 28-day AI challenge",
+                      "Full 14-day AI challenge",
                       "All AI tools & guides",
                       "Certificate of completion",
                       "Priority support",
