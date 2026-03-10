@@ -121,7 +121,7 @@ const OfferPage = () => {
                   Choose Your <span className="text-primary">AI Mastery Plan</span>
                 </h1>
                 <p className="text-muted-foreground max-w-lg mx-auto">
-                  Unlock your personalized 28-day AI challenge and start building real skills today
+                  Unlock your personalized 14-day AI challenge and start building real skills today
                 </p>
               </div>
 
