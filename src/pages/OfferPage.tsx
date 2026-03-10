@@ -150,7 +150,7 @@ const OfferPage = () => {
                   <p className="text-xs text-muted-foreground line-through mb-6 text-center">₹1,999</p>
                   <ul className="space-y-3 mb-8">
                     {[
-                      "Full 28-day AI challenge",
+                      "Full 14-day AI challenge",
                       "All AI tools & guides",
                       "Certificate of completion",
                       "Priority support",
