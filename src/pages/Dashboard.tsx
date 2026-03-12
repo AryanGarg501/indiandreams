@@ -88,7 +88,7 @@ const Dashboard = () => {
             <div className="flex items-center gap-3">
               <SidebarTrigger className="md:hidden" />
               <h1 className="text-lg font-bold text-foreground">
-                Welcome back! 👋
+                Welcome back, {userName}! 👋
               </h1>
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 bg-accent/10 rounded-full">
