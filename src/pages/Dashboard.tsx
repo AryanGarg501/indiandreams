@@ -41,7 +41,15 @@ const Dashboard = () => {
         return;
       }
       userId = session.user.id;
-      setUserName(session.user.user_metadata?.full_name || session.user.email || "Learner");
+
+      // Fetch the name from profiles table (set during account creation)
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("full_name")
+        .eq("user_id", userId)
+        .single();
+
+      setUserName(profile?.full_name || session.user.user_metadata?.full_name || session.user.email || "Learner");
       setLoading(false);
       fetchStreak(userId);
     };
