@@ -1,9 +1,37 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const quizData = [
+const companyQuiz = [
+  {
+    question: "What is your role at the company?",
+    subtitle: "We'll tailor AI strategies to your position",
+    options: ["Manager / Team Lead", "Marketing / Sales", "Developer / Engineer", "HR / Operations"],
+  },
+  {
+    question: "How large is your organization?",
+    subtitle: "This helps us recommend the right AI scale",
+    options: ["1-10 employees", "11-50 employees", "51-200 employees", "200+ employees"],
+  },
+  {
+    question: "What department could benefit most from AI?",
+    subtitle: "We'll focus your challenge around this area",
+    options: ["Customer support", "Content & marketing", "Data & analytics", "Product development"],
+  },
+  {
+    question: "What's your company's current AI adoption level?",
+    subtitle: "So we can meet you where you are",
+    options: ["Not using AI yet", "Experimenting casually", "Using a few AI tools", "AI is part of our workflow"],
+  },
+  {
+    question: "What's your biggest workplace challenge AI could solve?",
+    subtitle: "Pick the one that resonates most",
+    options: ["Repetitive manual tasks", "Slow decision-making", "Content creation bottleneck", "Scaling with limited staff"],
+  },
+];
+
+const selfQuiz = [
   {
     question: "What is your age?",
     subtitle: "We will personalize your AI challenge based on your answers",
@@ -31,10 +59,12 @@ const quizData = [
   },
 ];
 
-const totalSteps = quizData.length;
-
 const QuizSteps = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const quizType = (location.state as any)?.type || "self";
+  const quizData = quizType === "company" ? companyQuiz : selfQuiz;
+  const totalSteps = quizData.length;
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>([]);
 
