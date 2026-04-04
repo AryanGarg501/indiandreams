@@ -118,25 +118,22 @@ const LessonView = () => {
     );
 
     if (allDone && course) {
-      // Generate certificate
-      const { data: certData, error: certError } = await supabase
-        .from("certificates")
-        .insert({
-          user_id: userId,
-          course_id: courseId,
-          course_title: course.title,
-          user_name: userName,
-        })
-        .select("id")
-        .single();
+      // Generate certificate via secure RPC
+      const { data: certId, error: certError } = await supabase
+        .rpc("issue_certificate", {
+          _course_id: courseId,
+          _course_title: course.title,
+          _user_name: userName,
+          _expected_lessons: course.totalLessons,
+        });
 
-      if (!certError && certData) {
+      if (!certError && certId) {
         toast({
           title: "🎓 Course Completed!",
           description: "Your certificate is ready! Redirecting...",
         });
         setTimeout(() => {
-          navigate(`/certificate/${certData.id}`);
+          navigate(`/certificate/${certId}`);
         }, 1200);
       } else {
         toast({ title: "Course Completed! 🎉", description: "Congratulations on finishing all lessons!" });
