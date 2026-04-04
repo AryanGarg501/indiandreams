@@ -74,19 +74,16 @@ const ChallengeView = () => {
 
       // Check if all days completed
       if (challenge && newCompleted.size === challenge.days.length) {
-        const { data: certData } = await supabase
-          .from("certificates")
-          .insert({
-            user_id: userId,
-            course_id: challengeId,
-            course_title: challenge.title,
-            user_name: userName,
-          })
-          .select("id")
-          .single();
+        const { data: certId } = await supabase
+          .rpc("issue_certificate", {
+            _course_id: challengeId,
+            _course_title: challenge.title,
+            _user_name: userName,
+            _expected_lessons: challenge.days.length,
+          });
 
-        if (certData) {
-          setTimeout(() => navigate(`/certificate/${certData.id}`), 1200);
+        if (certId) {
+          setTimeout(() => navigate(`/certificate/${certId}`), 1200);
         }
       } else {
         // Jump to next day
