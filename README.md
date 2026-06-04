@@ -1,4 +1,4 @@
-# Welcome to mt own created website Indian Dreams
+# Welcome to my own created website Indian Dreams
 
 ## Project info
 
