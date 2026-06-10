@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import OfferPage from "./pages/OfferPage";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
+import Payment from "./pages/Payment";
 import ForgotPassword from "./pages/ForgotPassword";
 import Quiz from "./pages/Quiz";
 import QuizSteps from "./pages/QuizSteps";
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/quiz-steps" element={<QuizSteps />} />
