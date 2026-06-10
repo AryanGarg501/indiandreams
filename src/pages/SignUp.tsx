@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,6 +15,14 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const paid = searchParams.get("paid") === "1";
+
+  useEffect(() => {
+    if (!paid) {
+      toast.error("Please complete payment before creating an account");
+      navigate(`/offer`, { replace: true });
+    }
+  }, [paid, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
