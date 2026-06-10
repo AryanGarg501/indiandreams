@@ -165,7 +165,7 @@ const OfferPage = () => {
                     ))}
                   </ul>
                   <Button variant="hero" className="w-full h-14 rounded-xl font-semibold text-lg">
-                    Claim 90% Off — Get Full Access
+                    Get Full Access
                   </Button>
                 </motion.div>
               </div>
