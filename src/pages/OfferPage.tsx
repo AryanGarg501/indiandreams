@@ -19,8 +19,8 @@ const OfferPage = () => {
 
   const handleSelectPlan = (planId: string) => {
     setSelectedPlan(planId);
-    // Navigate to signup with email and plan pre-filled
-    navigate(`/signup?email=${encodeURIComponent(email)}&plan=${planId}`);
+    // Navigate to payment with email and plan pre-filled
+    navigate(`/payment?email=${encodeURIComponent(email)}&plan=${planId}`);
   };
 
   return (
