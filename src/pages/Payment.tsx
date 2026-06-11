@@ -53,13 +53,6 @@ const Payment = () => {
         description: "Full Package — 14-Day AI Challenge",
         prefill: { email },
         theme: { color: "#F97316" },
-        method: {
-          upi: true,
-          card: true,
-          netbanking: true,
-          wallet: true,
-ическим: false,
-        },
         config: {
           display: {
             blocks: {
