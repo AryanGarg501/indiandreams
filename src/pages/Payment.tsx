@@ -53,6 +53,27 @@ const Payment = () => {
         description: "Full Package — 14-Day AI Challenge",
         prefill: { email },
         theme: { color: "#F97316" },
+        method: {
+          upi: true,
+          card: true,
+          netbanking: true,
+          wallet: true,
+ическим: false,
+        },
+        config: {
+          display: {
+            blocks: {
+              upi_block: {
+                name: "Pay using UPI",
+                instruments: [
+                  { method: "upi", flows: ["collect", "intent", "qr"] },
+                ],
+              },
+            },
+            sequence: ["block.upi_block"],
+            preferences: { show_default_blocks: true },
+          },
+        },
         handler: async (resp: any) => {
           try {
             const { data: vData, error: vErr } = await supabase.functions.invoke(
