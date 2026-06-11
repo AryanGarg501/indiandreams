@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, Lock, Check, CreditCard, Loader2 } from "lucide-react";
+import { Shield, Lock, Check, CreditCard, Loader2, Smartphone, Landmark, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -11,6 +11,15 @@ declare global {
 }
 
 const AMOUNT_PAISE = 19900; // ₹199
+
+type PaymentMethod = "upi" | "card" | "netbanking" | "wallet";
+
+const METHODS: { id: PaymentMethod; label: string; icon: React.ElementType }[] = [
+  { id: "upi", label: "UPI", icon: Smartphone },
+  { id: "card", label: "Card", icon: CreditCard },
+  { id: "netbanking", label: "Netbanking", icon: Landmark },
+  { id: "wallet", label: "Wallet", icon: Wallet },
+];
 
 const loadRazorpay = () =>
   new Promise<boolean>((resolve) => {
@@ -28,8 +37,45 @@ const Payment = () => {
   const email = params.get("email") || "";
   const plan = params.get("plan") || "full";
   const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState<PaymentMethod>("upi");
 
   useEffect(() => { loadRazorpay(); }, []);
+
+  const buildRazorpayConfig = (method: PaymentMethod) => {
+    const blocks: Record<string, any> = {
+      upi_block: {
+        name: "Pay using UPI",
+        instruments: [{ method: "upi", flows: ["collect", "intent", "qr"] }],
+      },
+      card_block: {
+        name: "Pay using Card",
+        instruments: [{ method: "card" }],
+      },
+      netbanking_block: {
+        name: "Pay using Netbanking",
+        instruments: [{ method: "netbanking" }],
+      },
+      wallet_block: {
+        name: "Pay using Wallet",
+        instruments: [{ method: "wallet" }],
+      },
+    };
+
+    const sequenceMap: Record<PaymentMethod, string[]> = {
+      upi: ["block.upi_block", "block.card_block", "block.netbanking_block", "block.wallet_block"],
+      card: ["block.card_block", "block.upi_block", "block.netbanking_block", "block.wallet_block"],
+      netbanking: ["block.netbanking_block", "block.upi_block", "block.card_block", "block.wallet_block"],
+      wallet: ["block.wallet_block", "block.upi_block", "block.card_block", "block.netbanking_block"],
+    };
+
+    return {
+      display: {
+        blocks,
+        sequence: sequenceMap[method],
+        preferences: { show_default_blocks: true },
+      },
+    };
+  };
 
   const handlePay = async () => {
     if (loading) return;
@@ -53,20 +99,7 @@ const Payment = () => {
         description: "Full Package — 14-Day AI Challenge",
         prefill: { email },
         theme: { color: "#F97316" },
-        config: {
-          display: {
-            blocks: {
-              upi_block: {
-                name: "Pay using UPI",
-                instruments: [
-                  { method: "upi", flows: ["collect", "intent", "qr"] },
-                ],
-              },
-            },
-            sequence: ["block.upi_block"],
-            preferences: { show_default_blocks: true },
-          },
-        },
+        config: buildRazorpayConfig(selected),
         handler: async (resp: any) => {
           try {
             const { data: vData, error: vErr } = await supabase.functions.invoke(
@@ -143,6 +176,30 @@ const Payment = () => {
             </p>
           )}
 
+          <div className="mb-6">
+            <p className="text-sm font-medium text-foreground mb-3">Select payment method</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {METHODS.map((m) => {
+                const Icon = m.icon;
+                const active = selected === m.id;
+                return (
+                  <button
+                    key={m.id}
+                    onClick={() => setSelected(m.id)}
+                    className={`flex flex-col items-center justify-center gap-2 rounded-xl border p-4 transition-all duration-200 ${
+                      active
+                        ? "border-primary bg-primary/10 text-primary shadow-sm"
+                        : "border-border bg-background/60 text-muted-foreground hover:border-primary/40 hover:bg-primary/5"
+                    }`}
+                  >
+                    <Icon className="w-6 h-6" />
+                    <span className="text-xs font-medium">{m.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <Button
             onClick={handlePay}
             disabled={loading}
@@ -152,7 +209,7 @@ const Payment = () => {
             {loading ? (
               <><Loader2 className="w-5 h-5 animate-spin" /> Processing…</>
             ) : (
-              <>Pay ₹199 securely</>
+              <>Pay ₹199 via {METHODS.find(m => m.id === selected)?.label}</>
             )}
           </Button>
 
