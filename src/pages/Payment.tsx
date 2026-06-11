@@ -159,7 +159,7 @@ const Payment = () => {
           <div className="flex items-center justify-center gap-5 mt-6 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-primary" /> 256-bit SSL</span>
             <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5 text-primary" /> PCI DSS</span>
-            <span>UPI · Cards · Netbanking</span>
+            <span>UPI · Cards · Netbanking · Wallets</span>
           </div>
         </motion.div>
       </div>
