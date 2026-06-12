@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,12 +9,20 @@ import { supabase } from "@/integrations/supabase/client";
 
 const SignUp = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState(searchParams.get("email") || "");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const paid = searchParams.get("paid") === "1";
+  const plan = searchParams.get("plan") || "full";
+
+  useEffect(() => {
+    if (!paid) {
+      navigate(`/payu?email=${encodeURIComponent(email)}&plan=${plan}`, { replace: true });
+    }
+  }, [paid, email, plan, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
