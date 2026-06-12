@@ -27,6 +27,7 @@ Deno.serve(async (req) => {
     const phone = String(body.phone || "9999999999");
     const productinfo = String(body.productinfo || "Indian Dreams - Full Package");
     const plan = String(body.plan || "full");
+    const method = String(body.method || "").toUpperCase(); // UPI | CARD | NB | WALLET | ""
 
     if (!email || !email.includes("@")) {
       return new Response(JSON.stringify({ error: "Invalid email" }), {
@@ -46,6 +47,14 @@ Deno.serve(async (req) => {
     const surl = `${callbackBase}?redirect=${encodeURIComponent(origin)}`;
     const furl = surl;
 
+    // Map UI method to PayU pg/bankcode
+    let pg = "";
+    let bankcode = "";
+    if (method === "UPI") { pg = "UPI"; bankcode = "UPI"; }
+    else if (method === "CARD") { pg = "CC"; }
+    else if (method === "NB") { pg = "NB"; }
+    else if (method === "WALLET") { pg = "WALLET"; }
+
     return new Response(
       JSON.stringify({
         action: ACTION_URL,
@@ -60,6 +69,8 @@ Deno.serve(async (req) => {
         surl,
         furl,
         hash,
+        pg,
+        bankcode,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
