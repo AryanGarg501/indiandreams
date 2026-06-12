@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, Lock, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { Shield, Lock, CheckCircle2, AlertCircle, Loader2, Smartphone, CreditCard, Landmark, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +19,7 @@ const PayU = () => {
   const [firstname, setFirstname] = useState("");
   const [phone, setPhone] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [method, setMethod] = useState<"UPI" | "CARD" | "NB" | "WALLET">("UPI");
 
   useEffect(() => {
     if (!email) navigate("/offer", { replace: true });
@@ -31,7 +32,7 @@ const PayU = () => {
 
     setSubmitting(true);
     const { data, error } = await supabase.functions.invoke("payu-create-hash", {
-      body: { amount: "199.00", email, firstname, phone, plan },
+      body: { amount: "199.00", email, firstname, phone, plan, method },
     });
     if (error || !data?.hash) {
       setSubmitting(false);
@@ -57,6 +58,8 @@ const PayU = () => {
       hash: data.hash,
       service_provider: "payu_paisa",
     };
+    if (data.pg) fields.pg = data.pg;
+    if (data.bankcode) fields.bankcode = data.bankcode;
     Object.entries(fields).forEach(([k, v]) => {
       const input = document.createElement("input");
       input.type = "hidden";
