@@ -29,6 +29,39 @@ Deno.serve(async (req) => {
     const plan = String(body.plan || "full");
     const method = String(body.method || "").toUpperCase(); // UPI | CARD | NB | WALLET | ""
 
+    const ALLOWED_METHODS = ["", "UPI", "CARD", "NB", "WALLET"];
+    if (!ALLOWED_METHODS.includes(method)) {
+      return new Response(
+        JSON.stringify({ error: "invalid_method", message: "Selected payment method is not supported." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+    if (!firstname.trim() || firstname.length > 60) {
+      return new Response(
+        JSON.stringify({ error: "invalid_name", message: "Please enter a valid name." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+    if (!/^\d{10}$/.test(phone)) {
+      return new Response(
+        JSON.stringify({ error: "invalid_phone", message: "Enter a valid 10-digit phone number." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+    const amtNum = Number(amount);
+    if (!Number.isFinite(amtNum) || amtNum <= 0) {
+      return new Response(
+        JSON.stringify({ error: "invalid_amount", message: "Invalid amount." }),
+        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+    if (!MERCHANT_KEY || !MERCHANT_SALT) {
+      return new Response(
+        JSON.stringify({ error: "gateway_unconfigured", message: "Payment gateway is not configured. Please try again later." }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
     if (!email || !email.includes("@")) {
       return new Response(JSON.stringify({ error: "Invalid email" }), {
         status: 400,
