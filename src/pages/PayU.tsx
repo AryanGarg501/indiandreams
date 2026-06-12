@@ -122,6 +122,40 @@ const PayU = () => {
 
             <form onSubmit={handlePay} className="space-y-4">
               <div className="space-y-2">
+                <Label className="text-sm">Payment Method</Label>
+                <div className="grid grid-cols-4 gap-2">
+                  {([
+                    { id: "UPI", label: "UPI", Icon: Smartphone },
+                    { id: "CARD", label: "Card", Icon: CreditCard },
+                    { id: "NB", label: "Netbanking", Icon: Landmark },
+                    { id: "WALLET", label: "Wallet", Icon: Wallet },
+                  ] as const).map(({ id, label, Icon }) => {
+                    const active = method === id;
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => setMethod(id)}
+                        className={`flex flex-col items-center justify-center gap-1 rounded-xl border p-3 text-xs font-medium transition-colors ${
+                          active
+                            ? "border-primary bg-primary/10 text-primary"
+                            : "border-border bg-background text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        <Icon className="w-5 h-5" />
+                        {label}
+                      </button>
+                    );
+                  })}
+                </div>
+                {method === "UPI" && (
+                  <p className="text-xs text-muted-foreground pt-1">
+                    Pay using any UPI app — GPay, PhonePe, Paytm, BHIM.
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="firstname" className="text-sm">Full Name</Label>
                 <Input
                   id="firstname"
