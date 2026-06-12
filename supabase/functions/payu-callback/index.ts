@@ -38,6 +38,12 @@ Deno.serve(async (req) => {
     udf5 = "",
     status = "",
     hash: receivedHash = "",
+    error: payuError = "",
+    error_Message: payuErrorMessage = "",
+    unmappedstatus = "",
+    PG_TYPE = "",
+    bank_ref_num = "",
+    mode = "",
   } = params;
 
   // Reverse hash: salt|status|||||udf5|udf4|udf3|udf2|udf1|email|firstname|productinfo|amount|txnid|key
@@ -50,8 +56,20 @@ Deno.serve(async (req) => {
   if (verified && status === "success") {
     target = `${redirectBase}/signup?email=${encodeURIComponent(email)}&plan=${encodeURIComponent(plan)}&paid=1&txnid=${encodeURIComponent(txnid)}`;
   } else {
-    const reason = !verified ? "hash_mismatch" : status || "failed";
-    target = `${redirectBase}/payu?status=failure&reason=${encodeURIComponent(reason)}&email=${encodeURIComponent(email)}&plan=${encodeURIComponent(plan)}`;
+    const reason = !verified
+      ? "hash_mismatch"
+      : (payuError || unmappedstatus || status || "failed");
+    const message = payuErrorMessage || "";
+    const qs = new URLSearchParams({
+      status: "failure",
+      reason,
+      message,
+      email,
+      plan,
+      mode: mode || PG_TYPE || "",
+      txnid,
+    });
+    target = `${redirectBase}/payu?${qs.toString()}`;
   }
 
   return new Response(null, {
