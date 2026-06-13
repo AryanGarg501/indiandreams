@@ -4,12 +4,18 @@ import { motion } from "framer-motion";
 import {
   Shield, Lock, CheckCircle2, AlertCircle, Loader2,
   Smartphone, CreditCard, Landmark, Wallet, ChevronRight, BadgeCheck, ArrowLeft,
+  QrCode, Copy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import QRCode from "qrcode";
+
+// Merchant UPI VPA — replace with your verified merchant VPA
+const MERCHANT_VPA = "indiandreams@upi";
+const MERCHANT_NAME = "Indian Dreams";
 
 type Method = "UPI" | "CARD" | "NB" | "WALLET";
 
@@ -49,10 +55,31 @@ const PayU = () => {
   const [submitting, setSubmitting] = useState(false);
   const [method, setMethod] = useState<Method>("UPI");
   const [formError, setFormError] = useState<string | null>(null);
+  const [qrDataUrl, setQrDataUrl] = useState<string>("");
+  const upiAmount = "199.00";
+  const upiLink = `upi://pay?pa=${encodeURIComponent(MERCHANT_VPA)}&pn=${encodeURIComponent(
+    MERCHANT_NAME
+  )}&am=${upiAmount}&cu=INR&tn=${encodeURIComponent("Indian Dreams - Full Package")}`;
 
   useEffect(() => {
     if (!email) navigate("/offer", { replace: true });
   }, [email, navigate]);
+
+  useEffect(() => {
+    if (method !== "UPI") return;
+    QRCode.toDataURL(upiLink, { width: 240, margin: 1, color: { dark: "#0f172a", light: "#ffffff" } })
+      .then(setQrDataUrl)
+      .catch(() => setQrDataUrl(""));
+  }, [method, upiLink]);
+
+  const copyVpa = async () => {
+    try {
+      await navigator.clipboard.writeText(MERCHANT_VPA);
+      toast.success("UPI ID copied");
+    } catch {
+      toast.error("Couldn't copy UPI ID");
+    }
+  };
 
   const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
