@@ -4,18 +4,12 @@ import { motion } from "framer-motion";
 import {
   Shield, Lock, CheckCircle2, AlertCircle, Loader2,
   Smartphone, CreditCard, Landmark, Wallet, ChevronRight, BadgeCheck, ArrowLeft,
-  QrCode, Copy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import QRCode from "qrcode";
-
-// Merchant UPI VPA — replace with your verified merchant VPA
-const MERCHANT_VPA = "indiandreams@upi";
-const MERCHANT_NAME = "Indian Dreams";
 
 type Method = "UPI" | "CARD" | "NB" | "WALLET";
 
@@ -55,31 +49,10 @@ const PayU = () => {
   const [submitting, setSubmitting] = useState(false);
   const [method, setMethod] = useState<Method>("UPI");
   const [formError, setFormError] = useState<string | null>(null);
-  const [qrDataUrl, setQrDataUrl] = useState<string>("");
-  const upiAmount = "199.00";
-  const upiLink = `upi://pay?pa=${encodeURIComponent(MERCHANT_VPA)}&pn=${encodeURIComponent(
-    MERCHANT_NAME
-  )}&am=${upiAmount}&cu=INR&tn=${encodeURIComponent("Indian Dreams - Full Package")}`;
 
   useEffect(() => {
     if (!email) navigate("/offer", { replace: true });
   }, [email, navigate]);
-
-  useEffect(() => {
-    if (method !== "UPI") return;
-    QRCode.toDataURL(upiLink, { width: 240, margin: 1, color: { dark: "#0f172a", light: "#ffffff" } })
-      .then(setQrDataUrl)
-      .catch(() => setQrDataUrl(""));
-  }, [method, upiLink]);
-
-  const copyVpa = async () => {
-    try {
-      await navigator.clipboard.writeText(MERCHANT_VPA);
-      toast.success("UPI ID copied");
-    } catch {
-      toast.error("Couldn't copy UPI ID");
-    }
-  };
 
   const handlePay = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -246,39 +219,6 @@ const PayU = () => {
                     </span>
                   ))}
                 </div>
-
-                {method === "UPI" && (
-                  <div className="rounded-xl border border-border bg-muted/30 p-4 flex flex-col sm:flex-row gap-4 items-center">
-                    <div className="shrink-0 rounded-lg bg-white p-2 border border-border">
-                      {qrDataUrl ? (
-                        <img src={qrDataUrl} alt="UPI QR code" width={160} height={160} className="block" />
-                      ) : (
-                        <div className="w-[160px] h-[160px] flex items-center justify-center text-muted-foreground">
-                          <QrCode className="w-8 h-8 animate-pulse" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1 text-center sm:text-left space-y-2">
-                      <p className="text-sm font-semibold text-foreground">Scan to pay with any UPI app</p>
-                      <p className="text-xs text-muted-foreground">
-                        Open GPay, PhonePe, Paytm or BHIM and scan this code to pay ₹{upiAmount}.
-                      </p>
-                      <div className="flex items-center gap-2 justify-center sm:justify-start">
-                        <code className="text-xs bg-background border border-border px-2 py-1 rounded">{MERCHANT_VPA}</code>
-                        <button
-                          type="button"
-                          onClick={copyVpa}
-                          className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                        >
-                          <Copy className="w-3.5 h-3.5" /> Copy
-                        </button>
-                      </div>
-                      <p className="text-[11px] text-muted-foreground">
-                        Or continue below to pay via UPI on PayU's secure page.
-                      </p>
-                    </div>
-                  </div>
-                )}
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
