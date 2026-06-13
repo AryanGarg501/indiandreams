@@ -310,7 +310,7 @@ const PayU = () => {
             </div>
 
             <ul className="rounded-2xl border border-border bg-card/50 p-4 space-y-2 text-sm text-muted-foreground">
-              <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" /> Lifetime access to all 14 days</li>
+              <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" /> Only for 14 days</li>
               <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" /> Course completion certificate</li>
               <li className="flex gap-2"><CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" /> 7-day refund if not satisfied</li>
             </ul>
