@@ -247,6 +247,39 @@ const PayU = () => {
                   ))}
                 </div>
 
+                {method === "UPI" && (
+                  <div className="rounded-xl border border-border bg-muted/30 p-4 flex flex-col sm:flex-row gap-4 items-center">
+                    <div className="shrink-0 rounded-lg bg-white p-2 border border-border">
+                      {qrDataUrl ? (
+                        <img src={qrDataUrl} alt="UPI QR code" width={160} height={160} className="block" />
+                      ) : (
+                        <div className="w-[160px] h-[160px] flex items-center justify-center text-muted-foreground">
+                          <QrCode className="w-8 h-8 animate-pulse" />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 text-center sm:text-left space-y-2">
+                      <p className="text-sm font-semibold text-foreground">Scan to pay with any UPI app</p>
+                      <p className="text-xs text-muted-foreground">
+                        Open GPay, PhonePe, Paytm or BHIM and scan this code to pay ₹{upiAmount}.
+                      </p>
+                      <div className="flex items-center gap-2 justify-center sm:justify-start">
+                        <code className="text-xs bg-background border border-border px-2 py-1 rounded">{MERCHANT_VPA}</code>
+                        <button
+                          type="button"
+                          onClick={copyVpa}
+                          className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                        >
+                          <Copy className="w-3.5 h-3.5" /> Copy
+                        </button>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground">
+                        Or continue below to pay via UPI on PayU's secure page.
+                      </p>
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <Label htmlFor="firstname" className="text-xs font-medium">Full Name</Label>
