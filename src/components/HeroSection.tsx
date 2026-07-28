@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Users, ChevronRight, Sparkles } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { ArrowRight, Users, Sparkles } from "lucide-react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
 
