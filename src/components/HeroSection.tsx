@@ -10,7 +10,6 @@ const quizOptions = [
 ];
 
 const HeroSection = () => {
-  const [showQuiz, setShowQuiz] = useState(false);
   const navigate = useNavigate();
 
   return (
