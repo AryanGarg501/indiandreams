@@ -4,10 +4,6 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
 
-const quizOptions = [
-  { label: "I work for a company" },
-  { label: "I work for myself" },
-];
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -52,39 +48,13 @@ const HeroSection = () => {
             </p>
 
             <div className="flex flex-wrap gap-4 mb-10">
-              <Button variant="hero" size="lg" className="gap-2 text-base px-8 h-13 rounded-xl pulse-glow" onClick={() => setShowQuiz(!showQuiz)}>
+              <Button variant="hero" size="lg" className="gap-2 text-base px-8 h-13 rounded-xl pulse-glow" onClick={() => navigate("/offer")}>
                 Start Now <ArrowRight size={18} />
               </Button>
               <Button variant="heroOutline" size="lg" className="text-base px-8 h-13 rounded-xl">
                 Learn More
               </Button>
             </div>
-
-            <AnimatePresence>
-              {showQuiz && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden mb-10"
-                >
-                  <p className="text-sm font-semibold text-muted-foreground mb-4">How would you describe yourself?</p>
-                  <div className="flex gap-4">
-                    {quizOptions.map((option) => (
-                      <button
-                        key={option.label}
-                        onClick={() => navigate("/offer", { state: { type: option.label === "I work for a company" ? "company" : "self" } })}
-                        className="group relative flex-1 rounded-2xl border-2 border-border hover:border-primary overflow-hidden transition-all duration-300 bg-card cursor-pointer card-elevated p-4 flex items-center justify-between"
-                      >
-                        <span className="text-foreground font-semibold text-xs sm:text-sm">{option.label}</span>
-                        <ChevronRight className="text-foreground group-hover:text-primary transition-colors" size={16} />
-                      </button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
 
             <div className="flex items-center gap-4">
               <div className="flex -space-x-3">
