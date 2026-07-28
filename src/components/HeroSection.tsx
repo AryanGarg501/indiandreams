@@ -4,12 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
-import quizCompany from "@/assets/quiz-company.jpg";
-import quizMyself from "@/assets/quiz-myself.jpg";
 
 const quizOptions = [
-  { label: "I work for a company", image: quizCompany },
-  { label: "I work for myself", image: quizMyself },
+  { label: "I work for a company" },
+  { label: "I work for myself" },
 ];
 
 const HeroSection = () => {
@@ -79,19 +77,10 @@ const HeroSection = () => {
                       <button
                         key={option.label}
                         onClick={() => navigate("/offer", { state: { type: option.label === "I work for a company" ? "company" : "self" } })}
-                        className="group relative flex-1 rounded-2xl border-2 border-border hover:border-primary overflow-hidden transition-all duration-300 bg-card cursor-pointer card-elevated"
+                        className="group relative flex-1 rounded-2xl border-2 border-border hover:border-primary overflow-hidden transition-all duration-300 bg-card cursor-pointer card-elevated p-4 flex items-center justify-between"
                       >
-                        <div className="aspect-[4/3] overflow-hidden">
-                          <img
-                            src={option.image}
-                            alt={option.label}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                          />
-                        </div>
-                        <div className="absolute bottom-0 left-0 right-0 bg-hero-gradient p-3 flex items-center justify-between">
-                          <span className="text-primary-foreground font-semibold text-xs sm:text-sm">{option.label}</span>
-                          <ChevronRight className="text-primary-foreground" size={16} />
-                        </div>
+                        <span className="text-foreground font-semibold text-xs sm:text-sm">{option.label}</span>
+                        <ChevronRight className="text-foreground group-hover:text-primary transition-colors" size={16} />
                       </button>
                     ))}
                   </div>
