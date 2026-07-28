@@ -4,12 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
-import quizCompany from "@/assets/quiz-company.jpg";
-import quizMyself from "@/assets/quiz-myself.jpg";
 
 const quizOptions = [
-  { label: "I work for a company", image: quizCompany },
-  { label: "I work for myself", image: quizMyself },
+  { label: "I work for a company" },
+  { label: "I work for myself" },
 ];
 
 const HeroSection = () => {
