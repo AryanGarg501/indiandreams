@@ -78,7 +78,7 @@ const HeroSection = () => {
                     {quizOptions.map((option) => (
                       <button
                         key={option.label}
-                        onClick={() => navigate("/quiz-steps", { state: { type: option.label === "I work for a company" ? "company" : "self" } })}
+                        onClick={() => navigate("/offer", { state: { type: option.label === "I work for a company" ? "company" : "self" } })}
                         className="group relative flex-1 rounded-2xl border-2 border-border hover:border-primary overflow-hidden transition-all duration-300 bg-card cursor-pointer card-elevated"
                       >
                         <div className="aspect-[4/3] overflow-hidden">
