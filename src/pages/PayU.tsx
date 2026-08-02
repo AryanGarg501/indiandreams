@@ -15,9 +15,9 @@ type Method = "UPI" | "CARD" | "NB" | "WALLET";
 
 const METHOD_META: Record<Method, { label: string; sub: string; Icon: typeof Smartphone; brands: string[] }> = {
   UPI:    { label: "UPI",          sub: "Any UPI app", Icon: Smartphone,  brands: [] },
-  CARD:   { label: "Credit / Debit Card", sub: "Visa, Mastercard, RuPay, Amex", Icon: CreditCard, brands: ["VISA", "Mastercard", "RuPay", "AMEX"] },
-  NB:     { label: "Netbanking",   sub: "All major Indian banks", Icon: Landmark,    brands: ["HDFC", "ICICI", "SBI", "Axis", "Kotak"] },
-  WALLET: { label: "Wallet",       sub: "Mobikwik, Freecharge, Ola Money", Icon: Wallet, brands: ["Mobikwik", "Freecharge", "Ola Money"] },
+  CARD:   { label: "Credit / Debit Card", sub: "Visa, Mastercard, RuPay, Amex", Icon: CreditCard, brands: [] },
+  NB:     { label: "Netbanking",   sub: "All major Indian banks", Icon: Landmark,    brands: [] },
+  WALLET: { label: "Wallet",       sub: "Mobikwik, Freecharge, Ola Money", Icon: Wallet, brands: [] },
 };
 
 function friendlyError(reason: string | null, message: string | null): { title: string; detail: string } {
