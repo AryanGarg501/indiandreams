@@ -3,10 +3,7 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 const MERCHANT_KEY = Deno.env.get("PAYU_MERCHANT_KEY")!;
 const MERCHANT_SALT = Deno.env.get("PAYU_MERCHANT_SALT")!;
 const MODE = (Deno.env.get("PAYU_MODE") || "test").toLowerCase();
-const ACTION_URL =
-  MODE === "live"
-    ? "https://secure.payu.in/_payment"
-    : "https://test.payu.in/_payment";
+const ACTION_URL = MODE === "live" ? "https://secure.payu.in/_payment" : "https://test.payu.in/_payment";
 
 async function sha512(input: string): Promise<string> {
   const buf = new TextEncoder().encode(input);
@@ -37,27 +34,30 @@ Deno.serve(async (req) => {
       );
     }
     if (!firstname.trim() || firstname.length > 60) {
-      return new Response(
-        JSON.stringify({ error: "invalid_name", message: "Please enter a valid name." }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return new Response(JSON.stringify({ error: "invalid_name", message: "Please enter a valid name." }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
     if (!/^\d{10}$/.test(phone)) {
-      return new Response(
-        JSON.stringify({ error: "invalid_phone", message: "Enter a valid 10-digit phone number." }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return new Response(JSON.stringify({ error: "invalid_phone", message: "Enter a valid 10-digit phone number." }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
     const amtNum = Number(amount);
     if (!Number.isFinite(amtNum) || amtNum <= 0) {
-      return new Response(
-        JSON.stringify({ error: "invalid_amount", message: "Invalid amount." }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return new Response(JSON.stringify({ error: "invalid_amount", message: "Invalid amount." }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
     if (!MERCHANT_KEY || !MERCHANT_SALT) {
       return new Response(
-        JSON.stringify({ error: "gateway_unconfigured", message: "Payment gateway is not configured. Please try again later." }),
+        JSON.stringify({
+          error: "gateway_unconfigured",
+          message: "Payment gateway is not configured. Please try again later.",
+        }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
@@ -72,7 +72,9 @@ Deno.serve(async (req) => {
     const txnid = `ID${Date.now()}${Math.floor(Math.random() * 100000)}`;
     // udf1 carries plan so we can route on callback
     const udf1 = plan;
-    const hashString = `${MERCHANT_KEY}|${txnid}|${amount}|${productinfo}|${firstname}|${email}|${udf1}|||||||||${MERCHANT_SALT}`;
+    // PayU request-hash formula: key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT
+    // Only udf1 is used; udf2..udf5 + 5 trailing placeholders are empty => exactly 10 '|' between udf1 and SALT.
+    const hashString = `${MERCHANT_KEY}|${txnid}|${amount}|${productinfo}|${firstname}|${email}|${udf1}||||||||||${MERCHANT_SALT}`;
     const hash = await sha512(hashString);
 
     const origin = req.headers.get("origin") || new URL(req.url).origin;
@@ -83,10 +85,16 @@ Deno.serve(async (req) => {
     // Map UI method to PayU pg/bankcode
     let pg = "";
     let bankcode = "";
-    if (method === "UPI") { pg = "UPI"; bankcode = "UPI"; }
-    else if (method === "CARD") { pg = "CC"; }
-    else if (method === "NB") { pg = "NB"; }
-    else if (method === "WALLET") { pg = "WALLET"; }
+    if (method === "UPI") {
+      pg = "UPI";
+      bankcode = "UPI";
+    } else if (method === "CARD") {
+      pg = "CC";
+    } else if (method === "NB") {
+      pg = "NB";
+    } else if (method === "WALLET") {
+      pg = "WALLET";
+    }
 
     return new Response(
       JSON.stringify({
