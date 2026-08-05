@@ -18,7 +18,7 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
-import logo from "@/assets/logo.png";
+import { Logo } from "@/components/Logo";
 
 const navItems = [
   { label: "Home", icon: Home, href: "/dashboard" },
@@ -40,18 +40,14 @@ export function DashboardSidebar({ userName, onLogout }: DashboardSidebarProps) 
   return (
     <Sidebar collapsible="icon" className="border-r-0">
       <div className="p-4 flex items-center gap-3">
-        <img
-          src={logo}
-          alt="Indian Dreams logo"
-          className="h-8 w-auto object-contain shrink-0"
-          loading="eager"
-        />
+        <Logo className="h-8 w-auto object-contain shrink-0" loading="eager" />
         {!collapsed && (
           <span className="font-display text-lg font-bold text-sidebar-foreground">
             Indian Dreams
           </span>
         )}
       </div>
+
 
       <SidebarContent className="px-2">
         <SidebarGroup>
