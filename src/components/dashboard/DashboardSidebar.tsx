@@ -3,6 +3,7 @@ import {
   Home,
   BookOpen,
   Trophy,
+  Sparkles,
   User,
   LogOut,
 } from "lucide-react";
