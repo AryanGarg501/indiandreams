@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, Shield, Check, Star, Zap, Clock, Gift, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import logo from "@/assets/logo.png";
 
 const OfferPage = () => {
   const navigate = useNavigate();
@@ -26,8 +27,13 @@ const OfferPage = () => {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="py-4 px-4 flex items-center justify-center border-b border-border/50">
-        <Link to="/" className="font-display text-2xl font-bold text-gradient">
-          Indian Dreams
+        <Link to="/">
+          <img
+            src={logo}
+            alt="Indian Dreams logo"
+            className="h-10 w-auto object-contain"
+            loading="eager"
+          />
         </Link>
       </header>
 
