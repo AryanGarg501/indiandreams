@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from "@/assets/logo.png";
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -28,9 +29,13 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
-        <a href="#home" className="flex items-center gap-2 font-display text-2xl font-bold text-gradient-vivid">
-          <Sparkles size={22} className="text-primary" />
-          Indian Dreams
+        <a href="#home" className="flex items-center gap-2">
+          <img
+            src={logo}
+            alt="Indian Dreams logo"
+            className="h-8 md:h-10 w-auto object-contain"
+            loading="eager"
+          />
         </a>
 
         {/* Desktop */}

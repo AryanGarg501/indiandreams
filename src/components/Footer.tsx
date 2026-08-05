@@ -1,10 +1,17 @@
+import logo from "@/assets/logo.png";
+
 const Footer = () => {
   return (
     <footer className="bg-foreground py-12">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-display text-xl font-bold text-background mb-4">Indian Dreams</h3>
+            <img
+              src={logo}
+              alt="Indian Dreams logo"
+              className="h-8 w-auto object-contain mb-4 brightness-0 invert"
+              loading="lazy"
+            />
             <p className="text-sm text-background/60">
               India's premier AI learning platform. Master AI skills to advance your career.
             </p>

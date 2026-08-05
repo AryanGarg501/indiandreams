@@ -6,7 +6,6 @@ import {
   Sparkles,
   User,
   LogOut,
-  Flame,
 } from "lucide-react";
 import {
   Sidebar,
@@ -19,6 +18,7 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
+import logo from "@/assets/logo.png";
 
 const navItems = [
   { label: "Home", icon: Home, href: "/dashboard" },
@@ -40,9 +40,12 @@ export function DashboardSidebar({ userName, onLogout }: DashboardSidebarProps) 
   return (
     <Sidebar collapsible="icon" className="border-r-0">
       <div className="p-4 flex items-center gap-3">
-        <div className="w-9 h-9 rounded-xl bg-hero-gradient flex items-center justify-center text-primary-foreground font-bold text-sm shrink-0">
-          ID
-        </div>
+        <img
+          src={logo}
+          alt="Indian Dreams logo"
+          className="h-8 w-auto object-contain shrink-0"
+          loading="eager"
+        />
         {!collapsed && (
           <span className="font-display text-lg font-bold text-sidebar-foreground">
             Indian Dreams
