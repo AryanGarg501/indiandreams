@@ -1,4 +1,4 @@
-import logo from "@/assets/logo.png";
+import { Logo } from "@/components/Logo";
 
 const Footer = () => {
   return (
@@ -6,16 +6,15 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <img
-              src={logo}
-              alt="Indian Dreams logo"
-              className="h-8 w-auto object-contain mb-4 brightness-0 invert"
+            <Logo
+              className="h-8 w-auto object-contain mb-4"
               loading="lazy"
             />
             <p className="text-sm text-background/60">
               India's premier AI learning platform. Master AI skills to advance your career.
             </p>
           </div>
+
           <div>
             <h4 className="font-semibold text-background mb-4 text-sm">Company</h4>
             <ul className="space-y-2 text-sm text-background/60">

@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "@/assets/logo.png";
+import { Logo } from "@/components/Logo";
+
 
 const navLinks = [
   { label: "Home", href: "#home" },
@@ -30,13 +31,9 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
         <a href="#home" className="flex items-center gap-2">
-          <img
-            src={logo}
-            alt="Indian Dreams logo"
-            className="h-8 md:h-10 w-auto object-contain"
-            loading="eager"
-          />
+          <Logo className="h-8 md:h-10 w-auto object-contain" loading="eager" />
         </a>
+
 
         {/* Desktop */}
         <div className="hidden md:flex items-center gap-8">
