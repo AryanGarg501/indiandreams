@@ -11,12 +11,11 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-type Method = "upi" | "card" | "netbanking" | "wallet";
+type Method = "upi" | "card" | "wallet";
 
 const METHOD_META: Record<Method, { label: string; sub: string; Icon: typeof Smartphone }> = {
   upi:        { label: "UPI", sub: "Any UPI app", Icon: Smartphone },
   card:       { label: "Credit / Debit Card", sub: "Visa, Mastercard, RuPay, Amex", Icon: CreditCard },
-  netbanking: { label: "Netbanking", sub: "All major Indian banks", Icon: Landmark },
   wallet:     { label: "Wallet", sub: "Mobikwik, Freecharge, Ola Money", Icon: Wallet },
 };
 
