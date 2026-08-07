@@ -25,8 +25,8 @@ const OfferPage = () => {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <header className="py-4 px-4 flex items-center justify-center border-b border-border/50">
-        <Link to="/">
-          <Logo className="h-10 w-auto object-contain" loading="eager" />
+        <Link to="/" className="font-display text-xl font-bold text-gradient">
+          Indian Dreams
         </Link>
       </header>
 
