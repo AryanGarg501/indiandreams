@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Shield, Lock, CheckCircle2, AlertCircle, Loader2,
-  Smartphone, CreditCard, Landmark, Wallet, ChevronRight, BadgeCheck, ArrowLeft,
+  Smartphone, CreditCard, Wallet, ChevronRight, BadgeCheck, ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -100,7 +100,7 @@ const RazorpayPage = () => {
             preferred: { name: METHOD_META[method].label, instruments: [{ method }] },
           },
           sequence: [`block.preferred`],
-          preferences: { show_default_blocks: true },
+          preferences: { show_default_blocks: false },
         },
       },
       modal: {
