@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Shield, Lock, CheckCircle2, AlertCircle, Loader2,
-  Smartphone, CreditCard, Landmark, Wallet, ChevronRight, BadgeCheck, ArrowLeft,
+  Smartphone, CreditCard, Wallet, ChevronRight, BadgeCheck, ArrowLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,12 +11,11 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-type Method = "upi" | "card" | "netbanking" | "wallet";
+type Method = "upi" | "card" | "wallet";
 
 const METHOD_META: Record<Method, { label: string; sub: string; Icon: typeof Smartphone }> = {
   upi:        { label: "UPI", sub: "Any UPI app", Icon: Smartphone },
   card:       { label: "Credit / Debit Card", sub: "Visa, Mastercard, RuPay, Amex", Icon: CreditCard },
-  netbanking: { label: "Netbanking", sub: "All major Indian banks", Icon: Landmark },
   wallet:     { label: "Wallet", sub: "Mobikwik, Freecharge, Ola Money", Icon: Wallet },
 };
 
@@ -101,7 +100,7 @@ const RazorpayPage = () => {
             preferred: { name: METHOD_META[method].label, instruments: [{ method }] },
           },
           sequence: [`block.preferred`],
-          preferences: { show_default_blocks: true },
+          preferences: { show_default_blocks: false },
         },
       },
       modal: {
