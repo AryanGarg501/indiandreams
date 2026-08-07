@@ -1,15 +1,12 @@
-import { Logo } from "@/components/Logo";
-
 const Footer = () => {
   return (
     <footer className="bg-foreground py-12">
       <div className="container mx-auto px-4">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <Logo
-              className="h-8 w-auto object-contain mb-4"
-              loading="lazy"
-            />
+            <span className="font-display text-xl font-bold text-background block mb-4">
+              Indian Dreams
+            </span>
             <p className="text-sm text-background/60">
               India's premier AI learning platform. Master AI skills to advance your career.
             </p>
