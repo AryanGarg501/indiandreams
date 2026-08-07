@@ -18,8 +18,6 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Logo } from "@/components/Logo";
-
 const navItems = [
   { label: "Home", icon: Home, href: "/dashboard" },
   { label: "Guides", icon: BookOpen, href: "/guides" },
