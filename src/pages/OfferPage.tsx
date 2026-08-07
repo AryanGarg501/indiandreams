@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, Shield, Check, Star, Zap, Clock, Gift, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Logo } from "@/components/Logo";
-
 const OfferPage = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState<"email" | "plans">("email");
