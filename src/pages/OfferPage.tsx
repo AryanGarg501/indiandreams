@@ -20,7 +20,7 @@ const OfferPage = () => {
 
   const handleSelectPlan = (planId: string) => {
     setSelectedPlan(planId);
-    navigate(`/payu?email=${encodeURIComponent(email)}&plan=${planId}`);
+    navigate(`/payment?email=${encodeURIComponent(email)}&plan=${planId}`);
   };
 
   return (

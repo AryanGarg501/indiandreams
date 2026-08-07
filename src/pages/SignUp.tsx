@@ -20,7 +20,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (!paid) {
-      navigate(`/payu?email=${encodeURIComponent(email)}&plan=${plan}`, { replace: true });
+      navigate(`/payment?email=${encodeURIComponent(email)}&plan=${plan}`, { replace: true });
     }
   }, [paid, email, plan, navigate]);
 
