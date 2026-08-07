@@ -31,7 +31,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
         <a href="#home" className="flex items-center gap-2">
-          <Logo className="h-8 md:h-10 w-auto object-contain" loading="eager" />
+          <span className="font-display text-xl md:text-2xl font-bold text-gradient">Indian Dreams</span>
         </a>
 
 
