@@ -35,7 +35,7 @@ const SignUp = () => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -43,13 +43,22 @@ const SignUp = () => {
         emailRedirectTo: window.location.origin,
       },
     });
-    setLoading(false);
     if (error) {
+      setLoading(false);
       toast.error(error.message);
-    } else {
-      toast.success("Account created! Check your email to confirm.");
-      navigate("/login");
+      return;
     }
+    if (!data.session) {
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) {
+        setLoading(false);
+        toast.error(signInError.message);
+        return;
+      }
+    }
+    setLoading(false);
+    toast.success("Welcome to Indian Dreams!");
+    navigate("/dashboard", { replace: true });
   };
 
   return (
