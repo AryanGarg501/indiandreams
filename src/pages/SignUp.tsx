@@ -40,7 +40,6 @@ const SignUp = () => {
       password,
       options: {
         data: { full_name: name },
-        emailRedirectTo: window.location.origin,
       },
     });
     if (error) {
