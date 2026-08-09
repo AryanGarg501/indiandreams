@@ -113,11 +113,38 @@ const RazorpayPage = () => {
         if (vErr || !v?.verified) {
           return fail(await readError(vErr, "We couldn't verify the payment. Please contact support if you were charged."));
         }
-        toast.success("Payment successful!");
-        navigate(
-          `/signup?email=${encodeURIComponent(email)}&plan=${encodeURIComponent(plan)}&paid=1&txnid=${encodeURIComponent(v.paymentId)}`,
-          { replace: true },
-        );
+
+        // Auto-create the account and sign in — no email/password step needed.
+        const { data: acc, error: accErr } = await supabase.functions.invoke("payment-auto-signup", {
+          body: { ...response, email, name: firstname, plan },
+        });
+
+        if (accErr || !acc?.password) {
+          const msg = await readError(accErr, "");
+          toast.success("Payment successful!");
+          if (msg) toast.info(msg);
+          navigate(
+            `/signup?email=${encodeURIComponent(email)}&plan=${encodeURIComponent(plan)}&paid=1&txnid=${encodeURIComponent(v.paymentId)}`,
+            { replace: true },
+          );
+          return;
+        }
+
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: acc.email ?? email,
+          password: acc.password,
+        });
+        if (signInError) {
+          toast.success("Payment successful!");
+          navigate(
+            `/signup?email=${encodeURIComponent(email)}&plan=${encodeURIComponent(plan)}&paid=1&txnid=${encodeURIComponent(v.paymentId)}`,
+            { replace: true },
+          );
+          return;
+        }
+
+        toast.success("Payment successful — you're signed in!");
+        navigate("/dashboard", { replace: true });
       },
     });
 
