@@ -51,8 +51,8 @@ const HeroSection = () => {
               <Button variant="hero" size="lg" className="gap-2 text-base px-8 h-13 rounded-xl pulse-glow" onClick={() => navigate("/offer")}>
                 Start Now <ArrowRight size={18} />
               </Button>
-              <Button variant="heroOutline" size="lg" className="text-base px-8 h-13 rounded-xl">
-                Learn More
+              <Button variant="heroOutline" size="lg" className="text-base px-8 h-13 rounded-xl" onClick={() => navigate("/login")}>
+                Login
               </Button>
             </div>
 
