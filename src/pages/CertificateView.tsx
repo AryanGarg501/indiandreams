@@ -295,7 +295,7 @@ const CertificateView = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5, duration: 0.5 }}
-                  className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold mb-1.5"
+                  className="cert-name font-display text-3xl md:text-4xl lg:text-5xl font-extrabold mb-1.5"
                   style={{
                     background: "linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--primary)) 50%, hsl(var(--accent)) 100%)",
                     WebkitBackgroundClip: "text",
@@ -395,6 +395,15 @@ const CertificateView = () => {
       <style>{`
         @media print {
           body { background: white !important; }
+          .cert-name {
+            background: none !important;
+            -webkit-background-clip: initial !important;
+            background-clip: initial !important;
+            -webkit-text-fill-color: hsl(var(--foreground)) !important;
+            color: hsl(var(--foreground)) !important;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+          }
           .print\\:hidden { display: none !important; }
           .print\\:shadow-none { box-shadow: none !important; }
           .print\\:rounded-none { border-radius: 0 !important; }
