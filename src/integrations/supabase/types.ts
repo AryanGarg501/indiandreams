@@ -100,6 +100,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_public_certificate: {
+        Args: { _id: string }
+        Returns: {
+          completed_at: string
+          course_id: string
+          course_title: string
+          id: string
+          user_name: string
+        }[]
+      }
       issue_certificate: {
         Args: {
           _course_id: string
