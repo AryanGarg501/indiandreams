@@ -120,12 +120,7 @@ const LessonView = () => {
     if (allDone && course) {
       // Generate certificate via secure RPC
       const { data: certId, error: certError } = await supabase
-        .rpc("issue_certificate", {
-          _course_id: courseId,
-          _course_title: course.title,
-          _user_name: userName,
-          _expected_lessons: course.totalLessons,
-        });
+        .rpc("issue_certificate", { _course_id: courseId });
 
       if (!certError && certId) {
         toast({

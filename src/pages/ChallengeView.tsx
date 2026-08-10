@@ -75,12 +75,7 @@ const ChallengeView = () => {
       // Check if all days completed
       if (challenge && newCompleted.size === challenge.days.length) {
         const { data: certId } = await supabase
-          .rpc("issue_certificate", {
-            _course_id: challengeId,
-            _course_title: challenge.title,
-            _user_name: userName,
-            _expected_lessons: challenge.days.length,
-          });
+          .rpc("issue_certificate", { _course_id: challengeId });
 
         if (certId) {
           setTimeout(() => navigate(`/certificate/${certId}`), 1200);

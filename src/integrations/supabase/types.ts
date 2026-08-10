@@ -41,6 +41,30 @@ export type Database = {
         }
         Relationships: []
       }
+      courses: {
+        Row: {
+          course_id: string
+          created_at: string
+          required_lessons: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          required_lessons: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          required_lessons?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lesson_progress: {
         Row: {
           completed_at: string
@@ -65,6 +89,39 @@ export type Database = {
           lesson_id?: string
           module_id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      payment_orders: {
+        Row: {
+          amount_paise: number
+          created_at: string
+          email: string
+          id: string
+          order_id: string
+          plan: string
+          redeemed_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount_paise: number
+          created_at?: string
+          email: string
+          id?: string
+          order_id: string
+          plan: string
+          redeemed_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount_paise?: number
+          created_at?: string
+          email?: string
+          id?: string
+          order_id?: string
+          plan?: string
+          redeemed_at?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
@@ -100,25 +157,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_public_certificate: {
-        Args: { _id: string }
-        Returns: {
-          completed_at: string
-          course_id: string
-          course_title: string
-          id: string
-          user_name: string
-        }[]
-      }
-      issue_certificate: {
-        Args: {
-          _course_id: string
-          _course_title: string
-          _expected_lessons: number
-          _user_name: string
-        }
-        Returns: string
-      }
+      issue_certificate: { Args: { _course_id: string }; Returns: string }
     }
     Enums: {
       [_ in never]: never

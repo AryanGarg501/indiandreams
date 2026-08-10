@@ -119,17 +119,17 @@ const CertificateView = () => {
     const fetchCertificate = async () => {
       if (!certificateId) { setLoading(false); return; }
 
-      const { data, error } = await supabase
-        .rpc("get_public_certificate", { _id: certificateId })
-        .maybeSingle();
+      const { data, error } = await supabase.functions.invoke("public-certificate", {
+        body: { id: certificateId },
+      });
 
-      if (error || !data) {
+      if (error || !data?.certificate) {
         setCertificate(null);
         setLoading(false);
         return;
       }
 
-      setCertificate(data as Certificate);
+      setCertificate(data.certificate as Certificate);
       setLoading(false);
       
       // Show confetti on first load
