@@ -54,24 +54,66 @@ Deno.serve(async (req) => {
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE, { auth: { persistSession: false } });
 
+    // The order must exist, belong to this email, and not have been redeemed before.
+    const { data: order, error: orderErr } = await admin
+      .from("payment_orders")
+      .select("id, email, plan, redeemed_at")
+      .eq("order_id", orderId)
+      .maybeSingle();
+
+    if (orderErr) {
+      console.error("payment_orders lookup failed:", orderErr.message);
+      return json({ error: "server_error", message: "Could not complete account setup." }, 500);
+    }
+    if (!order) {
+      return json({ error: "unknown_order", message: "We couldn't match this payment to an order." }, 400);
+    }
+    if (order.email !== email) {
+      return json({ error: "email_mismatch", message: "This payment belongs to a different email address." }, 403);
+    }
+    if (order.redeemed_at) {
+      return json({ error: "order_already_used", message: "This payment has already been used to create an account. Please sign in." }, 409);
+    }
+
+    // Claim the order atomically before creating the account.
+    const { data: claimed, error: claimErr } = await admin
+      .from("payment_orders")
+      .update({ redeemed_at: new Date().toISOString() })
+      .eq("id", order.id)
+      .is("redeemed_at", null)
+      .select("id")
+      .maybeSingle();
+
+    if (claimErr) {
+      console.error("payment_orders claim failed:", claimErr.message);
+      return json({ error: "server_error", message: "Could not complete account setup." }, 500);
+    }
+    if (!claimed) {
+      return json({ error: "order_already_used", message: "This payment has already been used to create an account. Please sign in." }, 409);
+    }
+
     const password = randomPassword();
     const { error } = await admin.auth.admin.createUser({
       email,
       password,
       email_confirm: true,
-      user_metadata: { full_name: name || email.split("@")[0], plan: String(body.plan ?? "full") },
+      user_metadata: { full_name: name || email.split("@")[0], plan: order.plan },
     });
 
     if (error) {
+      // Release the claim so a legitimate retry is possible.
+      await admin.from("payment_orders").update({ redeemed_at: null }).eq("id", order.id);
       const msg = String(error.message ?? "").toLowerCase();
       if (msg.includes("already") || msg.includes("registered") || msg.includes("exists")) {
         return json({ error: "user_exists", message: "An account already exists for this email. Please sign in." }, 409);
       }
-      return json({ error: "create_failed", message: error.message }, 400);
+      console.error("createUser failed:", error.message);
+      return json({ error: "create_failed", message: "We couldn't create your account. Please contact support." }, 400);
     }
 
     return json({ ok: true, email, password });
   } catch (e) {
-    return json({ error: "server_error", message: String(e) }, 500);
+    console.error("payment-auto-signup error:", e);
+    return json({ error: "server_error", message: "Something went wrong." }, 500);
   }
 });
