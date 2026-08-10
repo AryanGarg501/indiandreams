@@ -318,10 +318,36 @@ const CertificateView = () => {
                     {certificate.id.slice(0, 8).toUpperCase()}
                   </p>
                 </div>
-                <div className="text-center">
-                  <div className="w-28 md:w-36 border-t border-muted-foreground/20 mb-1.5" />
-                  <p className="text-[10px] md:text-xs font-medium text-muted-foreground">Verified</p>
-                  <p className="text-[8px] text-muted-foreground/50">Certificate of Achievement</p>
+                <div className="flex flex-col items-center">
+                  {/* Verified stamp */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 1.6, rotate: -25 }}
+                    animate={{ opacity: 1, scale: 1, rotate: -12 }}
+                    transition={{ delay: 0.9, type: "spring", stiffness: 180, damping: 12 }}
+                    className="relative w-24 h-24 md:w-28 md:h-28"
+                  >
+                    <svg viewBox="0 0 120 120" className="w-full h-full">
+                      <defs>
+                        <path id="stamp-arc-top" d="M 60 60 m -42 0 a 42 42 0 1 1 84 0" fill="none" />
+                        <path id="stamp-arc-bottom" d="M 60 60 m 36 0 a 36 36 0 1 1 -72 0" fill="none" />
+                      </defs>
+                      <circle cx="60" cy="60" r="55" fill="none" stroke="hsl(var(--primary))" strokeOpacity="0.55" strokeWidth="2.5" />
+                      <circle cx="60" cy="60" r="48" fill="none" stroke="hsl(var(--primary))" strokeOpacity="0.35" strokeWidth="1" strokeDasharray="3 3" />
+                      <text fill="hsl(var(--primary))" fillOpacity="0.75" fontSize="11" fontWeight="700" letterSpacing="2.6">
+                        <textPath href="#stamp-arc-top" startOffset="50%" textAnchor="middle">
+                          INDIAN DREAMS
+                        </textPath>
+                      </text>
+                      <text fill="hsl(var(--primary))" fillOpacity="0.6" fontSize="8" fontWeight="700" letterSpacing="2">
+                        <textPath href="#stamp-arc-bottom" startOffset="50%" textAnchor="middle">
+                          COURSE COMPLETED
+                        </textPath>
+                      </text>
+                      <path d="M42 60 l12 12 l24 -26" fill="none" stroke="hsl(var(--primary))" strokeOpacity="0.8" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+                      <text x="60" y="86" textAnchor="middle" fill="hsl(var(--primary))" fillOpacity="0.8" fontSize="12" fontWeight="800" letterSpacing="1.5">VERIFIED</text>
+                    </svg>
+                  </motion.div>
+                  <p className="text-[8px] text-muted-foreground/50 mt-0.5">Certificate of Achievement</p>
                 </div>
               </div>
             </div>
