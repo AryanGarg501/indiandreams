@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Award } from "lucide-react";
+import { ArrowLeft, Download, Award, Share2, Check } from "lucide-react";
 import { coursesData } from "@/data/coursesData";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
@@ -112,25 +112,24 @@ const CertificateView = () => {
   const [loading, setLoading] = useState(true);
   const [certificate, setCertificate] = useState<Certificate | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [copied, setCopied] = useState(false);
   const certificateRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchCertificate = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) { navigate("/login"); return; }
+      if (!certificateId) { setLoading(false); return; }
 
       const { data, error } = await supabase
-        .from("certificates")
-        .select("*")
-        .eq("id", certificateId)
-        .single();
+        .rpc("get_public_certificate", { _id: certificateId })
+        .maybeSingle();
 
       if (error || !data) {
-        navigate("/guides");
+        setCertificate(null);
+        setLoading(false);
         return;
       }
 
-      setCertificate(data);
+      setCertificate(data as Certificate);
       setLoading(false);
       
       // Show confetti on first load
@@ -144,6 +143,33 @@ const CertificateView = () => {
     window.print();
   };
 
+  const shareUrl = `${window.location.origin}/certificate/${certificateId}`;
+
+  const handleShare = async () => {
+    const shareData = {
+      title: "Certificate of Completion",
+      text: certificate
+        ? `${certificate.user_name} completed "${certificate.course_title}" at Indian Dreams Academy.`
+        : "View my certificate",
+      url: shareUrl,
+    };
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch {
+        // user cancelled or unsupported — fall back to copy
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.prompt("Copy your certificate link", shareUrl);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -154,8 +180,9 @@ const CertificateView = () => {
 
   if (!certificate) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Certificate not found.</p>
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 px-4 text-center">
+        <p className="text-muted-foreground">This certificate link is invalid or no longer available.</p>
+        <Button variant="outline" size="sm" onClick={() => navigate("/")}>Go to homepage</Button>
       </div>
     );
   }
@@ -174,10 +201,16 @@ const CertificateView = () => {
           <ArrowLeft size={16} />
           <span>Back to Course</span>
         </Link>
-        <Button variant="outline" size="sm" onClick={handleDownload} className="gap-2">
-          <Download size={14} />
-          Download PDF
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={handleShare} className="gap-2">
+            {copied ? <Check size={14} /> : <Share2 size={14} />}
+            {copied ? "Link copied" : "Share"}
+          </Button>
+          <Button variant="outline" size="sm" onClick={handleDownload} className="gap-2">
+            <Download size={14} />
+            Download PDF
+          </Button>
+        </div>
       </header>
 
       {/* Certificate */}
