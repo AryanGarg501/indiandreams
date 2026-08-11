@@ -31,7 +31,7 @@ const SignUp = () => {
       return;
     }
     if (password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+      toast.error("Password needs at least 6 characters");
       return;
     }
     setLoading(true);
@@ -101,7 +101,7 @@ const SignUp = () => {
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="At least 6 characters"
+                placeholder="Any simple password (6+ characters)"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="h-12 border-border bg-card pr-12"
