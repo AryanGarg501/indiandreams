@@ -1,3 +1,4 @@
+import logoAsset from "@/assets/logo.png.asset.json";
 import { Link, useLocation } from "react-router-dom";
 import {
   Home,
