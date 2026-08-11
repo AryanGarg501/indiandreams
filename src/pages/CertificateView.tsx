@@ -6,6 +6,7 @@ import { ArrowLeft, Download, Award, Share2, Check } from "lucide-react";
 import { coursesData } from "@/data/coursesData";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
+import signatureAsset from "@/assets/signature.png.asset.json";
 
 // Confetti particle component
 const Confetti = ({ active }: { active: boolean }) => {
@@ -339,9 +340,14 @@ const CertificateView = () => {
               {/* Footer */}
               <div className="flex items-end justify-between relative z-10 mt-6 md:mt-8">
                 <div className="text-center">
+                  <img
+                    src={signatureAsset.url}
+                    alt="Signature of Aryan Garg"
+                    className="w-24 md:w-32 h-10 md:h-12 object-contain object-bottom mx-auto mb-0.5"
+                  />
                   <div className="w-28 md:w-36 border-t border-muted-foreground/20 mb-1.5" />
-                  <p className="text-[10px] md:text-xs font-medium text-muted-foreground">Indian Dreams</p>
-                  <p className="text-[8px] text-muted-foreground/50">Learning Platform</p>
+                  <p className="text-[10px] md:text-xs font-medium text-muted-foreground">Aryan Garg</p>
+                  <p className="text-[8px] text-muted-foreground/50">Indian Dreams · Learning Platform</p>
                 </div>
                 <div className="text-center flex flex-col items-center">
                   <div className="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center mb-1">
