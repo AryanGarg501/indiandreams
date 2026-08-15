@@ -221,7 +221,8 @@ const CertificateView = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           ref={certificateRef}
-          className="w-full aspect-[1.414/1] max-h-[calc(100vh-4.5rem)] relative print:max-h-none"
+          className="aspect-[1.414/1] relative w-full print:w-full"
+          style={{ width: "min(100%, calc((100vh - 5rem) * 1.414))" }}
         >
           {/* Outer glow */}
           <div className="absolute -inset-1 bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 rounded-2xl blur-xl print:hidden" />
