@@ -1,14 +1,9 @@
 import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
-import { Users, Clock, MessageSquare } from "lucide-react";
+import { Users, BookOpenCheck, Award } from "lucide-react";
+import { usePlatformStats, formatIndian } from "@/hooks/usePlatformStats";
 
-const stats = [
-  { value: 1612345, label: "Users learned new skills", display: "16,12,345+", icon: Users },
-  { value: 14314726, label: "Minutes of content consumed", display: "1,43,14,726+", icon: Clock },
-  { value: 164887, label: "AI prompts written", display: "1,64,887+", icon: MessageSquare },
-];
-
-const AnimatedNumber = ({ display, icon: Icon }: { target: number; display: string; icon: React.ElementType }) => {
+const AnimatedNumber = ({ display, icon: Icon }: { display: string; icon: React.ElementType }) => {
   const [inView, setInView] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -34,6 +29,14 @@ const AnimatedNumber = ({ display, icon: Icon }: { target: number; display: stri
 };
 
 const StatsSection = () => {
+  const { stats, loading } = usePlatformStats();
+
+  const items = [
+    { label: "Learners on Indian Dreams", value: stats?.learners ?? 0, icon: Users },
+    { label: "Lessons completed", value: stats?.lessons_completed ?? 0, icon: BookOpenCheck },
+    { label: "Certificates issued", value: stats?.certificates_issued ?? 0, icon: Award },
+  ];
+
   return (
     <section className="py-28 bg-secondary relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-primary/10" />
@@ -54,9 +57,9 @@ const StatsSection = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-12 max-w-4xl mx-auto text-center">
-          {stats.map((s) => (
+          {items.map((s) => (
             <div key={s.label}>
-              <AnimatedNumber target={s.value} display={s.display} icon={s.icon} />
+              <AnimatedNumber display={loading ? "—" : formatIndian(s.value)} icon={s.icon} />
               <p className="text-secondary-foreground/70 mt-2">{s.label}</p>
             </div>
           ))}

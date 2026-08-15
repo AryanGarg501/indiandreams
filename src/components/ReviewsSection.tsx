@@ -1,16 +1,12 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
-
-const reviews = [
-  { name: "Priya Sharma", text: "Easy to follow, engaging courses made very user-friendly and enjoyable. The AI concepts were explained brilliantly!", rating: 5, role: "Marketing Manager" },
-  { name: "Rahul Verma", text: "I'm really impressed with this learning tool. It delivers clear, concise instructions and explains why each step matters.", rating: 5, role: "Freelancer" },
-  { name: "Anita Desai", text: "As a 45-year-old teacher, I found Indian Dreams perfect for understanding AI. My students benefit from what I've learned here.", rating: 5, role: "Teacher" },
-  { name: "Vikram Singh", text: "The 28-day challenge transformed how I work. I now use AI daily to boost my productivity at my startup.", rating: 5, role: "Startup Founder" },
-  { name: "Meera Patel", text: "Fantastic platform! The certificate I earned helped me land a better position at my company.", rating: 4, role: "Software Developer" },
-  { name: "Arjun Nair", text: "Indian Dreams made AI accessible. The step-by-step approach is perfect for beginners like me.", rating: 5, role: "Student" },
-];
+import { useReviews } from "@/hooks/useReviews";
+import { formatIndian } from "@/hooks/usePlatformStats";
+import ReviewForm from "@/components/ReviewForm";
 
 const ReviewsSection = () => {
+  const { reviews, loading, average, reload } = useReviews();
+
   return (
     <section id="reviews" className="py-28 section-gradient relative overflow-hidden">
       <div className="absolute top-0 left-0 w-[400px] h-[400px] rounded-full bg-accent/8 blur-[120px]" />
@@ -19,28 +15,40 @@ const ReviewsSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
           <span className="text-xs font-bold text-primary uppercase tracking-[0.2em] mb-4 block">Testimonials</span>
           <h2 className="font-display text-3xl md:text-5xl font-bold mb-5">
             See how Indian Dreams <span className="text-gradient-vivid">changes lives</span>
           </h2>
-          <div className="flex items-center justify-center gap-3 mt-6">
-            <span className="font-display text-3xl font-bold text-foreground">4.5</span>
-            <div className="flex gap-0.5">
-              {[1, 2, 3, 4].map((i) => (
-                <Star key={i} size={20} className="fill-accent text-accent" />
-              ))}
-              <Star size={20} className="fill-accent/50 text-accent" />
+          {average !== null && (
+            <div className="flex items-center justify-center gap-3 mt-6">
+              <span className="font-display text-3xl font-bold text-foreground">{average.toFixed(1)}</span>
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Star
+                    key={i}
+                    size={20}
+                    className={i <= Math.round(average) ? "fill-accent text-accent" : "text-accent/30"}
+                  />
+                ))}
+              </div>
+              <span className="text-sm text-muted-foreground font-medium">
+                based on {formatIndian(reviews.length)} {reviews.length === 1 ? "review" : "reviews"}
+              </span>
             </div>
-            <span className="text-sm text-muted-foreground font-medium">based on 95,000+ reviews</span>
-          </div>
+          )}
+          {!loading && reviews.length === 0 && (
+            <p className="text-muted-foreground mt-6">
+              No reviews yet — be the first learner to share your experience.
+            </p>
+          )}
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {reviews.map((r, i) => (
             <motion.div
-              key={r.name}
+              key={r.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -60,12 +68,14 @@ const ReviewsSection = () => {
                 </div>
                 <div>
                   <p className="font-bold text-sm text-foreground">{r.name}</p>
-                  <p className="text-xs text-muted-foreground">{r.role}</p>
+                  {r.role && <p className="text-xs text-muted-foreground">{r.role}</p>}
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
+
+        <ReviewForm onSubmitted={reload} />
       </div>
     </section>
   );

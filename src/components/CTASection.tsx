@@ -1,8 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { ArrowRight, Users, Sparkles } from "lucide-react";
+import { usePlatformStats, formatIndian } from "@/hooks/usePlatformStats";
+import { useReviews } from "@/hooks/useReviews";
 
 const CTASection = () => {
+  const { stats } = usePlatformStats();
+  const { reviews } = useReviews(1);
+
   return (
     <section className="py-28 bg-secondary relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-primary/15" />
@@ -23,7 +28,9 @@ const CTASection = () => {
             <Sparkles size={28} className="text-primary-foreground" />
           </motion.div>
           <h2 className="font-display text-3xl md:text-5xl font-bold text-secondary-foreground mb-6 leading-tight">
-            Join 5,00,000+ learners across India
+            {stats && stats.learners > 0
+              ? `Join ${formatIndian(stats.learners)} learners across India`
+              : "Join learners across India"}
           </h2>
           <p className="text-secondary-foreground/70 mb-10 text-lg">
             Advance your career with AI skills. Start your journey today.
@@ -31,10 +38,15 @@ const CTASection = () => {
           <Button variant="hero" size="lg" className="gap-2 text-base px-10 h-14 rounded-xl shimmer">
             Start Now <ArrowRight size={18} />
           </Button>
-          <div className="flex items-center justify-center gap-3 mt-8">
-            <Users size={18} className="text-secondary-foreground/50" />
-            <span className="text-sm text-secondary-foreground/60 font-medium">More than 16,000+ reviews on Google</span>
-          </div>
+          {stats && stats.review_count > 0 && (
+            <div className="flex items-center justify-center gap-3 mt-8">
+              <Users size={18} className="text-secondary-foreground/50" />
+              <span className="text-sm text-secondary-foreground/60 font-medium">
+                {formatIndian(stats.review_count)} learner {stats.review_count === 1 ? "review" : "reviews"}
+                {stats.avg_rating ? ` · ${stats.avg_rating}/5 average` : ""}
+              </span>
+            </div>
+          )}
         </motion.div>
       </div>
     </section>

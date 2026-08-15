@@ -3,10 +3,12 @@ import { ArrowRight, Users, Sparkles, ShieldCheck, Award, Zap } from "lucide-rea
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-image.jpg";
+import { usePlatformStats, formatIndian } from "@/hooks/usePlatformStats";
 
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  const { stats } = usePlatformStats();
 
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
@@ -56,21 +58,23 @@ const HeroSection = () => {
               </Button>
             </div>
 
-            <div className="flex items-center gap-4 mb-10">
-              <div className="flex -space-x-3">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="w-10 h-10 rounded-full bg-hero-gradient border-2 border-card flex items-center justify-center shadow-md"
-                  >
-                    <Users size={14} className="text-primary-foreground" />
-                  </div>
-                ))}
+            {stats && stats.learners > 0 && (
+              <div className="flex items-center gap-4 mb-10">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className="w-10 h-10 rounded-full bg-hero-gradient border-2 border-card flex items-center justify-center shadow-md"
+                    >
+                      <Users size={14} className="text-primary-foreground" />
+                    </div>
+                  ))}
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-bold text-foreground">{formatIndian(stats.learners)}</span> learners joined
+                </p>
               </div>
-              <p className="text-sm text-muted-foreground">
-                More than <span className="font-bold text-foreground">5,00,000+</span> people joined
-              </p>
-            </div>
+            )}
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
