@@ -93,7 +93,7 @@ const RazorpayPage = () => {
       description: "Full Package — 14 Days",
       prefill: { name: firstname, email, contact: phone, method },
       notes: { plan },
-      theme: { color: "#F97316" },
+      theme: { color: "#0d7a5f" },
       config: {
         display: {
           blocks: {

@@ -39,11 +39,11 @@ const PathsSection = () => {
             >
               <div className="absolute inset-0 bg-hero-gradient opacity-0 group-hover:opacity-[0.04] transition-opacity duration-500" />
               <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-5">
+                <div className="flex items-center justify-between gap-3 mb-5">
                   <div className="w-12 h-12 rounded-xl bg-hero-gradient flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
                     <p.icon size={22} className="text-primary-foreground" />
                   </div>
-                  <span className="text-2xl">{p.emoji}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">Path 0{i + 1}</span>
                 </div>
                 <h3 className="font-display text-lg font-bold mb-2">{p.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
