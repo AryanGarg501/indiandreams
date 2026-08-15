@@ -191,7 +191,6 @@ export type Database = {
     }
     Functions: {
       issue_certificate: { Args: { _course_id: string }; Returns: string }
-      platform_stats: { Args: never; Returns: Json }
     }
     Enums: {
       [_ in never]: never
