@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import Challenges from "./pages/Challenges";
 import Guides from "./pages/Guides";
 import AITools from "./pages/AITools";
+import Certificates from "./pages/Certificates";
 import GuidePathway from "./pages/GuidePathway";
 import LessonView from "./pages/LessonView";
 import CertificateView from "./pages/CertificateView";
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/challenge/:challengeId" element={<ChallengeView />} />
           <Route path="/guides" element={<Guides />} />
           <Route path="/ai-tools" element={<AITools />} />
+          <Route path="/certificates" element={<Certificates />} />
           <Route path="/guide-pathway/:courseId" element={<GuidePathway />} />
           <Route path="/lesson/:courseId/:moduleId/:lessonId" element={<LessonView />} />
           <Route path="/certificate/:certificateId" element={<CertificateView />} />
