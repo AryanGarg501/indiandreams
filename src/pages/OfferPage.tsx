@@ -188,7 +188,7 @@ const OfferPage = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <Star className="w-4 h-4 text-primary" />
-                  4.9/5 Rating
+                  Verified Certificate
                 </div>
               </motion.div>
 
