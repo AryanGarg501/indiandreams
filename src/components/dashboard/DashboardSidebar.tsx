@@ -5,6 +5,7 @@ import {
   BookOpen,
   Trophy,
   Sparkles,
+  Award,
   User,
   LogOut,
 } from "lucide-react";
@@ -24,6 +25,7 @@ const navItems = [
   { label: "Guides", icon: BookOpen, href: "/guides" },
   { label: "Challenges", icon: Trophy, href: "/challenges" },
   { label: "AI Tools", icon: Sparkles, href: "/ai-tools" },
+  { label: "Certificates", icon: Award, href: "/certificates" },
 ];
 
 interface DashboardSidebarProps {
