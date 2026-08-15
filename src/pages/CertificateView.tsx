@@ -215,13 +215,13 @@ const CertificateView = () => {
       </header>
 
       {/* Certificate */}
-      <div className="flex items-center justify-center p-4 md:p-8 lg:p-12 print:p-0">
+      <div className="flex items-center justify-center p-2 md:p-4 print:p-0">
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
           ref={certificateRef}
-          className="w-full max-w-4xl aspect-[1.414/1] relative print:max-w-none"
+          className="w-full aspect-[1.414/1] max-h-[calc(100vh-4.5rem)] relative print:max-h-none"
         >
           {/* Outer glow */}
           <div className="absolute -inset-1 bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 rounded-2xl blur-xl print:hidden" />
