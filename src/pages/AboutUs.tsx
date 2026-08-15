@@ -489,7 +489,7 @@ const AboutUs = () => {
                 href="/offer"
                 className="inline-flex items-center justify-center rounded-full bg-white text-emerald-900 px-8 py-3.5 font-semibold hover:bg-emerald-50 transition-colors"
               >
-                Get Started for₹199
+                Get Started for ₹199
               </a>
             </motion.div>
           </div>
