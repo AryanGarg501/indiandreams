@@ -38,7 +38,7 @@ const Footer = () => {
             <ul className="space-y-2 text-sm text-background/60">
               <li><a href="#" className="hover:text-background transition-colors">Twitter</a></li>
               <li><a href="#" className="hover:text-background transition-colors">LinkedIn</a></li>
-              <li><a href="#" className="hover:text-background transition-colors">Instagram</a></li>
+              <li><a href="https://www.instagram.com/indiandreams.app?igsh=MThqenpkaTE0c2k4Zw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-background transition-colors">Instagram</a></li>
             </ul>
           </div>
         </div>
