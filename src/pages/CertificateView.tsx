@@ -240,7 +240,7 @@ const CertificateView = () => {
             <div className="h-2 bg-gradient-to-r from-secondary via-primary to-accent" />
 
             {/* Inner content */}
-            <div className="relative h-[calc(100%-0.5rem)] p-6 md:p-10 lg:p-14 flex flex-col">
+            <div className="relative h-[calc(100%-0.5rem)] p-4 md:p-8 lg:p-10 flex flex-col">
               {/* Decorative inner border */}
               <div className="absolute inset-4 md:inset-8 border border-primary/10 rounded-xl pointer-events-none" />
               <div className="absolute inset-[18px] md:inset-[34px] border border-primary/5 rounded-lg pointer-events-none" />
@@ -263,27 +263,27 @@ const CertificateView = () => {
                   animate={{ scale: 1 }}
                   transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
                 >
-                  <div className="relative mb-5 md:mb-7">
+                  <div className="relative mb-3 md:mb-4">
                     {/* Ring */}
                     <div className="absolute -inset-3 rounded-full border-2 border-dashed border-primary/20 animate-[spin_20s_linear_infinite]" />
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-hero-gradient flex items-center justify-center shadow-lg shadow-primary/20">
-                      <Award className="w-8 h-8 md:w-10 md:h-10 text-primary-foreground drop-shadow" />
+                    <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-hero-gradient flex items-center justify-center shadow-lg shadow-primary/20">
+                      <Award className="w-6 h-6 md:w-8 md:h-8 text-primary-foreground drop-shadow" />
                     </div>
                   </div>
                 </motion.div>
 
                 {/* Brand */}
-                <p className="text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase text-primary/60 mb-3 md:mb-4">
+                <p className="text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase text-primary/60 mb-2">
                   Indian Dreams Academy
                 </p>
 
                 {/* Title */}
-                <h1 className="font-display text-base md:text-lg lg:text-xl text-muted-foreground tracking-[0.2em] uppercase font-semibold mb-3">
+                <h1 className="font-display text-base md:text-lg lg:text-xl text-muted-foreground tracking-[0.2em] uppercase font-semibold mb-2">
                   Certificate of Completion
                 </h1>
 
                 {/* Ornamental divider */}
-                <div className="flex items-center gap-3 mb-5 md:mb-7">
+                <div className="flex items-center gap-3 mb-3 md:mb-4">
                   <div className="w-12 md:w-20 h-px bg-gradient-to-r from-transparent to-primary/30" />
                   <div className="w-2 h-2 rotate-45 bg-primary/40" />
                   <div className="w-12 md:w-20 h-px bg-gradient-to-l from-transparent to-primary/30" />
@@ -308,12 +308,12 @@ const CertificateView = () => {
                 </motion.h2>
 
                 {/* Underline */}
-                <div className="w-48 md:w-64 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent mb-5 md:mb-6" />
+                <div className="w-48 md:w-64 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent mb-3 md:mb-4" />
 
                 {/* Course info */}
                 <p className="text-xs md:text-sm text-muted-foreground mb-2.5">for successfully completing the course</p>
 
-                <div className="flex items-center gap-3 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 px-5 py-2.5 rounded-xl border border-primary/10 mb-6 md:mb-8">
+                <div className="flex items-center gap-3 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 px-4 py-2 rounded-xl border border-primary/10 mb-4 md:mb-5">
                   <span className="text-2xl md:text-3xl">{course?.emoji || "📜"}</span>
                   <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
                     {certificate.course_title}
@@ -339,12 +339,12 @@ const CertificateView = () => {
               </div>
 
               {/* Footer */}
-              <div className="flex items-end justify-between relative z-10 mt-6 md:mt-8">
+              <div className="flex items-end justify-between relative z-10 mt-3 md:mt-4">
                 <div className="text-center">
                   <img
                     src={signatureAsset.url}
                     alt="Signature of Aryan Garg"
-                    className="w-24 md:w-32 h-10 md:h-12 object-contain object-bottom mx-auto mb-0.5"
+                    className="w-20 md:w-28 h-8 md:h-10 object-contain object-bottom mx-auto mb-0.5"
                   />
                   <div className="w-28 md:w-36 border-t border-muted-foreground/20 mb-1.5" />
                   <p className="text-[10px] md:text-xs font-medium text-muted-foreground">Aryan Garg</p>
@@ -364,7 +364,7 @@ const CertificateView = () => {
                     initial={{ opacity: 0, scale: 1.6, rotate: -25 }}
                     animate={{ opacity: 1, scale: 1, rotate: -12 }}
                     transition={{ delay: 0.9, type: "spring", stiffness: 180, damping: 12 }}
-                    className="relative w-24 h-24 md:w-28 md:h-28"
+                    className="relative w-16 h-16 md:w-20 md:h-20"
                   >
                     <svg viewBox="0 0 120 120" className="w-full h-full">
                       <defs>
