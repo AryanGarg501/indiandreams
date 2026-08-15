@@ -1,22 +1,22 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Quote } from "lucide-react";
-
-const testimonials = [
-  "\"Learning AI through Indian Dreams has transformed my career. The courses are practical and easy to follow!\"",
-  "\"The interactive nature of the courses kept me engaged, making learning less like a chore and more like an enjoyable journey.\"",
-  "\"Whether you're a beginner or an expert, Indian Dreams provides excellent resources to help you achieve your goals.\"",
-];
+import { useReviews } from "@/hooks/useReviews";
 
 const TestimonialsCarousel = () => {
   const [current, setCurrent] = useState(0);
+  const { reviews } = useReviews(5);
+  const testimonials = reviews.map((r) => `"${r.text}" — ${r.name}`);
 
   useEffect(() => {
+    if (testimonials.length < 2) return;
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [testimonials.length]);
+
+  if (testimonials.length === 0) return null;
 
   return (
     <section className="py-20 bg-card">
