@@ -17,7 +17,7 @@ export const usePlatformStats = () => {
 
   useEffect(() => {
     let active = true;
-    supabase.rpc("platform_stats").then(({ data, error }) => {
+    supabase.functions.invoke("platform-stats").then(({ data, error }) => {
       if (!active) return;
       if (!error && data) setStats(data as unknown as PlatformStats);
       setLoading(false);
