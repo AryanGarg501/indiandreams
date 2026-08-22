@@ -145,7 +145,7 @@ const OfferPage = () => {
                   <h3 className="font-display text-xl font-bold text-foreground mb-1 mt-2 text-center">Full Package — 14 Days</h3>
                   <p className="text-sm text-muted-foreground mb-5 text-center">Complete AI mastery challenge</p>
                   <div className="flex items-baseline justify-center gap-1 mb-1">
-                    <span className="font-display text-5xl font-extrabold text-foreground">₹199</span>
+                    <span className="font-display text-5xl font-extrabold text-foreground">₹149</span>
                     <span className="text-muted-foreground text-sm">/one-time</span>
                   </div>
                   <p className="text-xs text-muted-foreground line-through mb-6 text-center">₹1,999</p>
