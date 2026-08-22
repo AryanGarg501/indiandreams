@@ -80,7 +80,7 @@ const HeroSection = () => {
               {[
                 { icon: Zap, title: "14-Day Track", sub: "Daily bite-sized lessons" },
                 { icon: Award, title: "Certificate", sub: "Verified on completion" },
-                { icon: ShieldCheck, title: "One-Time ₹199", sub: "No subscriptions" },
+                { icon: ShieldCheck, title: "One-Time ₹149", sub: "No subscriptions" },
               ].map(({ icon: Icon, title, sub }) => (
                 <div key={title} className="rounded-2xl border border-border bg-card/70 backdrop-blur p-4 card-elevated">
                   <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center mb-3">

@@ -7,7 +7,7 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE_ROLE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
 // Server-side price table — client-supplied amounts are ignored.
-const PLAN_PRICES: Record<string, number> = { full: 199 };
+const PLAN_PRICES: Record<string, number> = { full: 149 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

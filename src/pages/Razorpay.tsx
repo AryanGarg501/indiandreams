@@ -79,7 +79,7 @@ const RazorpayPage = () => {
     if (!sdkOk) return fail("Couldn't load the secure checkout. Check your connection and retry.");
 
     const { data, error } = await supabase.functions.invoke("razorpay-create-order", {
-      body: { amount: 199, email, name: firstname, phone, plan },
+      body: { amount: 149, email, name: firstname, phone, plan },
     });
     if (error) return fail(await readError(error, "Could not start payment. Please try again."));
     if (!data?.orderId || !data?.keyId) return fail("Payment gateway returned an invalid response. Please retry.");
@@ -260,7 +260,7 @@ const RazorpayPage = () => {
                   {submitting ? (
                     <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Opening Razorpay…</>
                   ) : (
-                    <>Pay ₹199 with {activeMeta.label}</>
+                    <>Pay ₹149 with {activeMeta.label}</>
                   )}
                 </Button>
 
@@ -289,12 +289,12 @@ const RazorpayPage = () => {
                 </div>
               </div>
               <div className="space-y-2 py-4 text-sm">
-                <div className="flex justify-between text-muted-foreground"><span>Subtotal</span><span>₹199.00</span></div>
+                <div className="flex justify-between text-muted-foreground"><span>Subtotal</span><span>₹149.00</span></div>
                 <div className="flex justify-between text-muted-foreground"><span>Taxes</span><span>Included</span></div>
               </div>
               <div className="flex justify-between items-baseline pt-3 border-t border-border">
                 <span className="font-semibold text-foreground">Total</span>
-                <span className="font-display text-2xl font-bold text-primary">₹199.00</span>
+                <span className="font-display text-2xl font-bold text-primary">₹149.00</span>
               </div>
             </div>
 
