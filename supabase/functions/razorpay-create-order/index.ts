@@ -28,14 +28,12 @@ Deno.serve(async (req) => {
     const body = await req.json().catch(() => ({}));
     const email = String(body.email ?? "").trim().toLowerCase();
     const name = String(body.name ?? "").trim();
-    const phone = String(body.phone ?? "");
     const plan = String(body.plan ?? "full");
 
     if (!EMAIL_RE.test(email) || email.length > 254) {
       return json({ error: "invalid_email", message: "Please provide a valid email." }, 400);
     }
     if (!name || name.length > 60) return json({ error: "invalid_name", message: "Please enter a valid name." }, 400);
-    if (!/^\d{10}$/.test(phone)) return json({ error: "invalid_phone", message: "Enter a valid 10-digit mobile number." }, 400);
 
     const price = PLAN_PRICES[plan];
     if (!price) return json({ error: "invalid_plan", message: "Unknown plan selected." }, 400);
@@ -51,7 +49,7 @@ Deno.serve(async (req) => {
         amount: amountPaise,
         currency: "INR",
         receipt: `ID${Date.now()}`,
-        notes: { email, plan, name, phone },
+        notes: { email, plan, name },
       }),
     });
 

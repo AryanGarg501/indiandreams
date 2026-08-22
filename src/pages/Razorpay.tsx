@@ -41,7 +41,6 @@ const RazorpayPage = () => {
   const plan = params.get("plan") || "full";
 
   const [firstname, setFirstname] = useState("");
-  const [phone, setPhone] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [method, setMethod] = useState<Method>("upi");
   const [formError, setFormError] = useState<string | null>(null);
@@ -71,7 +70,6 @@ const RazorpayPage = () => {
     e.preventDefault();
     setFormError(null);
     if (!firstname.trim()) return fail("Please enter your full name.");
-    if (!/^\d{10}$/.test(phone)) return fail("Enter a valid 10-digit mobile number.");
 
     setSubmitting(true);
 
@@ -79,7 +77,7 @@ const RazorpayPage = () => {
     if (!sdkOk) return fail("Couldn't load the secure checkout. Check your connection and retry.");
 
     const { data, error } = await supabase.functions.invoke("razorpay-create-order", {
-      body: { amount: 149, email, name: firstname, phone, plan },
+      body: { amount: 149, email, name: firstname, plan },
     });
     if (error) return fail(await readError(error, "Could not start payment. Please try again."));
     if (!data?.orderId || !data?.keyId) return fail("Payment gateway returned an invalid response. Please retry.");
@@ -91,7 +89,7 @@ const RazorpayPage = () => {
       currency: data.currency,
       name: "Indian Dreams",
       description: "Full Package — 14 Days",
-      prefill: { name: firstname, email, contact: phone, method },
+      prefill: { name: firstname, email, method },
       notes: { plan },
       theme: { color: "#0d7a5f" },
       config: {
@@ -227,18 +225,6 @@ const RazorpayPage = () => {
                       value={firstname}
                       onChange={(e) => setFirstname(e.target.value)}
                       placeholder="As on your card / UPI"
-                      className="h-11 bg-background"
-                      required
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="phone" className="text-xs font-medium">Mobile Number</Label>
-                    <Input
-                      id="phone"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                      placeholder="10-digit mobile"
-                      inputMode="numeric"
                       className="h-11 bg-background"
                       required
                     />
