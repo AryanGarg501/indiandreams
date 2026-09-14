@@ -23,7 +23,7 @@ const OfferPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="account-scene min-h-screen bg-background/80 flex flex-col">
       {/* Header */}
       <header className="py-4 px-4 flex items-center justify-center border-b border-border/50">
         <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold text-gradient">
