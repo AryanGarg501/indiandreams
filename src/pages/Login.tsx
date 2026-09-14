@@ -32,12 +32,12 @@ const Login = () => {
   };
 
   return (
-    <div className="account-scene min-h-screen bg-background/80 flex flex-col items-center justify-center px-4 py-10">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
       <Link to="/" className="font-display text-3xl font-bold text-gradient mb-10">
         Indian Dreams
       </Link>
 
-      <div className="w-full max-w-md bg-card/85 backdrop-blur-xl border border-border p-6 sm:p-8 shadow-2xl">
+      <div className="w-full max-w-md">
         <h1 className="text-2xl font-bold text-foreground mb-8">Welcome Back</h1>
 
         <form onSubmit={handleSubmit} className="space-y-5">

@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/logo.png";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 const Footer = () => {
   return (
@@ -7,7 +7,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src={logoAsset} alt="Indian Dreams logo" className="h-9 w-9 object-contain" />
+              <img src={logoAsset.url} alt="Indian Dreams logo" className="h-9 w-9 object-contain" />
               <span className="font-display text-xl font-bold text-background">
                 Indian Dreams
               </span>

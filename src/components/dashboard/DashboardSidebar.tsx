@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/logo.png";
+import logoAsset from "@/assets/logo.png.asset.json";
 import { Link, useLocation } from "react-router-dom";
 import {
   Home,
@@ -41,7 +41,7 @@ export function DashboardSidebar({ userName, onLogout }: DashboardSidebarProps) 
   return (
     <Sidebar collapsible="icon" className="border-r-0">
       <div className="p-4 flex items-center gap-2">
-        <img src={logoAsset} alt="Indian Dreams logo" className="h-8 w-8 object-contain shrink-0" />
+        <img src={logoAsset.url} alt="Indian Dreams logo" className="h-8 w-8 object-contain shrink-0" />
         {!collapsed && (
           <span className="font-display text-lg font-bold text-sidebar-foreground">
             Indian Dreams

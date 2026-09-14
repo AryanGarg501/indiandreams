@@ -28,7 +28,6 @@ import PromptChallenge from "./pages/games/PromptChallenge";
 import AITrivia from "./pages/games/AITrivia";
 import SpeedClassifier from "./pages/games/SpeedClassifier";
 import NotFound from "./pages/NotFound";
-import AnimatedBackground from "./components/AnimatedBackground";
 
 const queryClient = new QueryClient();
 
@@ -38,37 +37,34 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <AnimatedBackground />
-        <div className="app-stage">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about-us" element={<AboutUs />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/quiz" element={<Quiz />} />
-            <Route path="/quiz-steps" element={<QuizSteps />} />
-            <Route path="/offer" element={<OfferPage />} />
-            <Route path="/payment" element={<RazorpayPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/challenges" element={<Challenges />} />
-            <Route path="/challenge/:challengeId" element={<ChallengeView />} />
-            <Route path="/guides" element={<Guides />} />
-            <Route path="/ai-tools" element={<AITools />} />
-            <Route path="/certificates" element={<Certificates />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/guide-pathway/:courseId" element={<GuidePathway />} />
-            <Route path="/lesson/:courseId/:moduleId/:lessonId" element={<LessonView />} />
-            <Route path="/certificate/:certificateId" element={<CertificateView />} />
-            <Route path="/mini-games" element={<MiniGames />} />
-            <Route path="/mini-games/ai-spotter" element={<AISpotter />} />
-            <Route path="/mini-games/prompt-challenge" element={<PromptChallenge />} />
-            <Route path="/mini-games/ai-trivia" element={<AITrivia />} />
-            <Route path="/mini-games/speed-classifier" element={<SpeedClassifier />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/quiz-steps" element={<QuizSteps />} />
+          <Route path="/offer" element={<OfferPage />} />
+          <Route path="/payment" element={<RazorpayPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/challenges" element={<Challenges />} />
+          <Route path="/challenge/:challengeId" element={<ChallengeView />} />
+          <Route path="/guides" element={<Guides />} />
+          <Route path="/ai-tools" element={<AITools />} />
+          <Route path="/certificates" element={<Certificates />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/guide-pathway/:courseId" element={<GuidePathway />} />
+          <Route path="/lesson/:courseId/:moduleId/:lessonId" element={<LessonView />} />
+          <Route path="/certificate/:certificateId" element={<CertificateView />} />
+          <Route path="/mini-games" element={<MiniGames />} />
+          <Route path="/mini-games/ai-spotter" element={<AISpotter />} />
+          <Route path="/mini-games/prompt-challenge" element={<PromptChallenge />} />
+          <Route path="/mini-games/ai-trivia" element={<AITrivia />} />
+          <Route path="/mini-games/speed-classifier" element={<SpeedClassifier />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

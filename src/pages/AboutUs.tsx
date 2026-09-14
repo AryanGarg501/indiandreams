@@ -80,7 +80,7 @@ const AboutUs = () => {
   ];
 
   return (
-      <div className="cinematic-page min-h-screen bg-background/90">
+    <div className="min-h-screen bg-background">
       <Navbar />
       <main>
         {/* Hero */}

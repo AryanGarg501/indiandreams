@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoAsset from "@/assets/logo.png";
+import logoAsset from "@/assets/logo.png.asset.json";
 
 
 const navLinks = [
@@ -26,13 +26,13 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "glass shadow-lg border-b border-border/50" : "bg-secondary/20 backdrop-blur-[2px]"
+        scrolled ? "glass shadow-lg border-b border-border/50" : "bg-transparent"
       }`}
     >
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
         <a href="#home" className="flex items-center gap-2">
-          <img src={logoAsset} alt="Indian Dreams logo" className="h-9 w-9 object-contain" />
-          <span className={`font-display text-xl md:text-2xl font-bold ${scrolled ? "text-gradient" : "text-primary-foreground"}`}>Indian Dreams</span>
+          <img src={logoAsset.url} alt="Indian Dreams logo" className="h-9 w-9 object-contain" />
+          <span className="font-display text-xl md:text-2xl font-bold text-gradient">Indian Dreams</span>
         </a>
 
 
@@ -42,7 +42,7 @@ const Navbar = () => {
             <a
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium transition-colors duration-200 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full ${scrolled ? "text-muted-foreground hover:text-primary" : "text-primary-foreground/75 hover:text-primary-foreground"}`}
+              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors duration-200 relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-primary after:transition-all after:duration-300 hover:after:w-full"
             >
               {link.label}
             </a>
@@ -50,13 +50,13 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm" className={`font-semibold ${scrolled ? "" : "text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"}`} asChild><a href="/login">Login</a></Button>
-          <Button variant="gold" size="sm" className="rounded-sm px-6" asChild><a href="/quiz">Start Now</a></Button>
+          <Button variant="ghost" size="sm" className="font-semibold" asChild><a href="/login">Login</a></Button>
+          <Button variant="hero" size="sm" className="rounded-xl px-6" asChild><a href="/quiz">Start Now</a></Button>
         </div>
 
         {/* Mobile toggle */}
         <button
-          className={`md:hidden p-2 rounded-sm transition-colors ${scrolled ? "text-foreground hover:bg-muted" : "text-primary-foreground hover:bg-primary-foreground/10"}`}
+          className="md:hidden text-foreground p-2 rounded-xl hover:bg-muted transition-colors"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
