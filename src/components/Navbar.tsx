@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 
 
 const navLinks = [
@@ -31,7 +31,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between py-4 px-4">
         <a href="#home" className="flex items-center gap-2">
-          <img src={logoAsset.url} alt="Indian Dreams logo" className="h-9 w-9 object-contain" />
+          <img src={logoAsset} alt="Indian Dreams logo" className="h-9 w-9 object-contain" />
           <span className={`font-display text-xl md:text-2xl font-bold ${scrolled ? "text-gradient" : "text-primary-foreground"}`}>Indian Dreams</span>
         </a>
 

@@ -1,4 +1,4 @@
-import logoAsset from "@/assets/logo.png.asset.json";
+import logoAsset from "@/assets/logo.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -27,7 +27,7 @@ const OfferPage = () => {
       {/* Header */}
       <header className="py-4 px-4 flex items-center justify-center border-b border-border/50">
         <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold text-gradient">
-          <img src={logoAsset.url} alt="Indian Dreams logo" className="h-8 w-8 object-contain" />
+          <img src={logoAsset} alt="Indian Dreams logo" className="h-8 w-8 object-contain" />
           Indian Dreams
         </Link>
       </header>
