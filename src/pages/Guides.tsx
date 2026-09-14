@@ -7,6 +7,7 @@ import { Flame, BookOpen, Clock, Search } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { coursesData } from "@/data/coursesData";
+import { AIPlatformLogo, hasAIPlatformLogo } from "@/components/AIPlatformLogo";
 
 const categories = ["All", "AI Assistants", "Image & Design", "Writing", "Productivity", "Business"];
 
@@ -146,7 +147,9 @@ const Guides = () => {
                     className="bg-card rounded-2xl border border-border overflow-hidden card-elevated hover:border-primary/30 transition-colors block"
                   >
                     <div className="h-32 bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center text-5xl">
-                      {guide.emoji}
+                      {hasAIPlatformLogo(guide.slug) ? (
+                        <AIPlatformLogo platform={guide.slug} className="h-16 w-16" />
+                      ) : guide.emoji}
                     </div>
                     <div className="p-4">
                       <h3 className="font-semibold text-foreground">{guide.title}</h3>

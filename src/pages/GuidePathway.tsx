@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Clock, BookOpen, Lock, PlayCircle, ChevronRight, CheckCircle2, Award } from "lucide-react";
 import { coursesData } from "@/data/coursesData";
+import { AIPlatformLogo } from "@/components/AIPlatformLogo";
 
 interface LessonProgress {
   module_id: string;
@@ -124,7 +125,7 @@ const GuidePathway = () => {
               <div className="bg-card rounded-2xl border border-border p-6 md:p-8">
                 <div className="flex items-start gap-4">
                   <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center text-4xl shrink-0">
-                    {course.emoji}
+                    <AIPlatformLogo platform={courseId || course.title} className="h-10 w-10" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h1 className="text-2xl font-bold text-foreground">{course.title}</h1>
