@@ -7,6 +7,7 @@ import { coursesData } from "@/data/coursesData";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import signatureAsset from "@/assets/signature.png.asset.json";
+import { AIPlatformLogo } from "@/components/AIPlatformLogo";
 
 // Confetti particle component
 const Confetti = ({ active }: { active: boolean }) => {

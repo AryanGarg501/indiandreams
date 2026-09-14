@@ -4,6 +4,7 @@ import { ArrowLeft, RotateCcw, Timer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
+import { AIPlatformLogo, hasAIPlatformLogo } from "@/components/AIPlatformLogo";
 
 interface Tool {
   name: string;
@@ -176,6 +177,9 @@ const SpeedClassifier = () => {
                   "border-border bg-card"
                 }`}
               >
+                {hasAIPlatformLogo(tool.name) && (
+                  <AIPlatformLogo platform={tool.name} className="h-16 w-16 mx-auto mb-4" />
+                )}
                 <h2 className="text-3xl font-bold text-foreground">{tool.name}</h2>
                 <p className="text-sm text-muted-foreground mt-1">What type of AI tool is this?</p>
               </motion.div>
