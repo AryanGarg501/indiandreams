@@ -156,7 +156,7 @@ const RazorpayPage = () => {
   const activeMeta = METHOD_META[method];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/30 flex flex-col">
+    <div className="account-scene min-h-screen bg-background/80 flex flex-col">
       <header className="py-4 px-4 flex items-center justify-between border-b border-border/50 bg-card/40 backdrop-blur">
         <Link to="/offer" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="w-4 h-4" /> Back
