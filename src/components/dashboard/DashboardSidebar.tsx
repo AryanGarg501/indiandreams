@@ -79,16 +79,18 @@ export function DashboardSidebar({ userName, onLogout }: DashboardSidebarProps) 
       <SidebarFooter className="px-2 pb-4">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Profile" className="flex items-center gap-3 px-3 py-2.5">
-              <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                <User className="h-4 w-4 text-primary" />
-              </div>
-              {!collapsed && (
-                <div className="flex flex-col min-w-0">
-                  <span className="text-sm font-medium truncate">{userName}</span>
-                  <span className="text-xs text-muted-foreground">Profile</span>
+            <SidebarMenuButton asChild isActive={location.pathname === "/profile"} tooltip="Profile">
+              <Link to="/profile" className="flex items-center gap-3 px-3 py-2.5">
+                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <User className="h-4 w-4 text-primary" />
                 </div>
-              )}
+                {!collapsed && (
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-sm font-medium truncate">{userName}</span>
+                    <span className="text-xs text-muted-foreground">Profile</span>
+                  </div>
+                )}
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
