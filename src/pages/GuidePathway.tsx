@@ -5,7 +5,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, BookOpen, Lock, PlayCircle, ChevronRight, CheckCircle2, Award } from "lucide-react";
+import { ArrowLeft, Clock, BookOpen, Lock, PlayCircle, ChevronRight, CheckCircle2, Award, Sparkles } from "lucide-react";
 import { coursesData } from "@/data/coursesData";
 import { AIPlatformLogo } from "@/components/AIPlatformLogo";
 
@@ -64,7 +64,17 @@ const GuidePathway = () => {
     navigate("/login");
   };
 
-  const course = coursesData[courseId || ""] || coursesData.claude;
+  const course = coursesData[courseId || ""];
+
+  if (!loading && !course) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 px-6 text-center">
+        <p className="text-muted-foreground">Lessons are not available for this guide yet.</p>
+        <Button asChild variant="hero"><Link to={`/guide-lab/${courseId}`}><Sparkles size={16} /> Open AI Workspace</Link></Button>
+        <Button asChild variant="outline"><Link to="/guides">Back to Guides</Link></Button>
+      </div>
+    );
+  }
 
   // Build flat list of all lessons
   const allLessons = course.modules.flatMap((m, mIdx) =>
@@ -123,10 +133,14 @@ const GuidePathway = () => {
             <div className="max-w-3xl mx-auto space-y-6">
               {/* Course Header */}
               <div className="bg-card rounded-2xl border border-border p-6 md:p-8">
-                <div className="flex items-start gap-4">
+                  <div className="flex items-start gap-4">
                   <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center text-4xl shrink-0">
                     <AIPlatformLogo platform={courseId || course.title} className="h-10 w-10" />
                   </div>
+
+                  <Button asChild variant="hero" className="mt-5 w-full sm:w-auto">
+                    <Link to={`/guide-lab/${courseId}`}><Sparkles size={16} /> Try {course.title} AI</Link>
+                  </Button>
                   <div className="flex-1 min-w-0">
                     <h1 className="text-2xl font-bold text-foreground">{course.title}</h1>
                     <p className="text-muted-foreground mt-1 text-sm leading-relaxed">{course.description}</p>

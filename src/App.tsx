@@ -19,6 +19,7 @@ import AITools from "./pages/AITools";
 import Certificates from "./pages/Certificates";
 import Profile from "./pages/Profile";
 import GuidePathway from "./pages/GuidePathway";
+import GuideLab from "./pages/GuideLab";
 import LessonView from "./pages/LessonView";
 import CertificateView from "./pages/CertificateView";
 import ChallengeView from "./pages/ChallengeView";
@@ -55,6 +56,7 @@ const App = () => (
           <Route path="/certificates" element={<Certificates />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/guide-pathway/:courseId" element={<GuidePathway />} />
+          <Route path="/guide-lab/:guideId" element={<GuideLab />} />
           <Route path="/lesson/:courseId/:moduleId/:lessonId" element={<LessonView />} />
           <Route path="/certificate/:certificateId" element={<CertificateView />} />
           <Route path="/mini-games" element={<MiniGames />} />
