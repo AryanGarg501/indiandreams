@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { coursesData } from "@/data/coursesData";
+import { AIPlatformLogo } from "@/components/AIPlatformLogo";
 
 interface CourseProgress {
   courseId: string;
@@ -92,7 +93,7 @@ export function CurrentCourseCard() {
     <div className="bg-card rounded-2xl border border-border p-6 card-elevated">
       <div className="flex items-start gap-4 mb-5">
         <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-2xl shrink-0">
-          {course.emoji}
+          <AIPlatformLogo platform={course.courseId} className="h-9 w-9" />
         </div>
         <div className="min-w-0">
           <h3 className="text-base font-bold text-foreground">{course.title}</h3>

@@ -10,6 +10,7 @@ import { coursesData } from "@/data/coursesData";
 import ReactMarkdown from "react-markdown";
 import { useToast } from "@/hooks/use-toast";
 import { useSpeech } from "@/hooks/use-speech";
+import { AIPlatformLogo } from "@/components/AIPlatformLogo";
 
 interface LessonProgress {
   course_id: string;
@@ -193,7 +194,7 @@ const LessonView = () => {
                 Back to {course.title}
               </Link>
               <h2 className="font-display text-sm font-bold text-foreground flex items-center gap-2">
-                {course.emoji} {course.title}
+                <AIPlatformLogo platform={courseId || course.title} className="h-5 w-5" /> {course.title}
               </h2>
               <div className="mt-2">
                 <div className="flex items-center justify-between text-[11px] text-muted-foreground mb-1">

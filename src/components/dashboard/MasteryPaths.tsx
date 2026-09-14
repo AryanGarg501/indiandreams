@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { coursesData } from "@/data/coursesData";
+import { AIPlatformLogo } from "@/components/AIPlatformLogo";
 
 const masteryPaths = [
   { title: "Claude", slug: "claude", lessons: 10, hours: 5, emoji: "🤖" },
@@ -62,7 +63,7 @@ export function MasteryPaths() {
             className="bg-card rounded-2xl border border-border p-4 card-elevated cursor-pointer block hover:border-primary/30 transition-colors"
           >
             <div className="w-full aspect-square rounded-xl bg-muted flex items-center justify-center text-3xl mb-3">
-              {path.emoji}
+              <AIPlatformLogo platform={path.slug} className="h-12 w-12 sm:h-14 sm:w-14" />
             </div>
             <h4 className="font-semibold text-sm text-foreground">{path.title}</h4>
             <p className="text-xs text-muted-foreground mt-0.5">

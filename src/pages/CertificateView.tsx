@@ -7,6 +7,7 @@ import { coursesData } from "@/data/coursesData";
 import { format } from "date-fns";
 import { motion } from "framer-motion";
 import signatureAsset from "@/assets/signature.png.asset.json";
+import { AIPlatformLogo } from "@/components/AIPlatformLogo";
 
 // Confetti particle component
 const Confetti = ({ active }: { active: boolean }) => {
@@ -314,7 +315,11 @@ const CertificateView = () => {
                 <p className="text-xs md:text-sm text-muted-foreground mb-2.5">for successfully completing the course</p>
 
                 <div className="flex items-center gap-3 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5 px-4 py-2 rounded-xl border border-primary/10 mb-4 md:mb-5">
-                  <span className="text-2xl md:text-3xl">{course?.emoji || "📜"}</span>
+                  {course ? (
+                    <AIPlatformLogo platform={certificate.course_id} className="h-8 w-8 md:h-10 md:w-10" />
+                  ) : (
+                    <span className="text-2xl md:text-3xl">📜</span>
+                  )}
                   <h3 className="font-display text-xl md:text-2xl lg:text-3xl font-bold text-foreground">
                     {certificate.course_title}
                   </h3>
