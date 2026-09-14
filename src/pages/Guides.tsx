@@ -3,11 +3,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
-import { Flame, BookOpen, Clock, Search } from "lucide-react";
+import { Flame, BookOpen, Clock, Search, Sparkles, PlayCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { coursesData } from "@/data/coursesData";
 import { AIPlatformLogo, hasAIPlatformLogo } from "@/components/AIPlatformLogo";
+import { Button } from "@/components/ui/button";
 
 const categories = ["All", "AI Assistants", "Image & Design", "Writing", "Productivity", "Business"];
 
@@ -141,17 +142,16 @@ const Guides = () => {
               {/* Guides Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {filteredGuides.map((guide) => (
-                  <Link
+                  <article
                     key={guide.slug}
-                    to={`/guide-pathway/${guide.slug}`}
-                    className="bg-card rounded-2xl border border-border overflow-hidden card-elevated hover:border-primary/30 transition-colors block"
+                    className="bg-card rounded-lg border border-border overflow-hidden card-elevated hover:border-primary/30 transition-colors flex flex-col"
                   >
                     <div className="h-32 bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center text-5xl">
                       {hasAIPlatformLogo(guide.slug) ? (
                         <AIPlatformLogo platform={guide.slug} className="h-16 w-16" />
                       ) : guide.emoji}
                     </div>
-                    <div className="p-4">
+                    <div className="p-4 flex flex-col flex-1">
                       <h3 className="font-semibold text-foreground">{guide.title}</h3>
                       <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{guide.description}</p>
                       <div className="flex items-center gap-2 mt-3 text-xs text-muted-foreground">
@@ -166,8 +166,18 @@ const Guides = () => {
                         </div>
                         <Progress value={progressMap[guide.slug] || 0} className="h-1" />
                       </div>
+                      <div className="grid grid-cols-2 gap-2 mt-4">
+                        {coursesData[guide.slug] ? (
+                          <Button asChild variant="outline" size="sm">
+                            <Link to={`/guide-pathway/${guide.slug}`}><PlayCircle size={14} /> Learn</Link>
+                          </Button>
+                        ) : <div />}
+                        <Button asChild variant="hero" size="sm" className={coursesData[guide.slug] ? "" : "col-span-2"}>
+                          <Link to={`/guide-lab/${guide.slug}`}><Sparkles size={14} /> Try AI</Link>
+                        </Button>
+                      </div>
                     </div>
-                  </Link>
+                  </article>
                 ))}
               </div>
 
