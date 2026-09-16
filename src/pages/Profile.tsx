@@ -3,8 +3,21 @@ import { format } from "date-fns";
 import { Award, BookCheck, CalendarDays, CheckCircle2, Clock3, Mail, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { Progress } from "@/components/ui/progress";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { additionalCourses } from "@/data/additionalCourses";
+import { coursesData } from "@/data/coursesData";
 import { supabase } from "@/integrations/supabase/client";
+
+const learningCatalog = { ...coursesData, ...additionalCourses };
+const availableLessonKeys = new Set(
+  Object.entries(learningCatalog).flatMap(([courseId, course]) =>
+    course.modules.flatMap((module) =>
+      module.lessons.map((lesson) => `${courseId}:${module.id}:${lesson.id}`),
+    ),
+  ),
+);
+const totalAvailableLessons = availableLessonKeys.size;
 
 interface ProfileDetails {
   fullName: string;
@@ -14,6 +27,7 @@ interface ProfileDetails {
   lastSignInAt: string | null;
   emailConfirmed: boolean;
   completedLessons: number;
+  totalLessons: number;
   certificates: number;
 }
 
@@ -28,52 +42,97 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let active = true;
+    let currentUserId = "";
+
+    const loadLearningSummary = async (userId: string) => {
+      const [lessonResult, certificateResult] = await Promise.all([
+        supabase
+          .from("lesson_progress")
+          .select("course_id, module_id, lesson_id")
+          .eq("user_id", userId),
+        supabase
+          .from("certificates")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", userId),
+      ]);
+
+      const completedLessonKeys = new Set(
+        (lessonResult.data || [])
+          .map((lesson) => `${lesson.course_id}:${lesson.module_id}:${lesson.lesson_id}`)
+          .filter((key) => availableLessonKeys.has(key)),
+      );
+
+      if (!active) return;
+      setProfile((current) => current ? {
+        ...current,
+        completedLessons: completedLessonKeys.size,
+        certificates: certificateResult.count ?? 0,
+      } : current);
+    };
+
     const loadProfile = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate("/login");
         return;
       }
+      currentUserId = session.user.id;
 
-      const [profileResult, lessonResult, certificateResult] = await Promise.all([
-        supabase
-          .from("profiles")
-          .select("full_name, avatar_url, created_at")
-          .eq("user_id", session.user.id)
-          .maybeSingle(),
-        supabase
-          .from("lesson_progress")
-          .select("id", { count: "exact", head: true })
-          .eq("user_id", session.user.id),
-        supabase
-          .from("certificates")
-          .select("id", { count: "exact", head: true })
-          .eq("user_id", session.user.id),
-      ]);
+      const { data: profileRecord } = await supabase
+        .from("profiles")
+        .select("full_name, avatar_url, created_at")
+        .eq("user_id", session.user.id)
+        .maybeSingle();
 
-      const fullName = profileResult.data?.full_name
+      const fullName = profileRecord?.full_name
         || session.user.user_metadata?.full_name
         || session.user.email
         || "Learner";
 
+      if (!active) return;
       setProfile({
         fullName,
         email: session.user.email || "Not available",
-        avatarUrl: profileResult.data?.avatar_url || session.user.user_metadata?.avatar_url || null,
-        createdAt: profileResult.data?.created_at || session.user.created_at,
+        avatarUrl: profileRecord?.avatar_url || session.user.user_metadata?.avatar_url || null,
+        createdAt: profileRecord?.created_at || session.user.created_at,
         lastSignInAt: session.user.last_sign_in_at || null,
         emailConfirmed: Boolean(session.user.email_confirmed_at),
-        completedLessons: lessonResult.count ?? 0,
-        certificates: certificateResult.count ?? 0,
+        completedLessons: 0,
+        totalLessons: totalAvailableLessons,
+        certificates: 0,
       });
       setLoading(false);
+      await loadLearningSummary(session.user.id);
     };
 
     loadProfile();
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) navigate("/login");
     });
-    return () => subscription.unsubscribe();
+
+    const refreshSummary = () => {
+      if (currentUserId) void loadLearningSummary(currentUserId);
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") refreshSummary();
+    };
+    window.addEventListener("focus", refreshSummary);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    const progressChannel = supabase
+      .channel("profile-learning-summary")
+      .on("postgres_changes", { event: "*", schema: "public", table: "lesson_progress" }, refreshSummary)
+      .on("postgres_changes", { event: "*", schema: "public", table: "certificates" }, refreshSummary)
+      .subscribe();
+
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+      window.removeEventListener("focus", refreshSummary);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      supabase.removeChannel(progressChannel);
+    };
   }, [navigate]);
 
   const handleLogout = async () => {
@@ -102,6 +161,9 @@ const Profile = () => {
     { label: "Member since", value: formatDate(profile.createdAt), icon: CalendarDays },
     { label: "Last sign in", value: formatDate(profile.lastSignInAt), icon: Clock3 },
   ];
+  const learningProgress = profile.totalLessons > 0
+    ? Math.min(100, Math.round((profile.completedLessons / profile.totalLessons) * 100))
+    : 0;
 
   return (
     <SidebarProvider>
@@ -140,7 +202,16 @@ const Profile = () => {
               </section>
 
               <section aria-labelledby="learning-summary-title">
-                <h2 id="learning-summary-title" className="font-display text-lg font-bold text-foreground mb-3">Learning summary</h2>
+                <div className="mb-3 flex items-end justify-between gap-4">
+                  <h2 id="learning-summary-title" className="font-display text-lg font-bold text-foreground">Learning summary</h2>
+                  <span className="text-sm font-semibold text-primary">{learningProgress}% complete</span>
+                </div>
+                <div className="mb-4" aria-label={`${learningProgress}% of all lessons completed`}>
+                  <Progress value={learningProgress} className="h-2.5" />
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    {profile.completedLessons} of {profile.totalLessons} lessons completed
+                  </p>
+                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="bg-card border border-border rounded-lg p-5 flex items-center gap-4">
                     <div className="h-11 w-11 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
