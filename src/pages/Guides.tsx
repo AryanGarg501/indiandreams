@@ -13,18 +13,18 @@ import { Button } from "@/components/ui/button";
 const categories = ["All", "AI Assistants", "Image & Design", "Writing", "Productivity", "Business"];
 
 const guidesData = [
-  { title: "Claude", slug: "claude", lessons: 10, hours: 5, emoji: "🤖", category: "AI Assistants", description: "Master Anthropic's Claude for writing, analysis, and coding tasks." },
-  { title: "Gemini", slug: "gemini", lessons: 10, hours: 4, emoji: "💎", category: "AI Assistants", description: "Learn Google's Gemini for multimodal AI tasks and research." },
-  { title: "ChatGPT", slug: "chatgpt", lessons: 13, hours: 6, emoji: "🧠", category: "AI Assistants", description: "Unlock the full potential of OpenAI's ChatGPT for everyday work." },
-  { title: "Jasper AI", slug: "jasper-ai", lessons: 10, hours: 5, emoji: "✍️", category: "Writing", description: "Create marketing copy, blog posts, and content at scale with Jasper." },
-  { title: "Stable Diffusion", slug: "stable-diffusion", lessons: 10, hours: 4, emoji: "🎨", category: "Image & Design", description: "Generate stunning images and art using Stable Diffusion models." },
-  { title: "Midjourney", slug: "midjourney", lessons: 12, hours: 5, emoji: "🖼️", category: "Image & Design", description: "Create professional-quality visuals with Midjourney prompts." },
-  { title: "DALL·E", slug: "dall-e", lessons: 8, hours: 3, emoji: "🎭", category: "Image & Design", description: "Learn to generate and edit images with OpenAI's DALL·E." },
-  { title: "Notion AI", slug: "notion-ai", lessons: 9, hours: 4, emoji: "📝", category: "Productivity", description: "Supercharge your notes, docs, and workflows with Notion AI." },
-  { title: "Canva AI", slug: "canva-ai", lessons: 8, hours: 3, emoji: "🎯", category: "Image & Design", description: "Design graphics and presentations faster with Canva's AI tools." },
-  { title: "Copy.ai", slug: "copy-ai", lessons: 7, hours: 3, emoji: "📋", category: "Writing", description: "Generate sales copy, emails, and social media content effortlessly." },
-  { title: "Perplexity AI", slug: "perplexity", lessons: 8, hours: 3, emoji: "🔍", category: "AI Assistants", description: "Research smarter with AI-powered search and citation tools." },
-  { title: "AI for Business", slug: "ai-business", lessons: 15, hours: 8, emoji: "💼", category: "Business", description: "Strategic guide to implementing AI across your business operations." },
+  { title: "Claude", slug: "claude", emoji: "🤖", category: "AI Assistants", description: "Master Anthropic's Claude for writing, analysis, and coding tasks." },
+  { title: "Gemini", slug: "gemini", emoji: "💎", category: "AI Assistants", description: "Learn Google's Gemini for multimodal AI tasks and research." },
+  { title: "ChatGPT", slug: "chatgpt", emoji: "🧠", category: "AI Assistants", description: "Unlock the full potential of OpenAI's ChatGPT for everyday work." },
+  { title: "Jasper AI", slug: "jasper-ai", emoji: "✍️", category: "Writing", description: "Create marketing copy, blog posts, and content at scale with Jasper." },
+  { title: "Stable Diffusion", slug: "stable-diffusion", emoji: "🎨", category: "Image & Design", description: "Generate stunning images and art using Stable Diffusion models." },
+  { title: "Midjourney", slug: "midjourney", emoji: "🖼️", category: "Image & Design", description: "Create professional-quality visuals with Midjourney prompts." },
+  { title: "DALL·E", slug: "dall-e", emoji: "🎭", category: "Image & Design", description: "Learn to generate and edit images with OpenAI's DALL·E." },
+  { title: "Notion AI", slug: "notion-ai", emoji: "📝", category: "Productivity", description: "Supercharge your notes, docs, and workflows with Notion AI." },
+  { title: "Canva AI", slug: "canva-ai", emoji: "🎯", category: "Image & Design", description: "Design graphics and presentations faster with Canva's AI tools." },
+  { title: "Copy.ai", slug: "copy-ai", emoji: "📋", category: "Writing", description: "Generate sales copy, emails, and social media content effortlessly." },
+  { title: "Perplexity AI", slug: "perplexity", emoji: "🔍", category: "AI Assistants", description: "Research smarter with AI-powered search and citation tools." },
+  { title: "AI for Business", slug: "ai-business", emoji: "💼", category: "Business", description: "Strategic guide to implementing AI across your business operations." },
 ];
 
 const Guides = () => {
@@ -56,7 +56,7 @@ const Guides = () => {
         });
         for (const slug in grouped) {
           const course = coursesData[slug];
-          const totalLessons = course ? course.totalLessons : (guidesData.find(g => g.slug === slug)?.lessons || 1);
+          const totalLessons = course?.totalLessons || 1;
           map[slug] = Math.round((grouped[slug].size / totalLessons) * 100);
         }
         setProgressMap(map);
@@ -76,11 +76,17 @@ const Guides = () => {
     navigate("/login");
   };
 
-  const filteredGuides = guidesData.filter((g) => {
-    const matchesCategory = activeCategory === "All" || g.category === activeCategory;
-    const matchesSearch = g.title.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  const filteredGuides = guidesData
+    .filter((g) => {
+      const matchesCategory = activeCategory === "All" || g.category === activeCategory;
+      const matchesSearch = g.title.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    })
+    .map((guide) => ({
+      ...guide,
+      lessons: coursesData[guide.slug]?.totalLessons || 0,
+      hours: coursesData[guide.slug]?.totalHours || 0,
+    }));
 
   if (loading) {
     return (

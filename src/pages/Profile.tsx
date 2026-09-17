@@ -5,13 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
 import { Progress } from "@/components/ui/progress";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { additionalCourses } from "@/data/additionalCourses";
 import { coursesData } from "@/data/coursesData";
 import { supabase } from "@/integrations/supabase/client";
 
-const learningCatalog = { ...coursesData, ...additionalCourses };
 const availableLessonKeys = new Set(
-  Object.entries(learningCatalog).flatMap(([courseId, course]) =>
+  Object.entries(coursesData).flatMap(([courseId, course]) =>
     course.modules.flatMap((module) =>
       module.lessons.map((lesson) => `${courseId}:${module.id}:${lesson.id}`),
     ),
