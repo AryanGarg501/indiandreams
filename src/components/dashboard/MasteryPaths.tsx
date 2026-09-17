@@ -6,13 +6,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { coursesData } from "@/data/coursesData";
 import { AIPlatformLogo } from "@/components/AIPlatformLogo";
 
-const masteryPaths = [
-  { title: "Claude", slug: "claude", lessons: 10, hours: 5, emoji: "🤖" },
-  { title: "Gemini", slug: "gemini", lessons: 10, hours: 4, emoji: "💎" },
-  { title: "ChatGPT", slug: "chatgpt", lessons: 13, hours: 6, emoji: "🧠" },
-  { title: "Jasper AI", slug: "jasper-ai", lessons: 10, hours: 5, emoji: "✍️" },
-  { title: "Stable Diffusion", slug: "stable-diffusion", lessons: 10, hours: 4, emoji: "🎨" },
-];
+const masteryPaths = Object.entries(coursesData).map(([slug, course]) => ({
+  title: course.title,
+  slug,
+  lessons: course.totalLessons,
+  hours: course.totalHours,
+}));
 
 export function MasteryPaths() {
   const [progressMap, setProgressMap] = useState<Record<string, number>>({});
@@ -55,7 +54,7 @@ export function MasteryPaths() {
           View All <ArrowRight size={14} />
         </Link>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
         {masteryPaths.map((path) => (
           <Link
             to={`/guide-pathway/${path.slug}`}
