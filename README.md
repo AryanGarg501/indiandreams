@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://indiandreams.lovable.app
+**URL**: https://indiandreams.app
 
 
 **Use GitHub Codespaces**
