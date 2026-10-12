@@ -68,7 +68,7 @@ These are Indian Dreams learning workspaces inspired by the named platforms—no
 
 ## Learning catalog
 
-The shared catalog contains **12 courses and 129 lessons**. Guide cards derive lesson counts and estimated learning time from the course data rather than separate hardcoded totals.
+The shared catalog contains **12 courses and 119 lessons**. Guide cards derive lesson counts and estimated learning time from the course data rather than separate hardcoded totals.
 
 | Course | Course ID | Lessons | Workspace output |
 | --- | --- | ---: | --- |
