@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Users, Sparkles } from "lucide-react";
 import { usePlatformStats, formatIndian } from "@/hooks/usePlatformStats";
@@ -35,8 +36,10 @@ const CTASection = () => {
           <p className="text-secondary-foreground/70 mb-10 text-lg">
             Advance your career with AI skills. Start your journey today.
           </p>
-          <Button variant="hero" size="lg" className="gap-2 text-base px-10 h-14 rounded-xl shimmer">
-            Start Now <ArrowRight size={18} />
+          <Button variant="hero" size="lg" className="gap-2 text-base px-10 h-14 rounded-xl shimmer" asChild>
+            <Link to="/offer">
+              Start Now <ArrowRight size={18} />
+            </Link>
           </Button>
           {stats && stats.review_count > 0 && (
             <div className="flex items-center justify-center gap-3 mt-8">
