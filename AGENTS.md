@@ -1,0 +1,1 @@
+- Capacitor config ships bundled `dist` assets (no `server.url`); native icons/splash are generated from `resources/` via `npx capacitor-assets generate` — keeps store builds offline-capable and reproducible.

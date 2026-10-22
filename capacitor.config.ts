@@ -1,12 +1,21 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
+// Production config: the app loads bundled files from `dist` (no live preview URL).
 const config: CapacitorConfig = {
   appId: 'app.lovable.bf6db18a78f04c37835f0dd7264afbf7',
-  appName: 'indiandreams',
+  appName: 'Indian Dreams',
   webDir: 'dist',
-  server: {
-    url: 'https://bf6db18a-78f0-4c37-835f-0dd7264afbf7.lovableproject.com?forceHideBadge=true',
-    cleartext: true,
+  android: {
+    allowMixedContent: false,
+  },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 1500,
+      launchAutoHide: true,
+      backgroundColor: '#ffffff',
+      androidScaleType: 'CENTER_CROP',
+      showSpinner: false,
+    },
   },
 };
 
