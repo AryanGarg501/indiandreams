@@ -8,9 +8,10 @@ import { toast } from "sonner";
 
 interface Props {
   onSubmitted?: () => void;
+  bare?: boolean;
 }
 
-const ReviewForm = ({ onSubmitted }: Props) => {
+const ReviewForm = ({ onSubmitted, bare }: Props) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
@@ -64,10 +65,10 @@ const ReviewForm = ({ onSubmitted }: Props) => {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-14 bg-card rounded-2xl p-7 card-elevated">
-      <h3 className="font-display text-xl font-bold mb-1">Share your experience</h3>
-      <p className="text-sm text-muted-foreground mb-5">Your review appears publicly on this page.</p>
-      <div className="flex gap-1 mb-5">
+    <div className={bare ? "" : "max-w-xl mx-auto mt-14 bg-card rounded-2xl p-7 card-elevated"}>
+      {!bare && <h3 className="font-display text-xl font-bold mb-1">Share your experience</h3>}
+      <p className="text-sm text-muted-foreground mb-5">{bare ? "Your review will appear on our home page." : "Your review appears publicly on this page."}</p>
+      <div className={`flex gap-1 mb-5 ${bare ? "justify-center" : ""}`}>
         {[1, 2, 3, 4, 5].map((i) => (
           <button key={i} type="button" onClick={() => setRating(i)} aria-label={`${i} star`}>
             <Star size={24} className={i <= rating ? "fill-accent text-accent" : "text-muted"} />

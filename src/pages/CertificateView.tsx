@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, Link, useSearchParams } from "react-router-dom";
+import RateExperienceDialog from "@/components/RateExperienceDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, Award, Share2, Check } from "lucide-react";
@@ -115,6 +116,8 @@ const CertificateView = () => {
   const [certificate, setCertificate] = useState<Certificate | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [searchParams] = useSearchParams();
+  const justEarned = searchParams.get("new") === "1";
   const certificateRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -196,6 +199,7 @@ const CertificateView = () => {
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,hsl(var(--secondary)/0.08),transparent_60%),radial-gradient(ellipse_at_bottom,hsl(var(--primary)/0.06),transparent_60%)] bg-background">
       {/* Confetti */}
       <Confetti active={showConfetti} />
+      <RateExperienceDialog trigger={justEarned} />
       
       {/* Header */}
       <header className="print:hidden sticky top-0 z-40 h-14 flex items-center justify-between border-b border-border bg-card/80 backdrop-blur-sm px-4 md:px-6">

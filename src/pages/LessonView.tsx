@@ -129,7 +129,7 @@ const LessonView = () => {
           description: "Your certificate is ready! Redirecting...",
         });
         setTimeout(() => {
-          navigate(`/certificate/${certId}`);
+          navigate(`/certificate/${certId}?new=1`);
         }, 1200);
       } else {
         toast({ title: "Course Completed! 🎉", description: "Congratulations on finishing all lessons!" });
