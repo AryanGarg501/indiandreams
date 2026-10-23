@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Star } from "lucide-react";
 import ReviewForm from "@/components/ReviewForm";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -32,9 +31,6 @@ const RateExperienceDialog = ({ trigger }: { trigger: boolean }) => {
     <Dialog open={open} onOpenChange={(o) => (o ? setOpen(true) : later())}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex justify-center gap-1 mb-2">
-            {[1, 2, 3, 4, 5].map((i) => <Star key={i} size={22} className="fill-accent text-accent" />)}
-          </div>
           <DialogTitle className="font-display text-2xl text-center">Rate your experience</DialogTitle>
           <DialogDescription className="text-center">
             Congratulations on your certificate! How was learning with Indian Dreams?

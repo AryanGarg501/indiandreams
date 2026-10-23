@@ -67,7 +67,7 @@ const ReviewForm = ({ onSubmitted, bare }: Props) => {
   return (
     <div className={bare ? "" : "max-w-xl mx-auto mt-14 bg-card rounded-2xl p-7 card-elevated"}>
       {!bare && <h3 className="font-display text-xl font-bold mb-1">Share your experience</h3>}
-      <p className="text-sm text-muted-foreground mb-5">Your review appears publicly on this page.</p>
+      <p className="text-sm text-muted-foreground mb-5">{bare ? "Your review will appear on our home page." : "Your review appears publicly on this page."}</p>
       <div className={`flex gap-1 mb-5 ${bare ? "justify-center" : ""}`}>
         {[1, 2, 3, 4, 5].map((i) => (
           <button key={i} type="button" onClick={() => setRating(i)} aria-label={`${i} star`}>
