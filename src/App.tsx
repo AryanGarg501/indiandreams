@@ -11,6 +11,7 @@ import RazorpayPage from "./pages/Razorpay";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Quiz from "./pages/Quiz";
 import QuizSteps from "./pages/QuizSteps";
 import Dashboard from "./pages/Dashboard";
