@@ -31,6 +31,18 @@ const Login = () => {
     }
   };
 
+  const handleMagicLink = async () => {
+    if (!email) return toast.error("Enter your email first");
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/dashboard` },
+    });
+    setLoading(false);
+    if (error) return toast.error(error.message);
+    toast.success("Sign-in link sent! Check your inbox.");
+  };
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4">
       <Link to="/" className="font-display text-3xl font-bold text-gradient mb-10">
@@ -83,6 +95,10 @@ const Login = () => {
             {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
+
+        <Button type="button" variant="outline" className="w-full h-12 text-base rounded-lg mt-3" disabled={loading} onClick={handleMagicLink}>
+          Email me a sign-in link
+        </Button>
 
         <p className="text-center text-sm text-muted-foreground mt-8">
           Don't have an account?{" "}
