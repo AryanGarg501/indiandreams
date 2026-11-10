@@ -1,5 +1,8 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
+import { sendTemplateEmail } from "../_shared/transactional-email-templates/send-email.ts";
+
+const KEY_ID = Deno.env.get("RAZORPAY_KEY_ID") ?? "";
 const KEY_SECRET = Deno.env.get("RAZORPAY_KEY_SECRET") ?? "";
 
 async function hmacSha256Hex(secret: string, data: string): Promise<string> {
@@ -38,6 +41,31 @@ Deno.serve(async (req) => {
     const expected = await hmacSha256Hex(KEY_SECRET, `${orderId}|${paymentId}`);
     if (expected !== signature) {
       return json({ verified: false, error: "signature_mismatch", message: "We couldn't verify this payment. No money was deducted twice — please contact support if charged." }, 400);
+    }
+
+    // Send payment confirmation email using trusted order details from Razorpay.
+    try {
+      const orderRes = await fetch(`https://api.razorpay.com/v1/orders/${encodeURIComponent(orderId)}`, {
+        headers: { Authorization: `Basic ${btoa(`${KEY_ID}:${KEY_SECRET}`)}` },
+      });
+      const order = await orderRes.json();
+      const email = String(order?.notes?.email ?? "");
+      if (orderRes.ok && email) {
+        const result = await sendTemplateEmail("payment-confirmation", email, {
+          templateData: {
+            name: order.notes?.name || undefined,
+            planName: order.notes?.plan === "full" ? "Full Package" : String(order.notes?.plan ?? "Full Package"),
+            amount: `₹${(Number(order.amount) / 100).toLocaleString("en-IN")}`,
+            paymentId,
+            orderId,
+            paidOn: new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata" }),
+          },
+          idempotencyKey: `payment-confirmation-${paymentId}`,
+        });
+        if (!result.sent) console.log("Payment email not sent:", result.reason);
+      }
+    } catch (mailErr) {
+      console.error("Payment confirmation email failed:", mailErr);
     }
 
     return json({ verified: true, paymentId, orderId });
