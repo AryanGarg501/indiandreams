@@ -4,23 +4,30 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
       toast.error("Please enter your email address");
       return;
     }
     setLoading(true);
-    // TODO: connect to auth backend
-    setTimeout(() => {
-      toast.success("Reset instructions sent! Check your inbox.");
-      setLoading(false);
-    }, 1000);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    setSent(true);
+    toast.success("Reset link sent! Check your inbox.");
   };
 
   return (
@@ -32,16 +39,14 @@ const ForgotPassword = () => {
       <div className="w-full max-w-md">
         <h1 className="text-2xl font-bold text-foreground mb-3">Forgot password?</h1>
         <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
-          We'll send you reset instructions.
-          <br />
-          Please enter the email address associated with your account. If you don't see the email, check your spam or junk folder.
+          {sent
+            ? `If an account exists for ${email}, a reset link is on its way. Open it on this device to choose a new password. Check spam if you don't see it.`
+            : "Enter the email address linked to your account and we'll send you a link to reset your password."}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-muted-foreground text-sm">
-              Email
-            </Label>
+            <Label htmlFor="email" className="text-muted-foreground text-sm">Email</Label>
             <Input
               id="email"
               type="email"
@@ -51,22 +56,14 @@ const ForgotPassword = () => {
               className="h-12 border-border bg-card"
             />
           </div>
-
-          <Button
-            type="submit"
-            variant="hero"
-            className="w-full h-12 text-base rounded-lg"
-            disabled={loading}
-          >
-            {loading ? "Sending..." : "Send reset code"}
+          <Button type="submit" variant="hero" className="w-full h-12 text-base rounded-lg" disabled={loading}>
+            {loading ? "Sending..." : sent ? "Send again" : "Send reset link"}
           </Button>
         </form>
 
         <p className="text-center text-sm text-muted-foreground mt-8">
           Return to{" "}
-          <Link to="/login" className="text-primary hover:underline font-medium">
-            Log In
-          </Link>
+          <Link to="/login" className="text-primary hover:underline font-medium">Log In</Link>
         </p>
       </div>
     </div>
