@@ -52,6 +52,11 @@ const SignUp = () => {
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
       if (signInError) {
         setLoading(false);
+        if (/confirm/i.test(signInError.message)) {
+          toast.success("Almost there! Check your inbox and tap the confirmation link to start learning.");
+          navigate("/login", { replace: true });
+          return;
+        }
         toast.error(signInError.message);
         return;
       }
