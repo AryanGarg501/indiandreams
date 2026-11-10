@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { coursesData } from "@/data/coursesData";
 import { supabase } from "@/integrations/supabase/client";
+import { AccountSecurity } from "@/components/AccountSecurity";
 
 const availableLessonKeys = new Set(
   Object.entries(coursesData).flatMap(([courseId, course]) =>
@@ -244,6 +245,8 @@ const Profile = () => {
                   ))}
                 </div>
               </section>
+
+              <AccountSecurity currentEmail={profile.email} />
             </div>
           </main>
         </div>
